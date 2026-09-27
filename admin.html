@@ -48,6 +48,15 @@ table{width:100%;border-collapse:collapse;font-size:12px}th,td{border-bottom:1px
 </table>
 </div>
 <div class="small">The dashboard records whether a password was entered for the simulation, but never stores or displays the password content.</div>
+
+<h2 style="margin-top:28px">Student Feedback for Practical Teaching Study</h2>
+<div class="actions"><button class="btn" onclick="loadFeedback()">Load Feedback</button></div>
+<div class="scroll" style="margin-top:12px">
+<table>
+<thead><tr><th>Name</th><th>ID</th><th>Class</th><th>Level</th><th>Subject</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Q5</th><th>Q6</th><th>Q7</th><th>Q8</th><th>Q9</th><th>Q10</th><th>Most Useful</th><th>Improvement</th><th>Submitted</th></tr></thead>
+<tbody id="feedbackRows"></tbody>
+</table>
+</div>
 </div>
 </div></div>
 
@@ -69,6 +78,15 @@ async function loadData(){
  document.getElementById("rows").innerHTML=d.submissions.map(x=>`<tr>
  <td>${esc(x.name)}</td><td>Yes (not stored)</td><td>${esc(x.capturedAt)}</td><td>${esc(x.ip)}</td><td>${esc(x.os||"Unavailable")}</td><td>${esc(x.platform||"Unavailable")}</td><td>${esc(x.browser)}</td><td>${esc(x.language)}</td><td>${esc(x.screen)}</td><td>${esc(x.timezone)}</td>
  </tr>`).join("");
+}
+async function loadFeedback(){
+ const r=await fetch("/api/feedback");
+ if(r.status===401){location.reload();return;}
+ const d=await r.json();
+ document.getElementById("feedbackRows").innerHTML=d.feedback.map(x=>`<tr>
+ <td>${esc(x.name)}</td><td>${esc(x.studentId)}</td><td>${esc(x.className)}</td><td>${esc(x.level)}</td><td>${esc(x.subject)}</td>
+ <td>${esc(x.q1)}</td><td>${esc(x.q2)}</td><td>${esc(x.q3)}</td><td>${esc(x.q4)}</td><td>${esc(x.q5)}</td><td>${esc(x.q6)}</td><td>${esc(x.q7)}</td><td>${esc(x.q8)}</td><td>${esc(x.q9)}</td><td>${esc(x.q10)}</td>
+ <td>${esc(x.usefulPart)}</td><td>${esc(x.improvement)}</td><td>${esc(x.submittedAt)}</td></tr>`).join("");
 }
 async function logout(){await fetch("/api/admin-logout",{method:"POST"});location.reload();}
 </script>
