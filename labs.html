@@ -9,7 +9,7 @@
 .top{background:#8b1e1e;color:#fff;text-align:center;padding:9px 14px;font-weight:800}
 .wrap{max-width:1050px;margin:28px auto;background:#fff;border-radius:10px;padding:28px 34px;box-shadow:0 15px 42px rgba(0,0,0,.1)}
 h1,h2{color:#315fa8}.module{border-top:1px solid var(--line);padding:24px 0}.module:first-of-type{border-top:0}.tag{display:inline-block;background:#fff3cd;border:1px solid #efd184;padding:5px 8px;border-radius:999px;font-size:11px;font-weight:800}
-.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}.box{background:#f8fafc;border:1px solid var(--line);border-radius:7px;padding:14px;line-height:1.5}.back{display:inline-block;background:#315fa8;color:#fff;text-decoration:none;padding:10px 14px;border-radius:6px;font-weight:700}.pwlab{margin-top:16px;background:#fff;border:1px solid #d8e1eb;border-radius:9px;padding:18px}.pwlab input{width:100%;padding:12px;border:1px solid #cbd6e2;border-radius:7px;font:inherit}.pwbar{height:12px;background:#e8edf3;border-radius:999px;overflow:hidden;margin:12px 0}.pwfill{height:100%;width:0%;background:#315fa8;transition:width .2s}.pwstats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.pwstat{background:#f8fafc;border:1px solid #d8e1eb;border-radius:7px;padding:10px;text-align:center}.checklist{display:grid;gap:6px;margin-top:12px}.ok{color:#087443}.no{color:#b42318}.warnbox{background:#fff6df;border:1px solid #efd184;padding:12px 14px;border-radius:7px;margin-bottom:12px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}.box{background:#f8fafc;border:1px solid var(--line);border-radius:7px;padding:14px;line-height:1.5}.back{display:inline-block;background:#315fa8;color:#fff;text-decoration:none;padding:10px 14px;border-radius:6px;font-weight:700}.pwlab{margin-top:16px;background:#fff;border:1px solid #d8e1eb;border-radius:9px;padding:18px}.pwlab input{width:100%;padding:12px;border:1px solid #cbd6e2;border-radius:7px;font:inherit}.pwbar{height:12px;background:#e8edf3;border-radius:999px;overflow:hidden;margin:12px 0}.pwfill{height:100%;width:0%;background:#315fa8;transition:width .2s}.pwstats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.pwstat{background:#f8fafc;border:1px solid #d8e1eb;border-radius:7px;padding:10px;text-align:center}.checklist{display:grid;gap:6px;margin-top:12px}.ok{color:#087443}.no{color:#b42318}.warnbox{background:#fff6df;border:1px solid #efd184;padding:12px 14px;border-radius:7px;margin-bottom:12px}.toolrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.toolbtn{border:0;border-radius:6px;background:#315fa8;color:#fff;padding:10px 13px;font-weight:700;cursor:pointer}.toolbtn.alt{background:#edf2f7;color:#24435f;border:1px solid #cfd9e5}.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}.compare input{width:100%;padding:10px;border:1px solid #cbd6e2;border-radius:6px}.resultbox{background:#f8fafc;border:1px solid #d8e1eb;border-radius:7px;padding:12px;margin-top:12px}.mono{font-family:Consolas,monospace;word-break:break-all}
 @media(max-width:700px){.cols{grid-template-columns:1fr}}
 </style>
 </head>
@@ -53,7 +53,7 @@ h1,h2{color:#315fa8}.module{border-top:1px solid var(--line);padding:24px 0}.mod
     <div class="pwstat"><b id="pwStrength">—</b><br><small>Strength</small></div>
     <div class="pwstat"><b id="pwScore">0/5</b><br><small>Score</small></div>
     <div class="pwstat"><b id="pwLength">0</b><br><small>Length</small></div>
-    <div class="pwstat"><b id="pwEntropy">0 bits</b><br><small>Estimated entropy</small></div>
+    <div class="pwstat"><b id="pwEntropy">0 bits</b><br><small>Estimated entropy</small></div><div class="pwstat"><b id="pwCrack">—</b><br><small>Illustrative crack time</small></div>
   </div>
 
   <div class="checklist">
@@ -66,6 +66,21 @@ h1,h2{color:#315fa8}.module{border-top:1px solid var(--line);padding:24px 0}.mod
   </div>
 
   <div id="pwAdvice" class="box" style="margin-top:14px"><b>Advice:</b> Start typing an invented password to see feedback.</div>
+
+  <div class="toolrow">
+    <button class="toolbtn" type="button" id="genPw">Generate Strong Demo Password</button>
+    <button class="toolbtn alt" type="button" id="genPhrase">Generate Demo Passphrase</button>
+    <button class="toolbtn alt" type="button" id="clearPw">Clear</button>
+  </div>
+  <div id="generatedOut" class="resultbox mono" style="display:none"></div>
+
+  <h3 style="margin-top:24px;color:#315fa8">Compare Two Invented Passwords</h3>
+  <div class="compare">
+    <div><label><b>Password A</b></label><input id="cmpA" type="password" placeholder="Invented password A"></div>
+    <div><label><b>Password B</b></label><input id="cmpB" type="password" placeholder="Invented password B"></div>
+  </div>
+  <div class="toolrow"><button class="toolbtn" type="button" id="compareBtn">Compare</button></div>
+  <div id="compareOut" class="resultbox">Enter two invented passwords and click Compare.</div>
 </div>
 </section>
 
@@ -81,6 +96,7 @@ const strengthEl=document.getElementById("pwStrength");
 const scoreEl=document.getElementById("pwScore");
 const lenEl=document.getElementById("pwLength");
 const entropyEl=document.getElementById("pwEntropy");
+const crackEl=document.getElementById("pwCrack");
 const advice=document.getElementById("pwAdvice");
 
 show.addEventListener("change",()=>pw.type=show.checked?"text":"password");
@@ -100,15 +116,13 @@ function commonPattern(s){
  return false;
 }
 
-function analyze(){
- const s=pw.value;
+function scorePassword(s){
  const hasUpper=/[A-Z]/.test(s);
  const hasLower=/[a-z]/.test(s);
  const hasNum=/[0-9]/.test(s);
  const hasSym=/[^A-Za-z0-9]/.test(s);
  const long=s.length>=12;
  const bad=commonPattern(s);
-
  let score=0;
  if(long) score++;
  if(hasUpper) score++;
@@ -116,13 +130,35 @@ function analyze(){
  if(hasNum) score++;
  if(hasSym) score++;
  if(bad && score>0) score--;
-
  let pool=0;
  if(hasLower) pool+=26;
  if(hasUpper) pool+=26;
  if(hasNum) pool+=10;
  if(hasSym) pool+=32;
  const entropy=(s.length && pool)?Math.round(s.length*Math.log2(pool)):0;
+ return {score:Math.max(0,score),entropy,hasUpper,hasLower,hasNum,hasSym,long,bad};
+}
+
+function crackTimeLabel(entropy){
+ if(!entropy) return "—";
+ const guesses=Math.pow(2,entropy);
+ const seconds=guesses/1e10;
+ if(seconds<1) return "<1 sec";
+ if(seconds<60) return Math.round(seconds)+" sec";
+ if(seconds<3600) return Math.round(seconds/60)+" min";
+ if(seconds<86400) return Math.round(seconds/3600)+" hr";
+ if(seconds<31557600) return Math.round(seconds/86400)+" days";
+ const years=seconds/31557600;
+ if(years<1000) return Math.round(years)+" yrs";
+ if(years<1e6) return Math.round(years/1000)+"k yrs";
+ if(years<1e9) return Math.round(years/1e6)+"M yrs";
+ return ">1B yrs";
+}
+
+function analyze(){
+ const s=pw.value;
+ const r=scorePassword(s);
+ const {score,entropy,hasUpper,hasLower,hasNum,hasSym,long,bad}=r;
 
  let label="Very Weak";
  if(score===2) label="Weak";
@@ -135,6 +171,7 @@ function analyze(){
  scoreEl.textContent=Math.max(0,score)+"/5";
  lenEl.textContent=s.length;
  entropyEl.textContent=entropy+" bits";
+ crackEl.textContent=crackTimeLabel(entropy);
  fill.style.width=(Math.max(0,score)/5*100)+"%";
 
  setCheck("cLen",long,"At least 12 characters");
@@ -154,6 +191,44 @@ function analyze(){
  advice.innerHTML="<b>Advice:</b> "+(s?(tips.length?tips.join(", ")+".":"Good structure for a demo password. In real life, prefer a long unique password stored in a password manager."):"Start typing an invented password to see feedback.");
 }
 pw.addEventListener("input",analyze);
+
+document.getElementById("clearPw").addEventListener("click",()=>{
+ pw.value=""; show.checked=false; pw.type="password"; analyze();
+ document.getElementById("generatedOut").style.display="none";
+});
+
+document.getElementById("genPw").addEventListener("click",()=>{
+ const upper="ABCDEFGHJKLMNPQRSTUVWXYZ", lower="abcdefghijkmnopqrstuvwxyz", nums="23456789", syms="!@#$%^&*_-+=";
+ const all=upper+lower+nums+syms;
+ let out=upper[Math.floor(Math.random()*upper.length)]+lower[Math.floor(Math.random()*lower.length)]+nums[Math.floor(Math.random()*nums.length)]+syms[Math.floor(Math.random()*syms.length)];
+ while(out.length<16) out+=all[Math.floor(Math.random()*all.length)];
+ out=out.split("").sort(()=>Math.random()-.5).join("");
+ const box=document.getElementById("generatedOut");
+ box.style.display="block";
+ box.textContent="Generated demo password: "+out;
+});
+
+document.getElementById("genPhrase").addEventListener("click",()=>{
+ const words=["Blue","Falcon","Palm","Shield","Desert","Harbor","Cloud","Cedar","Oasis","Quartz","River","Star"];
+ let chosen=[];
+ while(chosen.length<4){const w=words[Math.floor(Math.random()*words.length)]; if(!chosen.includes(w)) chosen.push(w);}
+ const phrase=chosen.join("-")+"-"+(10+Math.floor(Math.random()*90))+"!";
+ const box=document.getElementById("generatedOut");
+ box.style.display="block";
+ box.textContent="Generated demo passphrase: "+phrase;
+});
+
+document.getElementById("compareBtn").addEventListener("click",()=>{
+ const a=document.getElementById("cmpA").value;
+ const b=document.getElementById("cmpB").value;
+ const ra=scorePassword(a), rb=scorePassword(b);
+ const out=document.getElementById("compareOut");
+ if(!a||!b){out.textContent="Enter both invented passwords first.";return;}
+ let verdict="Both are similar.";
+ if(ra.entropy>rb.entropy+5) verdict="Password A is stronger by this local estimate.";
+ else if(rb.entropy>ra.entropy+5) verdict="Password B is stronger by this local estimate.";
+ out.innerHTML="<b>Password A:</b> score "+ra.score+"/5, "+ra.entropy+" bits, "+crackTimeLabel(ra.entropy)+"<br><b>Password B:</b> score "+rb.score+"/5, "+rb.entropy+" bits, "+crackTimeLabel(rb.entropy)+"<br><b>Result:</b> "+verdict;
+});
 </script>
 </body>
 </html>
