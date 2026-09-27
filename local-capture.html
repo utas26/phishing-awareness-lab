@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Instructor Capture — Local View</title>
+<style>
+:root{--blue:#315fa8;--line:#d8e1eb;--ink:#26364f}
+*{box-sizing:border-box}
+body{margin:0;background:#eef3f8;font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+.top{background:#8b1e1e;color:white;text-align:center;padding:9px 14px;font-weight:800}
+.wrap{max-width:1050px;margin:32px auto;background:white;padding:28px;border-radius:9px;box-shadow:0 16px 45px rgba(0,0,0,.12)}
+h1{margin-top:0;color:#315fa8}
+.note{background:#fff6df;border:1px solid #efd184;padding:13px 14px;border-radius:7px;margin:14px 0 18px;line-height:1.5}
+.capture{border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.row{display:grid;grid-template-columns:190px 1fr;gap:12px;padding:11px 14px;border-top:1px solid #e8edf3}
+.row:first-child{border-top:0}.row b{color:#607089}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.btn{display:inline-block;border:0;border-radius:7px;padding:10px 14px;background:#315fa8;color:white;text-decoration:none;font-weight:700;cursor:pointer}
+.secondary{background:#edf2f7;color:#24435f}.danger{background:#fff1f0;color:#b42318;border:1px solid #fecdca}
+.empty{padding:18px;border:1px dashed var(--line);border-radius:8px;color:#6c7888;background:#fafcff}
+@media(max-width:650px){.wrap{margin:0;border-radius:0}.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="top">INSTRUCTOR CAPTURE — LOCAL VIEW</div>
+<main class="wrap">
+<h1>Instructor Capture — Local View</h1>
+<div class="note">
+<b>Local-only demonstration:</b> This page shows the exact invented username and password saved in this browser for the awareness exercise.
+The values stay in this browser's localStorage and are not sent to the central Instructor Dashboard.
+</div>
+
+<div id="captureArea"></div>
+
+<div class="actions">
+<a class="btn secondary" href="/admin.html">← Back to Instructor Dashboard</a>
+<a class="btn secondary" href="/fake-login.html">Open Stage 2</a>
+<button class="btn danger" onclick="clearLocal()">Clear Local Capture</button>
+</div>
+</main>
+
+<script>
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+
+function render(){
+  const area=document.getElementById("captureArea");
+  const raw=localStorage.getItem("phishlab_local_capture");
+  if(!raw){
+    area.innerHTML='<div class="empty">No local capture found in this browser. Complete Stage 2 in this same browser first.</div>';
+    return;
+  }
+  const r=JSON.parse(raw);
+  area.innerHTML=`<div class="capture">
+    <div class="row"><b>Username</b><span>${esc(r.username)}</span></div>
+    <div class="row"><b>Password</b><span>${esc(r.password)}</span></div>
+    <div class="row"><b>Captured at</b><span>${esc(r.capturedAt)}</span></div>
+    <div class="row"><b>Browser / User Agent</b><span>${esc(r.browser)}</span></div>
+    <div class="row"><b>Platform</b><span>${esc(r.platform)}</span></div>
+    <div class="row"><b>Language</b><span>${esc(r.language)}</span></div>
+    <div class="row"><b>Screen resolution</b><span>${esc(r.screen)}</span></div>
+    <div class="row"><b>Browser viewport</b><span>${esc(r.viewport)}</span></div>
+    <div class="row"><b>Timezone</b><span>${esc(r.timezone)}</span></div>
+    <div class="row"><b>Stored in</b><span>${esc(r.storage)}</span></div>
+    <div class="row"><b>Sent to internet?</b><span style="color:#087443;font-weight:700">${esc(r.sentToInternet)}</span></div>
+  </div>`;
+}
+
+function clearLocal(){
+  localStorage.removeItem("phishlab_local_capture");
+  render();
+}
+
+render();
+</script>
+</body></html>
