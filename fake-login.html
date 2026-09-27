@@ -30,16 +30,19 @@ hr{border:0;border-top:1px solid #d8dde4;margin:26px 0}.help{text-align:center;l
 
 <div class="stage">STAGE 2 — SUSPICIOUS EMAIL LINK</div>
 <div class="alert">Your session has timed out. Please log in again.</div>
+<div style="background:#fff3cd;border:1px solid #e8c765;color:#6b4b00;padding:12px 14px;border-radius:5px;margin:0 0 18px;line-height:1.45">
+<b>Important warning:</b> This is a classroom awareness simulation. <b>Do not enter any real password.</b> Use an invented password only.
+</div>
 
 <form id="loginForm" autocomplete="off">
 <div class="field"><span>👤</span><input id="studentName" placeholder="Student Name" aria-label="Student Name"></div>
-<div class="field pwd"><span>🔒</span><input id="studentPassword" type="password" placeholder="Training Password" aria-label="Training Password"></div>
+<div class="field pwd"><span>🔒</span><input id="studentPassword" type="password" placeholder="Password" aria-label="Password"></div>
 <button class="login" type="submit">Log in</button>
 </form>
 <div id="msg" class="msg"></div>
 
 <hr>
-<div class="help"><h3>Classroom training</h3><p>For this classroom simulation, any invented training password will be accepted. Do not enter your real UTAS or personal password.</p></div>
+<div class="help"><h3>Classroom training</h3><p>WARNING: Do not use your real UTAS, email, banking, social-media, or personal password. Enter an invented password only for this awareness simulation.</p></div>
 <hr>
 <div class="foot"><a href="/admin.html" style="display:inline-flex;align-items:center;gap:7px;text-decoration:none;color:#315fa8;font-weight:700"><span style="display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#315fa8;color:#fff;font-size:14px">⚙</span> Stage 3 — Instructor Dashboard</a><div style="margin-top:6px;color:#6c7888;font-weight:400">Admin only</div></div>
 </main>
@@ -65,7 +68,7 @@ document.getElementById("loginForm").addEventListener("submit",async e=>{
  if(!name){m.style.background="#fff0f0";m.style.border="1px solid #f0bcbc";m.style.color="#8f1d1d";m.textContent="Please enter Student Name.";return;}
  if(!p){
    m.style.background="#fff0f0";m.style.border="1px solid #f0bcbc";m.style.color="#8f1d1d";
-   m.innerHTML="<b>Training safeguard:</b> Please enter a training password.";
+   m.innerHTML="<b>Training safeguard:</b> Please enter a password for this simulation.";
    return;
  }
  const s=systemDetails();
