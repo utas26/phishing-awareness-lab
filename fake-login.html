@@ -1,11 +1,10 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Moodle-Style Phishing Awareness Training</title>
 <style>
-:root{--blue:#1f5fa8;--orange:#f6a700;--bg:#f4f7fb;}
+:root{--blue:#1f5fa8;--orange:#f6a700}
 *{box-sizing:border-box}
 body{margin:0;background:linear-gradient(180deg,#eef4fb,#f9fbfd);font-family:Arial,Helvetica,sans-serif;color:#22334d}
 .training-banner{background:#8b1e1e;color:#fff;text-align:center;padding:11px 16px;font-weight:800;letter-spacing:.04em}
@@ -17,6 +16,7 @@ body{margin:0;background:linear-gradient(180deg,#eef4fb,#f9fbfd);font-family:Ari
 .brand small{display:block;margin-top:8px;color:#61718a;font-weight:700}
 .alert{border:1px solid #f0b6b6;background:#fbdede;color:#a11d1d;padding:14px 16px;border-radius:4px;text-align:center;margin:14px 0 24px}
 .demo-note{border:1px solid #f0d184;background:#fff7df;color:#715100;padding:12px 14px;border-radius:5px;margin-bottom:18px;line-height:1.45}
+.student-summary{background:#f6f9fc;border:1px solid #d8e1eb;padding:12px 14px;border-radius:6px;margin-bottom:16px}
 .field{display:flex;align-items:center;gap:10px;border-bottom:2px solid #c7ced8;padding:7px 5px 10px;margin:12px 0 16px}
 .icon{width:22px;color:var(--orange);font-size:20px}
 input{border:0;outline:none;width:100%;font-size:18px;padding:8px 4px;background:transparent}
@@ -26,21 +26,9 @@ hr{border:0;border-top:1px solid #d8dde4;margin:26px 0}
 .first{text-align:center}
 .first h3{margin-bottom:10px}
 .first p{font-family:Consolas,monospace;line-height:1.5;margin:0;color:#1e2d45}
-.cookies{color:#f0a000;margin-top:30px}
 .result{display:none;margin-top:18px;border:1px solid #b7dfc8;background:#effaf3;color:#16623a;padding:14px;border-radius:5px;line-height:1.5}
 .footer-note{text-align:center;color:#6b7686;font-size:12px;margin-top:22px}
-.adminbox{margin-top:30px;border:1px solid #d8e1eb;border-radius:8px;background:#f8fbff;padding:18px}
-.adminbox h3{margin-top:0}
-.adminbox input{border:1px solid #cbd6e2;border-radius:5px;background:#fff;margin-bottom:10px}
-.adminbtn{background:#245d99;color:#fff;border:0;border-radius:5px;padding:10px 16px;font-weight:700;cursor:pointer}
-.hidden{display:none}
-.capture{margin-top:16px;border:1px solid #dbe4ef;border-radius:8px;overflow:hidden;background:#fff}
-.row{display:grid;grid-template-columns:180px 1fr;gap:12px;padding:11px 14px;border-top:1px solid #edf1f5;font-size:13px}
-.row:first-child{border-top:0}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-.secondary{background:#edf2f7;color:#24435f;border:0;border-radius:5px;padding:10px 14px;font-weight:700;cursor:pointer}
-.danger{background:#fff1f0;color:#b42318;border:1px solid #fecdca;border-radius:5px;padding:10px 14px;font-weight:700;cursor:pointer}
-@media(max-width:640px){.shell{margin:0;border-radius:0;padding:24px 18px}.brand-mark{flex-direction:column}.row{grid-template-columns:1fr}}
+@media(max-width:640px){.shell{margin:0;border-radius:0;padding:24px 18px}.brand-mark{flex-direction:column}}
 </style>
 </head>
 <body>
@@ -48,160 +36,74 @@ hr{border:0;border-top:1px solid #d8dde4;margin:26px 0}
 <main class="shell">
 <section class="brand">
 <div class="brand-mark">
-<div class="logo" aria-hidden="true"></div>
+<div class="logo"></div>
 <div><h1>University Learning Portal</h1><small>Moodle-style classroom simulation</small></div>
 </div>
 </section>
 
 <div class="alert">Your session has timed out. Please log in again.</div>
+<div class="student-summary" id="studentSummary"></div>
 
 <div class="demo-note">
 <b>Training credentials only:</b><br>
 Username: <b>student01</b><br>
 Password: <b>Demo@123</b><br>
-Any other credentials are rejected and are not stored.
+Only these fixed dummy credentials are accepted. Never enter a real password.
 </div>
 
 <form id="loginForm" autocomplete="off">
-<div class="field"><div class="icon">👤</div><input id="username" placeholder="Username" aria-label="Username"></div>
-<div class="field pwdwrap"><div class="icon">🔒</div><input id="password" type="password" placeholder="Password" aria-label="Password"></div>
+<div class="field"><div class="icon">👤</div><input id="username" placeholder="Username"></div>
+<div class="field pwdwrap"><div class="icon">🔒</div><input id="password" type="password" placeholder="Password"></div>
 <button class="login" type="submit">Log in</button>
 </form>
 
 <div id="result" class="result"></div>
-
 <hr>
 <section class="first">
-<h3>Is this your first time here?</h3>
-<p>Use only the demo username and password shown above.<br>
-This page is intentionally designed to teach students how a phishing page can imitate a familiar login screen.</p>
+<h3>Why this matters</h3>
+<p>A phishing page may look familiar while using a different domain.<br>
+Always verify the sender, URL, and login destination before entering credentials.</p>
 </section>
-
 <hr>
-
-<section class="adminbox">
-<h3>Instructor Dashboard</h3>
-<div id="adminLogin">
-<p style="color:#65748a">Admin access is required to view the locally captured training record.</p>
-<label>Admin Username</label>
-<input id="adminUser" autocomplete="off">
-<label>Admin Password</label>
-<input id="adminPass" type="password" autocomplete="off">
-<button class="adminbtn" type="button" id="adminLoginBtn">Admin Login</button>
-<div id="adminMsg" style="margin-top:10px;color:#a11d1d"></div>
-</div>
-
-<div id="adminPanel" class="hidden">
-<div id="captureArea">No demo record captured in this browser yet.</div>
-<div class="actions">
-<button class="secondary" type="button" onclick="renderCapture()">Refresh</button>
-<button class="danger" type="button" onclick="clearDemo()">Clear Demo Data</button>
-<button class="secondary" type="button" onclick="adminLogout()">Admin Logout</button>
-</div>
-</div>
-</section>
-
-<div class="cookies">Cookies notice</div>
-<div class="footer-note">Fictional training page · No real institution branding · No network credential collection</div>
+<div class="footer-note">Fictional training page · Fixed dummy credentials only · Central activity monitoring enabled for this classroom lab</div>
 </main>
 
 <script>
-const USER="student01";
-const PASS="Demo@123";
-const KEY="moodle_phishing_training_demo";
-let adminUnlocked=false;
+const NAME=sessionStorage.getItem("phish_student_name")||"Unknown student";
+const ID=sessionStorage.getItem("phish_student_id")||"Not provided";
+document.getElementById("studentSummary").innerHTML="<b>Student:</b> "+NAME+" &nbsp; | &nbsp; <b>ID:</b> "+ID;
 
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
-
-document.getElementById("loginForm").addEventListener("submit",function(e){
+document.getElementById("loginForm").addEventListener("submit",async function(e){
   e.preventDefault();
   const u=document.getElementById("username").value.trim();
   const p=document.getElementById("password").value;
   const result=document.getElementById("result");
   result.style.display="block";
-
-  if(u!==USER||p!==PASS){
-    result.style.background="#fff0f0";
-    result.style.borderColor="#f0bcbc";
-    result.style.color="#8f1d1d";
-    result.innerHTML="<b>Training safeguard:</b> Only the provided dummy credentials are accepted. No information was saved.";
+  if(u!=="student01"||p!=="Demo@123"){
+    result.style.background="#fff0f0";result.style.borderColor="#f0bcbc";result.style.color="#8f1d1d";
+    result.innerHTML="<b>Training safeguard:</b> Only the fixed dummy credentials are accepted. Nothing was saved.";
     return;
   }
 
-  const record={
-    username:u,
-    password:p,
-    capturedAt:new Date().toLocaleString(),
+  const payload={
+    name:NAME,id:ID,dummyUsername:u,
     browser:navigator.userAgent,
     language:navigator.language||"Unavailable",
     screen:screen.width+" × "+screen.height,
-    timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||"Unavailable",
-    publicIP:"Not collected in local-only mode",
-    sentToInternet:"No"
+    timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||"Unavailable"
   };
 
-  localStorage.setItem(KEY,JSON.stringify(record));
-
-  result.style.background="#effaf3";
-  result.style.borderColor="#b7dfc8";
-  result.style.color="#16623a";
-  result.innerHTML="<b>Phishing simulation successful.</b><br>You entered credentials into a page that only looked like a familiar learning-system login. In a real attack, stolen credentials could be transmitted to an attacker. In this safe demo, the fixed dummy credentials were stored only in this browser.";
-
+  try{
+    const r=await fetch("/api/submit",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+    if(!r.ok) throw new Error();
+    result.style.background="#effaf3";result.style.borderColor="#b7dfc8";result.style.color="#16623a";
+    result.innerHTML="<b>Phishing simulation completed.</b><br>Your classroom activity has been recorded for the instructor. The password used here is a fixed dummy training password, not a real credential.";
+  }catch(e){
+    result.style.background="#fff7df";result.style.borderColor="#f0d184";result.style.color="#715100";
+    result.innerHTML="The simulation completed, but the central activity record could not be saved. Please inform the instructor.";
+  }
   document.getElementById("username").value="";
   document.getElementById("password").value="";
 });
-
-document.getElementById("adminLoginBtn").addEventListener("click",()=>{
-  const u=document.getElementById("adminUser").value;
-  const p=document.getElementById("adminPass").value;
-  const msg=document.getElementById("adminMsg");
-
-  if(u==="admin" && p==="admin123"){
-    adminUnlocked=true;
-    document.getElementById("adminLogin").classList.add("hidden");
-    document.getElementById("adminPanel").classList.remove("hidden");
-    msg.textContent="";
-    renderCapture();
-  } else {
-    msg.textContent="Invalid admin username or password.";
-  }
-});
-
-function renderCapture(){
-  if(!adminUnlocked) return;
-  const raw=localStorage.getItem(KEY);
-  const area=document.getElementById("captureArea");
-  if(!raw){
-    area.textContent="No demo record captured in this browser yet.";
-    return;
-  }
-  const r=JSON.parse(raw);
-  area.innerHTML=`<div class="capture">
-    <div class="row"><b>Username</b><span>${esc(r.username)}</span></div>
-    <div class="row"><b>Password</b><span>${esc(r.password)}</span></div>
-    <div class="row"><b>Captured at</b><span>${esc(r.capturedAt)}</span></div>
-    <div class="row"><b>Browser/User Agent</b><span>${esc(r.browser)}</span></div>
-    <div class="row"><b>Language</b><span>${esc(r.language)}</span></div>
-    <div class="row"><b>Screen</b><span>${esc(r.screen)}</span></div>
-    <div class="row"><b>Timezone</b><span>${esc(r.timezone)}</span></div>
-    <div class="row"><b>Public IP</b><span>${esc(r.publicIP)}</span></div>
-    <div class="row"><b>Sent to internet?</b><span style="color:green;font-weight:700">${esc(r.sentToInternet)}</span></div>
-  </div>`;
-}
-
-function clearDemo(){
-  if(!adminUnlocked) return;
-  localStorage.removeItem(KEY);
-  renderCapture();
-}
-
-function adminLogout(){
-  adminUnlocked=false;
-  document.getElementById("adminPanel").classList.add("hidden");
-  document.getElementById("adminLogin").classList.remove("hidden");
-  document.getElementById("adminUser").value="";
-  document.getElementById("adminPass").value="";
-}
 </script>
-</body>
-</html>
+</body></html>
