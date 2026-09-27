@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Phishing Awareness — Learning & Feedback</title>
+<style>
+:root{--blue:#315fa8;--orange:#f4b332;--line:#d8e1eb;--ink:#26364f}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:#2f61a6;font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+.top{background:#8b1e1e;color:white;text-align:center;padding:9px 14px;font-weight:800}
+.admin{position:fixed;top:52px;right:20px;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#fff;color:var(--blue);text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+.wrap{max-width:900px;margin:34px auto;background:white;padding:30px 34px 38px;border-radius:8px;box-shadow:0 18px 55px rgba(0,0,0,.2)}
+.brand{display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--line);padding-bottom:16px}
+.mark{width:58px;height:58px;border-radius:14px 29px 14px 29px;background:linear-gradient(145deg,#f5a21b 0 48%,#3156a6 48% 100%)}
+h1{margin:0;color:#3156a6}.sub{color:#6b7890;margin-top:4px}
+.cards{display:grid;grid-template-columns:1fr;gap:16px;margin-top:26px}
+.card{border:1px solid var(--line);border-radius:9px;padding:20px;background:#f8fafc}
+.card h2{margin:0 0 8px;color:#3156a6}.card p{margin:0 0 14px;line-height:1.5}
+.btn{display:inline-block;text-decoration:none;font-weight:800;padding:11px 16px;border-radius:6px}
+.feedback{background:#f4b332;color:#26364f}.info{background:#315fa8;color:white}.counter{background:#edf2f7;color:#24435f;border:1px solid #cfd9e5}
+.back{display:inline-block;margin-top:22px;text-decoration:none;color:#315fa8;font-weight:700}
+</style>
+</head>
+<body>
+<div class="top">PHISHING AWARENESS — LEARNING & FEEDBACK</div>
+<a class="admin" href="/admin.html" title="Instructor Dashboard">⚙</a>
+
+<main class="wrap">
+<div class="brand"><div class="mark"></div><div><h1>UTAS-Ibra Learning Portal</h1><div class="sub">Cybersecurity awareness learning resources</div></div></div>
+
+<div class="cards">
+  <section class="card">
+    <h2>Student Feedback</h2>
+    <p>Provide feedback about practical, real-time cybersecurity teaching compared with theory-based teaching.</p>
+    <a class="btn feedback" href="/feedback.html">Open Student Feedback</a>
+  </section>
+
+  <section class="card">
+    <h2>What is Phishing?</h2>
+    <p>Learn the meaning of phishing, common phishing types, the attack flow, and why phishing works.</p>
+    <a class="btn info" href="/phishing-info.html">Open Phishing Explanation</a>
+  </section>
+
+  <section class="card">
+    <h2>Countermeasures & Detection</h2>
+    <p>Learn how to identify suspicious emails, links, domains, attachments, and how to respond safely.</p>
+    <a class="btn counter" href="/countermeasures.html">Open Countermeasures & Detection</a>
+  </section>
+</div>
+
+<a class="back" href="/">← Back to Stage 1</a>
+</main>
+</body>
+</html>
