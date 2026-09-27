@@ -49,6 +49,7 @@ const server=http.createServer(async(req,res)=>{
         id:'',
         dummyUsername:String(b.usernameEntered||b.name||'Training user').slice(0,120),
         passwordSubmitted:Boolean(b.passwordSubmitted),
+        passwordLength:Math.max(0,Math.min(128,Number(b.passwordLength)||0)),
         capturedAt:new Date().toLocaleString('en-US',{timeZone:'Asia/Muscat'}),
         ip:ipOf(req),
         os:String(b.os||'Unavailable').slice(0,80),
