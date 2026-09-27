@@ -2,111 +2,63 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>UTAS-Ibra Moodle Awareness Simulation</title>
+<title>UTAS-Ibra Moodle Awareness — Stage 1</title>
 <style>
-:root{--blue:#315fa8;--blue2:#234f91;--orange:#f4b332;--line:#d8e0ea}
+:root{--blue:#315fa8;--blue2:#244f91;--orange:#f4b332;--line:#d8e1eb;--ink:#26364f}
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;background:#2f61a6;font-family:Arial,Helvetica,sans-serif;color:#27364d}
+body{margin:0;min-height:100vh;background:#2f61a6;font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
 .training{background:#8b1e1e;color:#fff;text-align:center;padding:9px 14px;font-weight:800;letter-spacing:.03em}
 .admin{position:fixed;top:52px;right:20px;z-index:10;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#fff;color:var(--blue);text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.2);font-size:19px}
-.panel{max-width:800px;margin:30px auto 45px;background:#fff;border-radius:4px;padding:42px 48px 36px;box-shadow:0 18px 55px rgba(0,0,0,.2)}
-.brand{text-align:center;margin-bottom:18px}.brandbox{width:min(550px,100%);margin:auto;padding:20px;border:1px solid #edf1f6}.mark{width:100px;height:100px;margin:0 auto 12px;border-radius:24px 50px 24px 50px;background:linear-gradient(145deg,#f5a21b 0 48%,#3156a6 48% 100%)}
-.brand h1{margin:0;color:#3156a6;font-size:28px}.brand small{display:block;margin-top:6px;color:#69788f;font-weight:700}
-.alert{background:#fbdede;border:1px solid #efbcbc;color:#a11d1d;text-align:center;padding:14px;border-radius:4px;margin:18px 0 25px}
-.field{display:flex;align-items:center;border-bottom:2px solid #c8ced8;margin:14px 0 16px;padding:7px 4px}.field.pwd{background:#eaf2ff}.field span{width:30px;color:#f4a500;font-size:20px}.field input{width:100%;border:0;outline:0;background:transparent;padding:9px 4px;font-size:18px}
-.login{display:block;margin:22px auto 36px;border:0;border-radius:3px;background:#f5bb3c;color:#fff;padding:14px 58px;font-size:16px;cursor:pointer;box-shadow:0 2px 7px rgba(0,0,0,.14)}
-.msg{display:none;margin-top:14px;padding:13px 14px;border-radius:5px;line-height:1.45}
-hr{border:0;border-top:1px solid #d8dde4;margin:26px 0}.first{text-align:center}.first p{font-family:Consolas,monospace;line-height:1.55}.cookies{color:#f0a000}
-.foot{text-align:center;color:#6c7888;font-size:12px;margin-top:20px}
-.modal{position:fixed;inset:0;background:rgba(20,35,55,.58);display:none;align-items:center;justify-content:center;padding:18px;z-index:20}.modal.show{display:flex}.modalbox{width:min(480px,100%);background:#fff;border-radius:8px;padding:24px;box-shadow:0 18px 55px rgba(0,0,0,.3)}.modalbox h2{margin-top:0}.modalbox label{display:block;font-weight:700;margin:12px 0 6px}.modalbox input{width:100%;padding:11px;border:1px solid #cbd6e2;border-radius:6px}.modalbtn{margin-top:16px;border:0;border-radius:6px;background:#3156a6;color:#fff;padding:11px 16px;font-weight:700;cursor:pointer}
-@media(max-width:650px){.panel{margin:0;border-radius:0;padding:24px 18px}.admin{top:46px;right:10px}}
+.shell{max-width:920px;margin:30px auto 45px;background:#fff;border-radius:5px;padding:28px 34px 34px;box-shadow:0 18px 55px rgba(0,0,0,.2)}
+.brand{display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--line);padding-bottom:16px}
+.mark{width:62px;height:62px;border-radius:15px 30px 15px 30px;background:linear-gradient(145deg,#f5a21b 0 48%,#3156a6 48% 100%)}
+.brand h1{margin:0;color:#3156a6;font-size:25px}.brand small{color:#6b7890}
+.stage{display:inline-block;margin:18px 0 8px;background:#fff3cd;border:1px solid #efd184;padding:7px 10px;border-radius:999px;font-size:12px;font-weight:800}
+.mail{margin-top:12px;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.mailhead{background:#f6f8fb;padding:14px 16px;border-bottom:1px solid var(--line);font-size:13px;line-height:1.45}
+.mailbody{padding:20px;line-height:1.58}
+.btn{display:inline-block;background:#245d99;color:#fff;border:0;border-radius:6px;padding:12px 18px;font-weight:700;cursor:pointer}
+.fakeurl{margin-top:14px;padding:12px;border:1px dashed #e4ad3e;background:#fff9ea;border-radius:6px;font-family:Consolas,monospace}
+.fakeurl a{color:#245d99}.note{margin-top:16px;color:#6c7888;font-size:13px}
+.foot{text-align:center;color:#6c7888;font-size:12px;margin-top:22px}
+@media(max-width:650px){.shell{margin:0;border-radius:0;padding:22px 16px}.admin{top:46px;right:10px}}
 </style>
 </head>
 <body>
-<div class="training">AUTHORIZED PHISHING AWARENESS SIMULATION — NOT THE REAL UTAS MOODLE — DO NOT ENTER REAL PASSWORDS</div>
+<div class="training">AUTHORIZED PHISHING AWARENESS SIMULATION — NOT THE REAL UTAS MOODLE</div>
 <a class="admin" href="/admin.html" title="Instructor Dashboard" aria-label="Instructor Dashboard">⚙</a>
 
-<main class="panel">
-<div class="brand"><div class="brandbox"><div class="mark"></div><h1>UTAS-Ibra Learning Portal</h1><small>Moodle-style classroom simulation</small></div></div>
+<main class="shell">
+<div class="brand"><div class="mark"></div><div><h1>UTAS-Ibra Learning Portal</h1><small>Moodle-style cybersecurity awareness exercise</small></div></div>
 
-<div class="alert">Your session has timed out. Please log in again.</div>
+<div class="stage">STAGE 1 — SPOT THE SUSPICIOUS EMAIL</div>
+<h2>Account Verification Message</h2>
 
-<form id="loginForm" autocomplete="off">
-<div class="field"><span>👤</span><input id="username" placeholder="Username" aria-label="Username"></div>
-<div class="field pwd"><span>🔒</span><input id="password" type="password" placeholder="Password" aria-label="Password"></div>
-<button class="login" type="submit">Log in</button>
-</form>
-<div id="msg" class="msg"></div>
-
-<hr>
-<div class="first">
-<h3>Is this your first time here?</h3>
-<p>Use the classroom training credentials provided by your instructor.<br>
-Check the sender and website address before entering credentials.</p>
+<div class="mail">
+<div class="mailhead">
+From: IT Support &lt;security-alert@campus-access.example&gt;<br>
+Subject: Urgent: Your Moodle account will be suspended today
 </div>
-<hr>
-<div class="cookies">Cookies notice</div>
-<div class="foot">Classroom awareness simulation. Instructor monitoring is available from the small ⚙ icon.</div>
+<div class="mailbody">
+<p>Dear Student,</p>
+<p>We detected unusual activity on your learning account. To avoid suspension, verify your account immediately.</p>
+<button class="btn" id="verifyBtn">Verify Moodle Account</button>
+<div class="fakeurl"><a href="#" id="fakeUrl">https://secure-login.campus-check.example/verify</a></div>
+<p class="note">This fictional link stays inside the authorized classroom simulator and opens Stage 2.</p>
+</div>
+</div>
+
+<div class="foot">Small ⚙ icon: Instructor Dashboard (admin only).</div>
 </main>
 
-<div id="completeModal" class="modal">
-  <div class="modalbox">
-    <h2>Training Completion</h2>
-    <p>The simulated login step is complete. Enter your name and student ID so your instructor can record attendance/completion.</p>
-    <label>Student Name</label>
-    <input id="studentName" placeholder="Enter your name">
-    <label>Student ID</label>
-    <input id="studentId" placeholder="Enter your student ID">
-    <button id="saveCompletion" class="modalbtn">Submit Completion</button>
-    <div id="completeMsg" style="margin-top:10px;color:#a11d1d"></div>
-  </div>
-</div>
-
 <script>
-function sys(){
- const ua=navigator.userAgent||"Unavailable";
- let os="Unknown";
- if(/Windows NT/.test(ua)) os="Windows";
- else if(/Android/.test(ua)) os="Android";
- else if(/iPhone|iPad|iPod/.test(ua)) os="iOS/iPadOS";
- else if(/Mac OS X/.test(ua)) os="macOS";
- else if(/Linux/.test(ua)) os="Linux";
- return {ua,os,platform:navigator.platform||"Unavailable"};
-}
-
-document.getElementById("loginForm").addEventListener("submit",e=>{
- e.preventDefault();
- const u=document.getElementById("username").value.trim();
- const p=document.getElementById("password").value;
- const m=document.getElementById("msg");
- m.style.display="block";
- if(u!=="student01" || p!=="Demo@123"){
-   m.style.background="#fff0f0";m.style.border="1px solid #f0bcbc";m.style.color="#8f1d1d";
-   m.innerHTML="<b>Training safeguard:</b> The entered training credentials were not accepted. Nothing was stored.";
-   return;
- }
- m.style.display="none";
- document.getElementById("completeModal").classList.add("show");
-});
-
-document.getElementById("saveCompletion").addEventListener("click",async()=>{
- const name=document.getElementById("studentName").value.trim();
- const id=document.getElementById("studentId").value.trim();
- const cm=document.getElementById("completeMsg");
- if(!name||!id){cm.textContent="Please enter Student Name and Student ID.";return;}
- const s=sys();
- const payload={name,id,dummyUsername:"student01",browser:s.ua,os:s.os,platform:s.platform,language:navigator.language||"Unavailable",screen:screen.width+" × "+screen.height,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||"Unavailable"};
+async function nextStage(){
  try{
-   const r=await fetch("/api/submit",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
-   if(!r.ok) throw new Error();
-   document.getElementById("completeModal").classList.remove("show");
-   const m=document.getElementById("msg");
-   m.style.display="block";m.style.background="#effaf3";m.style.border="1px solid #b7dfc8";m.style.color="#16623a";
-   m.innerHTML="<b>Awareness activity completed.</b><br>Your completion was recorded for the instructor.";
-   document.getElementById("loginForm").reset();
- }catch(e){
-   cm.textContent="Could not save the completion record. Please inform your instructor.";
- }
-});
+  await fetch("/api/event",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({event:"clicked_phishing_link"})});
+ }catch(e){}
+ location.href="/fake-login.html";
+}
+document.getElementById("verifyBtn").addEventListener("click",nextStage);
+document.getElementById("fakeUrl").addEventListener("click",e=>{e.preventDefault();nextStage();});
 </script>
 </body></html>
