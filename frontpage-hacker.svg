@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-labelledby="t d">
+<title id="t">Cybersecurity awareness illustration</title>
+<desc id="d">A stylized hooded cyber threat figure behind a laptop, with blue digital panels and orange highlights.</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#08264f"/><stop offset="1" stop-color="#0f5da7"/></linearGradient>
+  <linearGradient id="hood" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0c1727"/><stop offset="1" stop-color="#234f91"/></linearGradient>
+  <linearGradient id="lap" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#15243a"/><stop offset="1" stop-color="#09111d"/></linearGradient>
+  <filter id="glow"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="1200" height="700" fill="url(#bg)"/>
+<g opacity=".2" stroke="#5fc6ff" stroke-width="2">
+  <path d="M0 110h1200M0 220h1200M0 330h1200M0 440h1200M0 550h1200"/>
+  <path d="M120 0v700M240 0v700M360 0v700M480 0v700M600 0v700M720 0v700M840 0v700M960 0v700M1080 0v700"/>
+</g>
+<g opacity=".3" fill="none" stroke="#70d0ff" stroke-width="3">
+  <path d="M55 90h260v150H55zM885 95h255v175H885z"/>
+  <path d="M85 130h190M85 160h150M915 135h170M915 170h200M915 205h130"/>
+</g>
+<text x="80" y="125" fill="#8ce5ff" font-family="Arial" font-size="32" font-weight="700">PHISHING</text>
+<text x="910" y="130" fill="#8ce5ff" font-family="Arial" font-size="28" font-weight="700">FAKE LOGIN</text>
+<text x="910" y="170" fill="#8ce5ff" font-family="Arial" font-size="28" font-weight="700">DATA THEFT</text>
+<text x="910" y="210" fill="#8ce5ff" font-family="Arial" font-size="28" font-weight="700">SOCIAL ENGINEERING</text>
+
+<g transform="translate(170 85)">
+  <path d="M205 40c-105 40-155 145-155 270v100h310V310c0-125-50-230-155-270z" fill="url(#hood)" stroke="#1d78c9" stroke-width="5"/>
+  <ellipse cx="205" cy="255" rx="112" ry="125" fill="#05090f"/>
+  <path d="M70 330c-45 30-65 90-65 160h400c0-70-20-130-65-160-44-29-88-35-135-35s-91 6-135 35z" fill="#152942"/>
+  <path d="M25 450h360v165H25z" rx="18" fill="url(#lap)" stroke="#71cfff" stroke-width="3"/>
+  <g transform="translate(155 485)" filter="url(#glow)">
+    <path d="M50 0 95 80H5z" fill="none" stroke="#ff4d3d" stroke-width="8"/>
+    <rect x="45" y="25" width="10" height="28" rx="5" fill="#ff4d3d"/>
+    <circle cx="50" cy="65" r="6" fill="#ff4d3d"/>
+  </g>
+  <text x="115" y="590" fill="#ff5a43" font-family="Arial" font-size="34" font-weight="800">CYBER ATTACK</text>
+</g>
+
+<g transform="translate(45 535)">
+  <rect x="0" y="0" width="105" height="110" rx="8" fill="#e7f0f9"/>
+  <text x="12" y="35" fill="#102743" font-family="Arial" font-size="18" font-weight="700">THINK</text>
+  <text x="12" y="58" fill="#102743" font-family="Arial" font-size="18" font-weight="700">BEFORE</text>
+  <text x="12" y="81" fill="#102743" font-family="Arial" font-size="18" font-weight="700">YOU CLICK</text>
+</g>
+</svg>
