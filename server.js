@@ -59,7 +59,7 @@ const server=http.createServer(async(req,res)=>{
       };
       submissions.push(rec);
       if(submissions.length>1000) submissions.shift();
-      console.log(JSON.stringify({type:'training_submission',...rec,password:'[fixed dummy password omitted from logs]'}));
+      console.log(JSON.stringify({type:'training_submission',...rec,password:'[not collected]'}));
       return send(res,200,{ok:true});
     }
 
