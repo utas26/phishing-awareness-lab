@@ -1,8 +1,8 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PhishLab - Email</title>
+<title>Phishing Awareness Lab</title>
 <style>
 body{font-family:Arial,sans-serif;background:#eef4fa;margin:0;color:#122033}
 .wrap{max-width:1000px;margin:40px auto;background:#fff;padding:30px;border-radius:18px;box-shadow:0 18px 50px rgba(0,0,0,.12)}
@@ -10,16 +10,31 @@ body{font-family:Arial,sans-serif;background:#eef4fa;margin:0;color:#122033}
 .mail{margin-top:24px;border:1px solid #d9e3ef;border-radius:14px;overflow:hidden}
 .head{background:#f7f9fc;padding:14px}
 .body{padding:22px}
-.btn{display:inline-block;background:#245d99;color:white;text-decoration:none;padding:13px 18px;border-radius:10px;font-weight:700}
+.btn{display:inline-block;background:#245d99;color:white;text-decoration:none;padding:13px 18px;border-radius:10px;font-weight:700;border:0;cursor:pointer}
 .url{margin-top:14px;padding:12px;background:#fff8e6;border:1px dashed #e9ad39;border-radius:10px;font-family:monospace}
 .note{margin-top:16px;color:#6c7888;font-size:13px}
+.studentbox{margin:20px 0;padding:16px;background:#f8fbff;border:1px solid #d8e4f0;border-radius:12px}
+label{display:block;font-weight:700;margin:10px 0 6px}
+input{width:100%;padding:11px;border:1px solid #cbd6e2;border-radius:8px;box-sizing:border-box}
+#msg{margin-top:12px;color:#a11d1d}
+.adminlink{margin-top:22px;font-size:13px}
 </style>
 </head>
 <body>
 <div class="wrap">
 <div class="badge">AUTHORIZED TRAINING SIMULATION</div>
 <h1>Stage 1 — Spot the suspicious email</h1>
-<p>This fictional message is for classroom use only.</p>
+<p>This activity is for classroom phishing-awareness training only.</p>
+
+<div class="studentbox">
+  <b>Student details</b>
+  <label>Student Name</label>
+  <input id="studentName" placeholder="Enter your name">
+  <label>Student ID</label>
+  <input id="studentId" placeholder="Enter your student ID">
+  <div id="msg"></div>
+</div>
+
 <div class="mail">
 <div class="head">
 From: IT Support &lt;security-alert@campus-access.example&gt;<br>
@@ -28,12 +43,29 @@ Subject: Urgent: Your student account will be suspended today
 <div class="body">
 <p>Dear Student,</p>
 <p>We detected unusual activity on your account. To avoid suspension, verify your account immediately.</p>
-<p><a class="btn" href="fake-login.html">Verify Account Now</a></p>
-<div class="url">
-<a href="fake-login.html">https://secure-login.campus-check.example/verify</a>
-</div>
-<p class="note">Teaching note: the text looks like an external URL, but in this safe lab it opens a local fake-login training page.</p>
+<p><button class="btn" id="verifyBtn">Verify Account Now</button></p>
+<div class="url"><a href="#" id="fakeUrl">https://secure-login.campus-check.example/verify</a></div>
+<p class="note">Teaching note: the displayed URL is fictional. Inside this training site it opens the Moodle-style simulation page.</p>
 </div>
 </div>
+
+<div class="adminlink"><a href="/admin.html">Instructor Dashboard</a></div>
 </div>
+
+<script>
+async function proceed(){
+  const name=document.getElementById("studentName").value.trim();
+  const id=document.getElementById("studentId").value.trim();
+  const msg=document.getElementById("msg");
+  if(!name||!id){msg.textContent="Please enter Student Name and Student ID first.";return;}
+  sessionStorage.setItem("phish_student_name",name);
+  sessionStorage.setItem("phish_student_id",id);
+  try{
+    await fetch("/api/event",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name,id,event:"clicked_phishing_link"})});
+  }catch(e){}
+  window.location.href="/fake-login.html";
+}
+document.getElementById("verifyBtn").addEventListener("click",proceed);
+document.getElementById("fakeUrl").addEventListener("click",e=>{e.preventDefault();proceed();});
+</script>
 </body></html>
