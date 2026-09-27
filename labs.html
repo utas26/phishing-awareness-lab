@@ -2,233 +2,182 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Practical Security Awareness Modules</title>
+<title>Practical Security — Real-Time Labs</title>
 <style>
-:root{--blue:#315fa8;--line:#d8e1eb;--ink:#26364f}
-*{box-sizing:border-box}body{margin:0;background:#eef3f8;font-family:Arial,sans-serif;color:var(--ink)}
+:root{--blue:#315fa8;--orange:#f4b332;--line:#d8e1eb;--ink:#26364f;--good:#087443;--bad:#b42318;--bg:#eef3f8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
 .top{background:#8b1e1e;color:#fff;text-align:center;padding:9px 14px;font-weight:800}
-.wrap{max-width:1050px;margin:28px auto;background:#fff;border-radius:10px;padding:28px 34px;box-shadow:0 15px 42px rgba(0,0,0,.1)}
-h1,h2{color:#315fa8}.module{border-top:1px solid var(--line);padding:24px 0}.module:first-of-type{border-top:0}.tag{display:inline-block;background:#fff3cd;border:1px solid #efd184;padding:5px 8px;border-radius:999px;font-size:11px;font-weight:800}
-.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}.box{background:#f8fafc;border:1px solid var(--line);border-radius:7px;padding:14px;line-height:1.5}.back{display:inline-block;background:#315fa8;color:#fff;text-decoration:none;padding:10px 14px;border-radius:6px;font-weight:700}.pwlab{margin-top:16px;background:#fff;border:1px solid #d8e1eb;border-radius:9px;padding:18px}.pwlab input{width:100%;padding:12px;border:1px solid #cbd6e2;border-radius:7px;font:inherit}.pwbar{height:12px;background:#e8edf3;border-radius:999px;overflow:hidden;margin:12px 0}.pwfill{height:100%;width:0%;background:#315fa8;transition:width .2s}.pwstats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.pwstat{background:#f8fafc;border:1px solid #d8e1eb;border-radius:7px;padding:10px;text-align:center}.checklist{display:grid;gap:6px;margin-top:12px}.ok{color:#087443}.no{color:#b42318}.warnbox{background:#fff6df;border:1px solid #efd184;padding:12px 14px;border-radius:7px;margin-bottom:12px}.toolrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.toolbtn{border:0;border-radius:6px;background:#315fa8;color:#fff;padding:10px 13px;font-weight:700;cursor:pointer}.toolbtn.alt{background:#edf2f7;color:#24435f;border:1px solid #cfd9e5}.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}.compare input{width:100%;padding:10px;border:1px solid #cbd6e2;border-radius:6px}.resultbox{background:#f8fafc;border:1px solid #d8e1eb;border-radius:7px;padding:12px;margin-top:12px}.mono{font-family:Consolas,monospace;word-break:break-all}
-@media(max-width:700px){.cols{grid-template-columns:1fr}}
+.wrap{max-width:1100px;margin:28px auto;background:#fff;border-radius:10px;padding:28px 34px;box-shadow:0 15px 42px rgba(0,0,0,.1)}
+h1,h2,h3{color:var(--blue)}
+.module{border-top:1px solid var(--line);padding:28px 0}.module:first-of-type{border-top:0}
+.tag{display:inline-block;background:#fff3cd;border:1px solid #efd184;padding:5px 8px;border-radius:999px;font-size:11px;font-weight:800}
+.intro{background:#f8fafc;border:1px solid var(--line);padding:14px;border-radius:8px;line-height:1.5}
+.lab{margin-top:16px;border:1px solid var(--line);border-radius:10px;padding:18px;background:#fff}
+.scenario{background:#f8fafc;border:1px solid var(--line);border-radius:8px;padding:16px;margin-bottom:14px}
+.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{border:0;border-radius:6px;padding:10px 14px;background:var(--blue);color:#fff;font-weight:800;cursor:pointer}.btn.alt{background:#edf2f7;color:#24435f;border:1px solid #cfd9e5}.btn.good{background:#087443}.btn.bad{background:#b42318}
+.feedback{margin-top:12px;padding:12px;border-radius:7px;display:none}.feedback.good{display:block;background:#effaf3;border:1px solid #b7dfc8;color:#16623a}.feedback.bad{display:block;background:#fff0f0;border:1px solid #f0bcbc;color:#8f1d1d}
+.score{font-weight:800;margin-top:10px}.mono{font-family:Consolas,monospace;word-break:break-all}
+.cardgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.choice{border:1px solid var(--line);border-radius:8px;padding:14px;background:#fafcff;cursor:pointer}.choice:hover{border-color:#315fa8}
+.pwlab input,.compare input{width:100%;padding:12px;border:1px solid #cbd6e2;border-radius:7px;font:inherit}.pwbar{height:12px;background:#e8edf3;border-radius:999px;overflow:hidden;margin:12px 0}.pwfill{height:100%;width:0;background:#315fa8;transition:width .2s}.pwstats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.pwstat{background:#f8fafc;border:1px solid var(--line);border-radius:7px;padding:10px;text-align:center}.checklist{display:grid;gap:6px;margin-top:12px}.ok{color:var(--good)}.no{color:var(--bad)}.warnbox{background:#fff6df;border:1px solid #efd184;padding:12px 14px;border-radius:7px;margin-bottom:12px}.toolrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.toolbtn{border:0;border-radius:6px;background:#315fa8;color:#fff;padding:10px 13px;font-weight:700;cursor:pointer}.toolbtn.alt{background:#edf2f7;color:#24435f;border:1px solid #cfd9e5}.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}.resultbox{background:#f8fafc;border:1px solid var(--line);border-radius:7px;padding:12px;margin-top:12px}
+.back{display:inline-block;background:#315fa8;color:#fff;text-decoration:none;padding:10px 14px;border-radius:6px;font-weight:700}
+@media(max-width:800px){.cardgrid{grid-template-columns:1fr}.pwstats{grid-template-columns:1fr 1fr}.compare{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<div class="top">PRACTICAL CYBERSECURITY — SAFE AWARENESS MODULES</div>
+<div class="top">PRACTICAL CYBERSECURITY — FIVE REAL-TIME AWARENESS LABS + PASSWORD CHECKER</div>
 <main class="wrap">
-<h1>Real-Time Cybersecurity Awareness Modules</h1>
-<p>These modules are defensive classroom activities. They teach recognition and response without performing real attacks.</p>
+<h1>Real-Time Practical Security Labs</h1>
+<div class="intro"><b>Safe classroom mode:</b> All scenarios are fictional and defensive. No real accounts, real passwords, OTPs, real downloads, or real malicious content are used.</div>
 
-<section class="module" id="qr"><span class="tag">SAFE SIMULATION</span><h2>QR Phishing (Quishing)</h2><div class="cols"><div class="box"><b>Student activity:</b> Compare several fictional QR prompts and inspect the displayed destination before deciding whether to continue.</div><div class="box"><b>Learning:</b> Verify domain, context, sender/source, and avoid entering credentials after an unexpected QR scan.</div></div></section>
-
-<section class="module" id="mfa"><span class="tag">SAFE SIMULATION</span><h2>MFA Fatigue</h2><div class="cols"><div class="box"><b>Student activity:</b> Respond to a sequence of fictional MFA prompts and decide which should be approved or rejected.</div><div class="box"><b>Learning:</b> Never approve unexpected prompts; report repeated requests and secure the account.</div></div></section>
-
-<section class="module" id="update"><span class="tag">SAFE SIMULATION</span><h2>Fake Software Update</h2><div class="cols"><div class="box"><b>Student activity:</b> Compare a normal update notification with suspicious browser popups.</div><div class="box"><b>Learning:</b> Use official app/OS update channels; avoid unexpected executable downloads.</div></div></section>
-
-<section class="module" id="attachment"><span class="tag">SAFE SIMULATION</span><h2>Malicious Attachment Recognition</h2><div class="cols"><div class="box"><b>Student activity:</b> Review fictional emails and filenames without opening any real files.</div><div class="box"><b>Learning:</b> Check sender, context, extension, double extensions, macros, and unexpected archives.</div></div></section>
-
-<section class="module" id="wifi"><span class="tag">SAFE SIMULATION</span><h2>Rogue Wi-Fi Awareness</h2><div class="cols"><div class="box"><b>Student activity:</b> Choose between fictional SSIDs such as official, look-alike, and open guest networks.</div><div class="box"><b>Learning:</b> Verify network names, avoid sensitive activity on unknown networks, and use trusted protections.</div></div></section>
-
-<section class="module" id="browser"><span class="tag">SAFE SIMULATION</span><h2>Browser Permission Scam</h2><div class="cols"><div class="box"><b>Student activity:</b> Evaluate fictional notification/camera/microphone/download prompts.</div><div class="box"><b>Learning:</b> Grant permissions only when expected, necessary, and from trusted sites.</div></div></section>
-
-<section class="module" id="social"><span class="tag">SAFE SIMULATION</span><h2>Social Engineering</h2><div class="cols"><div class="box"><b>Student activity:</b> Identify persuasion techniques in fictional calls, emails, and chat messages.</div><div class="box"><b>Learning:</b> Recognize authority, fear, urgency, reward, curiosity, and impersonation.</div></div></section>
-
-<section class="module" id="passwords">
-<span class="tag">SAFE REAL-TIME PRACTICE</span>
-<h2>Password Strength — Interactive Lab</h2>
-<div class="cols">
-  <div class="box"><b>Student activity:</b> Type an <b>invented sample password</b> and watch the strength score update instantly.</div>
-  <div class="box"><b>Learning:</b> See how length, character variety, and common patterns affect password quality. Nothing is sent to the server.</div>
+<section class="module" id="qr">
+<span class="tag">REAL-TIME LAB 1</span><h2>QR Phishing (Quishing)</h2>
+<p>Inspect the fictional QR destination shown below and decide whether it is safe or suspicious.</p>
+<div class="lab">
+<div class="scenario">
+<b>Scenario:</b> A poster says: “Scan to confirm your university account immediately.”<br><br>
+<b>QR destination:</b> <span class="mono" id="qrUrl">https://utas-login-check.example/verify</span>
 </div>
-
-<div class="pwlab">
-  <div class="warnbox"><b>Important:</b> Do not type your real UTAS, email, banking, or personal password. Use an invented example only. This checker runs locally in your browser.</div>
-  <label for="pwInput"><b>Invented sample password</b></label>
-  <input id="pwInput" type="password" autocomplete="new-password" placeholder="Type an invented sample password">
-  <label style="display:flex;align-items:center;gap:8px;margin-top:10px;font-weight:400"><input id="showPw" type="checkbox" style="width:auto"> Show password while testing</label>
-
-  <div class="pwbar"><div id="pwFill" class="pwfill"></div></div>
-
-  <div class="pwstats">
-    <div class="pwstat"><b id="pwStrength">—</b><br><small>Strength</small></div>
-    <div class="pwstat"><b id="pwScore">0/5</b><br><small>Score</small></div>
-    <div class="pwstat"><b id="pwLength">0</b><br><small>Length</small></div>
-    <div class="pwstat"><b id="pwEntropy">0 bits</b><br><small>Estimated entropy</small></div><div class="pwstat"><b id="pwCrack">—</b><br><small>Illustrative crack time</small></div>
-  </div>
-
-  <div class="checklist">
-    <div id="cLen" class="no">✗ At least 12 characters</div>
-    <div id="cUpper" class="no">✗ Contains uppercase letter</div>
-    <div id="cLower" class="no">✗ Contains lowercase letter</div>
-    <div id="cNum" class="no">✗ Contains number</div>
-    <div id="cSym" class="no">✗ Contains symbol</div>
-    <div id="cPattern" class="no">✗ Avoids common/simple patterns</div>
-  </div>
-
-  <div id="pwAdvice" class="box" style="margin-top:14px"><b>Advice:</b> Start typing an invented password to see feedback.</div>
-
-  <div class="toolrow">
-    <button class="toolbtn" type="button" id="genPw">Generate Strong Demo Password</button>
-    <button class="toolbtn alt" type="button" id="genPhrase">Generate Demo Passphrase</button>
-    <button class="toolbtn alt" type="button" id="clearPw">Clear</button>
-  </div>
-  <div id="generatedOut" class="resultbox mono" style="display:none"></div>
-
-  <h3 style="margin-top:24px;color:#315fa8">Compare Two Invented Passwords</h3>
-  <div class="compare">
-    <div><label><b>Password A</b></label><input id="cmpA" type="password" placeholder="Invented password A"></div>
-    <div><label><b>Password B</b></label><input id="cmpB" type="password" placeholder="Invented password B"></div>
-  </div>
-  <div class="toolrow"><button class="toolbtn" type="button" id="compareBtn">Compare</button></div>
-  <div id="compareOut" class="resultbox">Enter two invented passwords and click Compare.</div>
+<div class="actions"><button class="btn good" onclick="answerQR(false)">Safe</button><button class="btn bad" onclick="answerQR(true)">Suspicious</button><button class="btn alt" onclick="nextQR()">Next Scenario</button></div>
+<div id="qrFeedback" class="feedback"></div><div id="qrScore" class="score">Score: 0 / 0</div>
 </div>
 </section>
 
-<section class="module" id="url"><span class="tag">SAFE SIMULATION</span><h2>Suspicious URL / Domain Inspection</h2><div class="cols"><div class="box"><b>Student activity:</b> Compare legitimate-looking fictional URLs and identify the true registrable domain.</div><div class="box"><b>Learning:</b> Detect typosquatting, misleading subdomains, shortened links, and unexpected domains.</div></div></section>
+<section class="module" id="mfa">
+<span class="tag">REAL-TIME LAB 2</span><h2>MFA Fatigue</h2>
+<p>Respond to unexpected fictional MFA prompts as they appear.</p>
+<div class="lab">
+<div class="scenario" id="mfaScenario"></div>
+<div class="actions"><button class="btn good" onclick="answerMFA('approve')">Approve</button><button class="btn bad" onclick="answerMFA('deny')">Deny</button><button class="btn alt" onclick="answerMFA('report')">Deny & Report</button></div>
+<div id="mfaFeedback" class="feedback"></div><div id="mfaScore" class="score">Score: 0 / 0</div>
+</div>
+</section>
+
+<section class="module" id="update">
+<span class="tag">REAL-TIME LAB 3</span><h2>Fake Software Update</h2>
+<p>Choose which fictional update prompt is safer.</p>
+<div class="lab">
+<div class="cardgrid">
+<div class="choice" onclick="answerUpdate(0)"><b>Prompt A</b><br><br>Browser popup: “CRITICAL UPDATE! Download <span class="mono">Flash_Update_2026.exe</span> now.”</div>
+<div class="choice" onclick="answerUpdate(1)"><b>Prompt B</b><br><br>Operating system Settings → Update page shows a normal signed system update.</div>
+<div class="choice" onclick="answerUpdate(2)"><b>Prompt C</b><br><br>Email attachment named <span class="mono">SecurityPatch.zip</span> from an unknown sender.</div>
+</div>
+<div id="updateFeedback" class="feedback"></div><div id="updateScore" class="score">Score: 0 / 0</div>
+</div>
+</section>
+
+<section class="module" id="browser">
+<span class="tag">REAL-TIME LAB 4</span><h2>Browser Permission Scam</h2>
+<p>Decide whether each fictional browser permission should be allowed or denied.</p>
+<div class="lab">
+<div class="scenario" id="permScenario"></div>
+<div class="actions"><button class="btn good" onclick="answerPerm('allow')">Allow</button><button class="btn bad" onclick="answerPerm('deny')">Deny</button><button class="btn alt" onclick="nextPerm()">Next Prompt</button></div>
+<div id="permFeedback" class="feedback"></div><div id="permScore" class="score">Score: 0 / 0</div>
+</div>
+</section>
+
+<section class="module" id="url">
+<span class="tag">REAL-TIME LAB 5</span><h2>Suspicious URL / Domain Inspection</h2>
+<p>Classify each fictional URL and focus on the real domain, not the page appearance.</p>
+<div class="lab">
+<div class="scenario"><b>URL:</b> <span class="mono" id="urlText"></span><br><br><b>Question:</b> Would you trust this link for a university login?</div>
+<div class="actions"><button class="btn good" onclick="answerURL(true)">Trust</button><button class="btn bad" onclick="answerURL(false)">Do Not Trust</button><button class="btn alt" onclick="nextURL()">Next URL</button></div>
+<div id="urlFeedback" class="feedback"></div><div id="urlScore" class="score">Score: 0 / 0</div>
+</div>
+</section>
+
+<section class="module" id="passwords">
+<span class="tag">PASSWORD CHECKER</span><h2>Password Strength — Interactive Lab</h2>
+<div class="pwlab">
+<div class="warnbox"><b>Important:</b> Do not type your real UTAS, email, banking, or personal password. Use an invented example only. This checker runs locally in your browser.</div>
+<label><b>Invented sample password</b></label>
+<input id="pwInput" type="password" autocomplete="new-password" placeholder="Type an invented sample password">
+<label style="display:flex;align-items:center;gap:8px;margin-top:10px;font-weight:400"><input id="showPw" type="checkbox" style="width:auto"> Show password while testing</label>
+<div class="pwbar"><div id="pwFill" class="pwfill"></div></div>
+<div class="pwstats">
+<div class="pwstat"><b id="pwStrength">—</b><br><small>Strength</small></div>
+<div class="pwstat"><b id="pwScore">0/5</b><br><small>Score</small></div>
+<div class="pwstat"><b id="pwLength">0</b><br><small>Length</small></div>
+<div class="pwstat"><b id="pwEntropy">0 bits</b><br><small>Estimated entropy</small></div>
+<div class="pwstat"><b id="pwCrack">—</b><br><small>Illustrative crack time</small></div>
+</div>
+<div class="checklist">
+<div id="cLen" class="no">✗ At least 12 characters</div>
+<div id="cUpper" class="no">✗ Contains uppercase letter</div>
+<div id="cLower" class="no">✗ Contains lowercase letter</div>
+<div id="cNum" class="no">✗ Contains number</div>
+<div id="cSym" class="no">✗ Contains symbol</div>
+<div id="cPattern" class="no">✗ Avoids common/simple patterns</div>
+</div>
+<div id="pwAdvice" class="resultbox"><b>Advice:</b> Start typing an invented password to see feedback.</div>
+<div class="toolrow"><button class="toolbtn" id="genPw" type="button">Generate Strong Demo Password</button><button class="toolbtn alt" id="genPhrase" type="button">Generate Demo Passphrase</button><button class="toolbtn alt" id="clearPw" type="button">Clear</button></div>
+<div id="generatedOut" class="resultbox mono" style="display:none"></div>
+<h3>Compare Two Invented Passwords</h3>
+<div class="compare"><div><label><b>Password A</b></label><input id="cmpA" type="password"></div><div><label><b>Password B</b></label><input id="cmpB" type="password"></div></div>
+<div class="toolrow"><button class="toolbtn" id="compareBtn" type="button">Compare</button></div>
+<div id="compareOut" class="resultbox">Enter two invented passwords and click Compare.</div>
+</div>
+</section>
 
 <a class="back" href="/">← Back to Practical Security Home</a>
 </main>
+
 <script>
-const pw=document.getElementById("pwInput");
-const show=document.getElementById("showPw");
-const fill=document.getElementById("pwFill");
-const strengthEl=document.getElementById("pwStrength");
-const scoreEl=document.getElementById("pwScore");
-const lenEl=document.getElementById("pwLength");
-const entropyEl=document.getElementById("pwEntropy");
-const crackEl=document.getElementById("pwCrack");
-const advice=document.getElementById("pwAdvice");
+let qrIndex=0,qrCorrect=0,qrTotal=0;
+const qrCases=[
+ {url:"https://utas-login-check.example/verify",suspicious:true,why:"The domain is not the official university domain and the message creates urgency."},
+ {url:"https://student-portal.example.edu/announcements",suspicious:false,why:"In this fictional scenario, this is the expected official training domain and no credential request is made."},
+ {url:"https://utas.account-security.example/reset",suspicious:true,why:"The important domain is account-security.example, not UTAS."}
+];
+function nextQR(){qrIndex=(qrIndex+1)%qrCases.length;document.getElementById("qrUrl").textContent=qrCases[qrIndex].url;document.getElementById("qrFeedback").className="feedback";}
+function answerQR(choice){qrTotal++;const c=qrCases[qrIndex];const ok=choice===c.suspicious;if(ok)qrCorrect++;const f=document.getElementById("qrFeedback");f.className="feedback "+(ok?"good":"bad");f.innerHTML=(ok?"Correct. ":"Not quite. ")+c.why;document.getElementById("qrScore").textContent="Score: "+qrCorrect+" / "+qrTotal;}
 
+let mfaIndex=0,mfaCorrect=0,mfaTotal=0;
+const mfaCases=[
+ {text:"You are not logging in, but your phone suddenly shows an MFA approval request.",answer:"report",why:"Unexpected MFA prompts should be denied and reported."},
+ {text:"You just entered your password into the official training portal and immediately receive one MFA prompt.",answer:"approve",why:"This prompt matches the action you just initiated."},
+ {text:"You receive six MFA prompts in one minute while not using the account.",answer:"report",why:"Repeated unexpected prompts are a classic MFA-fatigue warning sign."}
+];
+function renderMFA(){document.getElementById("mfaScenario").innerHTML="<b>Prompt:</b> "+mfaCases[mfaIndex].text;}
+function answerMFA(a){mfaTotal++;const c=mfaCases[mfaIndex];const ok=a===c.answer;if(ok)mfaCorrect++;const f=document.getElementById("mfaFeedback");f.className="feedback "+(ok?"good":"bad");f.innerHTML=(ok?"Correct. ":"Incorrect. ")+c.why;document.getElementById("mfaScore").textContent="Score: "+mfaCorrect+" / "+mfaTotal;mfaIndex=(mfaIndex+1)%mfaCases.length;renderMFA();}
+
+let updateCorrect=0,updateTotal=0;
+function answerUpdate(i){updateTotal++;const ok=i===1;if(ok)updateCorrect++;const f=document.getElementById("updateFeedback");f.className="feedback "+(ok?"good":"bad");f.innerHTML=ok?"Correct. Use official operating-system or application update channels.":"Suspicious. Avoid unexpected executable downloads or email attachments presented as updates.";document.getElementById("updateScore").textContent="Score: "+updateCorrect+" / "+updateTotal;}
+
+let permIndex=0,permCorrect=0,permTotal=0;
+const permCases=[
+ {text:"A news website asks for camera access immediately on page load.",answer:"deny",why:"Camera access is unrelated to reading news."},
+ {text:"A video-conference page you intentionally opened asks for microphone access before joining.",answer:"allow",why:"Microphone access is expected for the activity you initiated."},
+ {text:"A random page says 'Allow notifications to prove you are not a robot'.",answer:"deny",why:"That is a common deceptive permission pattern."}
+];
+function renderPerm(){document.getElementById("permScenario").innerHTML="<b>Prompt:</b> "+permCases[permIndex].text;}
+function nextPerm(){permIndex=(permIndex+1)%permCases.length;renderPerm();document.getElementById("permFeedback").className="feedback";}
+function answerPerm(a){permTotal++;const c=permCases[permIndex];const ok=a===c.answer;if(ok)permCorrect++;const f=document.getElementById("permFeedback");f.className="feedback "+(ok?"good":"bad");f.innerHTML=(ok?"Correct. ":"Incorrect. ")+c.why;document.getElementById("permScore").textContent="Score: "+permCorrect+" / "+permTotal;nextPerm();}
+
+let urlIndex=0,urlCorrect=0,urlTotal=0;
+const urlCases=[
+ {url:"https://utas-portal.example-login.com/signin",trust:false,why:"The real domain is example-login.com; 'utas-portal' is only a subdomain."},
+ {url:"https://portal.training-university.example/login",trust:true,why:"In this fictional lab, training-university.example is the expected domain."},
+ {url:"https://university-secure.example/reset?continue=login",trust:false,why:"The domain does not match the expected training university domain."},
+ {url:"https://training-university.example.security-check.com/",trust:false,why:"The real domain is security-check.com, not training-university.example."}
+];
+function renderURL(){document.getElementById("urlText").textContent=urlCases[urlIndex].url;}
+function nextURL(){urlIndex=(urlIndex+1)%urlCases.length;renderURL();document.getElementById("urlFeedback").className="feedback";}
+function answerURL(trust){urlTotal++;const c=urlCases[urlIndex];const ok=trust===c.trust;if(ok)urlCorrect++;const f=document.getElementById("urlFeedback");f.className="feedback "+(ok?"good":"bad");f.innerHTML=(ok?"Correct. ":"Incorrect. ")+c.why;document.getElementById("urlScore").textContent="Score: "+urlCorrect+" / "+urlTotal;nextURL();}
+
+const pw=document.getElementById("pwInput"),show=document.getElementById("showPw"),fill=document.getElementById("pwFill"),strengthEl=document.getElementById("pwStrength"),scoreEl=document.getElementById("pwScore"),lenEl=document.getElementById("pwLength"),entropyEl=document.getElementById("pwEntropy"),crackEl=document.getElementById("pwCrack"),advice=document.getElementById("pwAdvice");
 show.addEventListener("change",()=>pw.type=show.checked?"text":"password");
-
-function setCheck(id,ok,label){
- const e=document.getElementById(id);
- e.className=ok?"ok":"no";
- e.textContent=(ok?"✓ ":"✗ ")+label;
-}
-
-function commonPattern(s){
- const x=s.toLowerCase();
- const bad=["password","qwerty","123456","admin","welcome","letmein","abc123","111111","000000"];
- if(bad.some(v=>x.includes(v))) return true;
- if(/(.)\1\1/.test(x)) return true;
- if(/1234|abcd|qwer/.test(x)) return true;
- return false;
-}
-
-function scorePassword(s){
- const hasUpper=/[A-Z]/.test(s);
- const hasLower=/[a-z]/.test(s);
- const hasNum=/[0-9]/.test(s);
- const hasSym=/[^A-Za-z0-9]/.test(s);
- const long=s.length>=12;
- const bad=commonPattern(s);
- let score=0;
- if(long) score++;
- if(hasUpper) score++;
- if(hasLower) score++;
- if(hasNum) score++;
- if(hasSym) score++;
- if(bad && score>0) score--;
- let pool=0;
- if(hasLower) pool+=26;
- if(hasUpper) pool+=26;
- if(hasNum) pool+=10;
- if(hasSym) pool+=32;
- const entropy=(s.length && pool)?Math.round(s.length*Math.log2(pool)):0;
- return {score:Math.max(0,score),entropy,hasUpper,hasLower,hasNum,hasSym,long,bad};
-}
-
-function crackTimeLabel(entropy){
- if(!entropy) return "—";
- const guesses=Math.pow(2,entropy);
- const seconds=guesses/1e10;
- if(seconds<1) return "<1 sec";
- if(seconds<60) return Math.round(seconds)+" sec";
- if(seconds<3600) return Math.round(seconds/60)+" min";
- if(seconds<86400) return Math.round(seconds/3600)+" hr";
- if(seconds<31557600) return Math.round(seconds/86400)+" days";
- const years=seconds/31557600;
- if(years<1000) return Math.round(years)+" yrs";
- if(years<1e6) return Math.round(years/1000)+"k yrs";
- if(years<1e9) return Math.round(years/1e6)+"M yrs";
- return ">1B yrs";
-}
-
-function analyze(){
- const s=pw.value;
- const r=scorePassword(s);
- const {score,entropy,hasUpper,hasLower,hasNum,hasSym,long,bad}=r;
-
- let label="Very Weak";
- if(score===2) label="Weak";
- if(score===3) label="Medium";
- if(score===4) label="Strong";
- if(score>=5 && !bad) label="Very Strong";
- if(!s) label="—";
-
- strengthEl.textContent=label;
- scoreEl.textContent=Math.max(0,score)+"/5";
- lenEl.textContent=s.length;
- entropyEl.textContent=entropy+" bits";
- crackEl.textContent=crackTimeLabel(entropy);
- fill.style.width=(Math.max(0,score)/5*100)+"%";
-
- setCheck("cLen",long,"At least 12 characters");
- setCheck("cUpper",hasUpper,"Contains uppercase letter");
- setCheck("cLower",hasLower,"Contains lowercase letter");
- setCheck("cNum",hasNum,"Contains number");
- setCheck("cSym",hasSym,"Contains symbol");
- setCheck("cPattern",!bad,"Avoids common/simple patterns");
-
- let tips=[];
- if(!long) tips.push("make it longer");
- if(!hasUpper) tips.push("add uppercase");
- if(!hasLower) tips.push("add lowercase");
- if(!hasNum) tips.push("add a number");
- if(!hasSym) tips.push("add a symbol");
- if(bad) tips.push("avoid common words or sequences");
- advice.innerHTML="<b>Advice:</b> "+(s?(tips.length?tips.join(", ")+".":"Good structure for a demo password. In real life, prefer a long unique password stored in a password manager."):"Start typing an invented password to see feedback.");
-}
+function setCheck(id,ok,label){const e=document.getElementById(id);e.className=ok?"ok":"no";e.textContent=(ok?"✓ ":"✗ ")+label;}
+function commonPattern(s){const x=s.toLowerCase();const bad=["password","qwerty","123456","admin","welcome","letmein","abc123","111111","000000"];return bad.some(v=>x.includes(v))||/(.)\1\1/.test(x)||/1234|abcd|qwer/.test(x);}
+function scorePassword(s){const hasUpper=/[A-Z]/.test(s),hasLower=/[a-z]/.test(s),hasNum=/[0-9]/.test(s),hasSym=/[^A-Za-z0-9]/.test(s),long=s.length>=12,bad=commonPattern(s);let score=0;if(long)score++;if(hasUpper)score++;if(hasLower)score++;if(hasNum)score++;if(hasSym)score++;if(bad&&score>0)score--;let pool=0;if(hasLower)pool+=26;if(hasUpper)pool+=26;if(hasNum)pool+=10;if(hasSym)pool+=32;const entropy=(s.length&&pool)?Math.round(s.length*Math.log2(pool)):0;return{score:Math.max(0,score),entropy,hasUpper,hasLower,hasNum,hasSym,long,bad};}
+function crackTimeLabel(e){if(!e)return"—";const sec=Math.pow(2,e)/1e10;if(sec<1)return"<1 sec";if(sec<60)return Math.round(sec)+" sec";if(sec<3600)return Math.round(sec/60)+" min";if(sec<86400)return Math.round(sec/3600)+" hr";if(sec<31557600)return Math.round(sec/86400)+" days";const y=sec/31557600;if(y<1000)return Math.round(y)+" yrs";if(y<1e6)return Math.round(y/1000)+"k yrs";if(y<1e9)return Math.round(y/1e6)+"M yrs";return">1B yrs";}
+function analyze(){const s=pw.value,r=scorePassword(s),{score,entropy,hasUpper,hasLower,hasNum,hasSym,long,bad}=r;let label="Very Weak";if(score===2)label="Weak";if(score===3)label="Medium";if(score===4)label="Strong";if(score>=5&&!bad)label="Very Strong";if(!s)label="—";strengthEl.textContent=label;scoreEl.textContent=score+"/5";lenEl.textContent=s.length;entropyEl.textContent=entropy+" bits";crackEl.textContent=crackTimeLabel(entropy);fill.style.width=(score/5*100)+"%";setCheck("cLen",long,"At least 12 characters");setCheck("cUpper",hasUpper,"Contains uppercase letter");setCheck("cLower",hasLower,"Contains lowercase letter");setCheck("cNum",hasNum,"Contains number");setCheck("cSym",hasSym,"Contains symbol");setCheck("cPattern",!bad,"Avoids common/simple patterns");let tips=[];if(!long)tips.push("make it longer");if(!hasUpper)tips.push("add uppercase");if(!hasLower)tips.push("add lowercase");if(!hasNum)tips.push("add a number");if(!hasSym)tips.push("add a symbol");if(bad)tips.push("avoid common words or sequences");advice.innerHTML="<b>Advice:</b> "+(s?(tips.length?tips.join(", ")+".":"Good structure for a demo password. In real life, prefer a long unique password stored in a password manager."):"Start typing an invented password to see feedback.");}
 pw.addEventListener("input",analyze);
-
-document.getElementById("clearPw").addEventListener("click",()=>{
- pw.value=""; show.checked=false; pw.type="password"; analyze();
- document.getElementById("generatedOut").style.display="none";
-});
-
-document.getElementById("genPw").addEventListener("click",()=>{
- const upper="ABCDEFGHJKLMNPQRSTUVWXYZ", lower="abcdefghijkmnopqrstuvwxyz", nums="23456789", syms="!@#$%^&*_-+=";
- const all=upper+lower+nums+syms;
- let out=upper[Math.floor(Math.random()*upper.length)]+lower[Math.floor(Math.random()*lower.length)]+nums[Math.floor(Math.random()*nums.length)]+syms[Math.floor(Math.random()*syms.length)];
- while(out.length<16) out+=all[Math.floor(Math.random()*all.length)];
- out=out.split("").sort(()=>Math.random()-.5).join("");
- const box=document.getElementById("generatedOut");
- box.style.display="block";
- box.textContent="Generated demo password: "+out;
-});
-
-document.getElementById("genPhrase").addEventListener("click",()=>{
- const words=["Blue","Falcon","Palm","Shield","Desert","Harbor","Cloud","Cedar","Oasis","Quartz","River","Star"];
- let chosen=[];
- while(chosen.length<4){const w=words[Math.floor(Math.random()*words.length)]; if(!chosen.includes(w)) chosen.push(w);}
- const phrase=chosen.join("-")+"-"+(10+Math.floor(Math.random()*90))+"!";
- const box=document.getElementById("generatedOut");
- box.style.display="block";
- box.textContent="Generated demo passphrase: "+phrase;
-});
-
-document.getElementById("compareBtn").addEventListener("click",()=>{
- const a=document.getElementById("cmpA").value;
- const b=document.getElementById("cmpB").value;
- const ra=scorePassword(a), rb=scorePassword(b);
- const out=document.getElementById("compareOut");
- if(!a||!b){out.textContent="Enter both invented passwords first.";return;}
- let verdict="Both are similar.";
- if(ra.entropy>rb.entropy+5) verdict="Password A is stronger by this local estimate.";
- else if(rb.entropy>ra.entropy+5) verdict="Password B is stronger by this local estimate.";
- out.innerHTML="<b>Password A:</b> score "+ra.score+"/5, "+ra.entropy+" bits, "+crackTimeLabel(ra.entropy)+"<br><b>Password B:</b> score "+rb.score+"/5, "+rb.entropy+" bits, "+crackTimeLabel(rb.entropy)+"<br><b>Result:</b> "+verdict;
-});
+document.getElementById("clearPw").onclick=()=>{pw.value="";show.checked=false;pw.type="password";analyze();document.getElementById("generatedOut").style.display="none";};
+document.getElementById("genPw").onclick=()=>{const U="ABCDEFGHJKLMNPQRSTUVWXYZ",L="abcdefghijkmnopqrstuvwxyz",N="23456789",S="!@#$%^&*_-+=",A=U+L+N+S;let out=U[Math.floor(Math.random()*U.length)]+L[Math.floor(Math.random()*L.length)]+N[Math.floor(Math.random()*N.length)]+S[Math.floor(Math.random()*S.length)];while(out.length<16)out+=A[Math.floor(Math.random()*A.length)];const box=document.getElementById("generatedOut");box.style.display="block";box.textContent="Generated demo password: "+out;};
+document.getElementById("genPhrase").onclick=()=>{const W=["Blue","Falcon","Palm","Shield","Desert","Harbor","Cloud","Cedar","Oasis","Quartz","River","Star"];let x=[];while(x.length<4){const w=W[Math.floor(Math.random()*W.length)];if(!x.includes(w))x.push(w);}const box=document.getElementById("generatedOut");box.style.display="block";box.textContent="Generated demo passphrase: "+x.join("-")+"-"+(10+Math.floor(Math.random()*90))+"!";};
+document.getElementById("compareBtn").onclick=()=>{const a=document.getElementById("cmpA").value,b=document.getElementById("cmpB").value,o=document.getElementById("compareOut");if(!a||!b){o.textContent="Enter both invented passwords first.";return;}const ra=scorePassword(a),rb=scorePassword(b);let v="Both are similar.";if(ra.entropy>rb.entropy+5)v="Password A is stronger by this local estimate.";else if(rb.entropy>ra.entropy+5)v="Password B is stronger by this local estimate.";o.innerHTML="<b>Password A:</b> "+ra.score+"/5, "+ra.entropy+" bits, "+crackTimeLabel(ra.entropy)+"<br><b>Password B:</b> "+rb.score+"/5, "+rb.entropy+" bits, "+crackTimeLabel(rb.entropy)+"<br><b>Result:</b> "+v;};
+renderMFA();renderPerm();renderURL();
 </script>
 </body>
 </html>
