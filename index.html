@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PhishLab - Email</title>
+<style>
+body{font-family:Arial,sans-serif;background:#eef4fa;margin:0;color:#122033}
+.wrap{max-width:1000px;margin:40px auto;background:#fff;padding:30px;border-radius:18px;box-shadow:0 18px 50px rgba(0,0,0,.12)}
+.badge{display:inline-block;background:#fff3cd;border:1px solid #efcf71;padding:7px 10px;border-radius:999px;font-size:12px;font-weight:700}
+.mail{margin-top:24px;border:1px solid #d9e3ef;border-radius:14px;overflow:hidden}
+.head{background:#f7f9fc;padding:14px}
+.body{padding:22px}
+.btn{display:inline-block;background:#245d99;color:white;text-decoration:none;padding:13px 18px;border-radius:10px;font-weight:700}
+.url{margin-top:14px;padding:12px;background:#fff8e6;border:1px dashed #e9ad39;border-radius:10px;font-family:monospace}
+.note{margin-top:16px;color:#6c7888;font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="badge">AUTHORIZED TRAINING SIMULATION</div>
+<h1>Stage 1 — Spot the suspicious email</h1>
+<p>This fictional message is for classroom use only.</p>
+<div class="mail">
+<div class="head">
+From: IT Support &lt;security-alert@campus-access.example&gt;<br>
+Subject: Urgent: Your student account will be suspended today
+</div>
+<div class="body">
+<p>Dear Student,</p>
+<p>We detected unusual activity on your account. To avoid suspension, verify your account immediately.</p>
+<p><a class="btn" href="fake-login.html">Verify Account Now</a></p>
+<div class="url">
+<a href="fake-login.html">https://secure-login.campus-check.example/verify</a>
+</div>
+<p class="note">Teaching note: the text looks like an external URL, but in this safe lab it opens a local fake-login training page.</p>
+</div>
+</div>
+</div>
+</body></html>

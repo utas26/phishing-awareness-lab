@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PhishLab - Fake Login</title>
+<style>
+body{font-family:Arial,sans-serif;background:linear-gradient(135deg,#edf3f9,#dfe8f2);margin:0;color:#122033}
+.top{background:#fff;padding:16px 24px;border-bottom:1px solid #dbe4ef;font-weight:700}
+.wrap{max-width:900px;margin:40px auto;padding:20px}
+.card{background:#fff;border-radius:18px;padding:28px;box-shadow:0 18px 50px rgba(0,0,0,.12)}
+.warn{background:#fff5dc;border:1px solid #efcf71;padding:12px;border-radius:10px;margin:15px 0}
+label{display:block;font-weight:700;margin:14px 0 6px}
+input{width:100%;padding:12px;border:1px solid #d6e0eb;border-radius:9px;box-sizing:border-box}
+button{margin-top:16px;padding:12px 18px;border:0;border-radius:9px;background:#245d99;color:#fff;font-weight:700;cursor:pointer}
+.msg{margin-top:14px}
+.capture{margin-top:24px;border:1px solid #dbe4ef;border-radius:12px;overflow:hidden}
+.row{display:grid;grid-template-columns:180px 1fr;padding:11px 14px;border-top:1px solid #edf1f5}
+.row:first-child{border-top:0}
+.secondary{background:#edf2f7;color:#24435f}
+.danger{background:#fff1f0;color:#b42318;border:1px solid #fecdca}
+</style>
+</head>
+<body>
+<div class="top">PhishLab Classroom Simulator — Fake Login</div>
+<div class="wrap">
+<div class="card">
+<h1>Student Access Portal</h1>
+<div class="warn"><b>Training only:</b> enter invented dummy credentials only. Never enter a real password.</div>
+<form id="f">
+<label>Username</label><input id="u" placeholder="e.g. teststudent25">
+<label>Password</label><input id="p" type="password" placeholder="e.g. LabPass@456">
+<label style="display:flex;gap:8px;align-items:flex-start;font-weight:600">
+<input id="c" type="checkbox" style="width:auto;margin-top:3px">
+<span>I confirm these are dummy classroom credentials.</span>
+</label>
+<button>Sign In</button>
+</form>
+<div class="msg" id="m"></div>
+
+<h2 style="margin-top:34px">Instructor View</h2>
+<div id="cap">No demo data captured yet.</div>
+<button class="secondary" onclick="render()">Refresh</button>
+<button class="danger" onclick="clearDemo()">Clear Demo Data</button>
+
+<p style="margin-top:22px;color:#66758a;font-size:13px">
+This local lab stores only dummy data in browser localStorage. Public IP is not collected.
+</p>
+<p><a href="index.html">← Back to phishing email</a></p>
+</div>
+</div>
+<script>
+const KEY="phishlab_v4";
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+document.getElementById("f").addEventListener("submit",e=>{
+  e.preventDefault();
+  const u=document.getElementById("u").value.trim();
+  const p=document.getElementById("p").value;
+  const c=document.getElementById("c").checked;
+  const m=document.getElementById("m");
+  if(!u||!p||!c){m.textContent="Enter dummy credentials and confirm they are for training only.";return;}
+  const r={
+    username:u,password:p,capturedAt:new Date().toLocaleString(),
+    userAgent:navigator.userAgent,
+    language:navigator.language||"Unavailable",
+    screen:screen.width+" × "+screen.height,
+    timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||"Unavailable",
+    publicIP:"Not collected in local-only mode",
+    sentToInternet:"No"
+  };
+  localStorage.setItem(KEY,JSON.stringify(r));
+  m.textContent="Dummy training data saved locally. See Instructor View below.";
+  render();
+});
+function render(){
+  const raw=localStorage.getItem(KEY);
+  const cap=document.getElementById("cap");
+  if(!raw){cap.textContent="No demo data captured yet.";return;}
+  const r=JSON.parse(raw);
+  cap.innerHTML=`<div class="capture">
+  <div class="row"><b>Username</b><span>${esc(r.username)}</span></div>
+  <div class="row"><b>Password</b><span>${esc(r.password)}</span></div>
+  <div class="row"><b>Captured at</b><span>${esc(r.capturedAt)}</span></div>
+  <div class="row"><b>Browser/User Agent</b><span>${esc(r.userAgent)}</span></div>
+  <div class="row"><b>Language</b><span>${esc(r.language)}</span></div>
+  <div class="row"><b>Screen</b><span>${esc(r.screen)}</span></div>
+  <div class="row"><b>Timezone</b><span>${esc(r.timezone)}</span></div>
+  <div class="row"><b>Public IP</b><span>${esc(r.publicIP)}</span></div>
+  <div class="row"><b>Sent to internet?</b><span style="color:green;font-weight:700">${esc(r.sentToInternet)}</span></div>
+  </div>`;
+}
+function clearDemo(){localStorage.removeItem(KEY);render();}
+render();
+</script>
+</body></html>
