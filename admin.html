@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Instructor Dashboard</title>
+<style>
+body{font-family:Arial,sans-serif;background:#eef4fa;margin:0;color:#122033}
+.wrap{max-width:1200px;margin:35px auto;padding:20px}
+.card{background:#fff;border:1px solid #d9e3ef;border-radius:14px;padding:22px;box-shadow:0 14px 40px rgba(0,0,0,.1)}
+input{width:100%;padding:11px;border:1px solid #ccd7e3;border-radius:8px;box-sizing:border-box;margin:6px 0 12px}
+button{background:#245d99;color:white;border:0;border-radius:8px;padding:11px 16px;font-weight:700;cursor:pointer}
+.secondary{background:#edf2f7;color:#24435f}.danger{background:#fff1f0;color:#b42318;border:1px solid #fecdca}
+.hidden{display:none}
+table{width:100%;border-collapse:collapse;margin-top:18px;font-size:13px}
+th,td{border:1px solid #dce5ef;padding:9px;text-align:left;vertical-align:top}
+th{background:#f4f7fb}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}
+.stat{background:#f6f9fc;border:1px solid #d8e1eb;border-radius:10px;padding:12px 16px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.small{font-size:12px;color:#66758a}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="card">
+<h1>Instructor Dashboard</h1>
+<div id="loginBox">
+<p>Admin access required.</p>
+<label>Username</label><input id="au">
+<label>Password</label><input id="ap" type="password">
+<button id="loginBtn">Login</button>
+<div id="loginMsg" style="color:#a11d1d;margin-top:10px"></div>
+</div>
+
+<div id="dash" class="hidden">
+<div class="actions">
+<button onclick="loadData()">Refresh</button>
+<button class="secondary" onclick="logout()">Logout</button>
+</div>
+<div class="stats">
+<div class="stat">Total submissions: <b id="total">0</b></div>
+<div class="stat">Link clicks: <b id="clicks">0</b></div>
+</div>
+<div style="overflow:auto">
+<table>
+<thead><tr>
+<th>Student Name</th><th>Student ID</th><th>Dummy Username</th><th>Password</th><th>Captured At</th><th>Public IP</th><th>Browser/User Agent</th><th>Language</th><th>Screen</th><th>Timezone</th>
+</tr></thead>
+<tbody id="rows"></tbody>
+</table>
+</div>
+<p class="small">Password shown is the fixed lab password <b>Demo@123</b>, not a student’s real password. The dashboard never accepts or stores arbitrary real credentials.</p>
+</div>
+</div>
+</div>
+
+<script>
+async function login(){
+ const r=await fetch("/api/admin-login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:document.getElementById("au").value,password:document.getElementById("ap").value})});
+ if(r.ok){document.getElementById("loginBox").classList.add("hidden");document.getElementById("dash").classList.remove("hidden");loadData();}
+ else document.getElementById("loginMsg").textContent="Invalid admin username or password.";
+}
+document.getElementById("loginBtn").addEventListener("click",login);
+
+async function loadData(){
+ const r=await fetch("/api/submissions");
+ if(r.status===401){document.getElementById("dash").classList.add("hidden");document.getElementById("loginBox").classList.remove("hidden");return;}
+ const d=await r.json();
+ document.getElementById("total").textContent=d.submissions.length;
+ document.getElementById("clicks").textContent=d.clickCount;
+ const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+ document.getElementById("rows").innerHTML=d.submissions.map(x=>`<tr>
+ <td>${esc(x.name)}</td><td>${esc(x.id)}</td><td>${esc(x.dummyUsername)}</td><td>Demo@123</td><td>${esc(x.capturedAt)}</td><td>${esc(x.ip)}</td><td>${esc(x.browser)}</td><td>${esc(x.language)}</td><td>${esc(x.screen)}</td><td>${esc(x.timezone)}</td>
+ </tr>`).join("");
+}
+async function logout(){await fetch("/api/admin-logout",{method:"POST"});location.reload();}
+</script>
+</body></html>
