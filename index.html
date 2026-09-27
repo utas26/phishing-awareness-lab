@@ -12,14 +12,14 @@ body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:
 .side{background:#244f91;color:#fff;padding:24px 16px;position:sticky;top:0;height:100vh;overflow:auto}
 .side h2{margin:0 0 8px}.side p{font-size:12px;color:#dce7f4;line-height:1.5}
 .nav{display:grid;gap:7px;margin-top:20px}.nav a{color:#fff;text-decoration:none;padding:10px 12px;border-radius:7px;background:rgba(255,255,255,.07);font-weight:700}.nav a:hover{background:rgba(255,255,255,.15)}
-.main{padding:28px}.hero{background:#fff;border:1px solid var(--line);border-radius:12px;padding:24px;box-shadow:0 12px 34px rgba(30,55,85,.08)}
+.main{padding:28px}.hero{background:#fff;border:1px solid var(--line);border-radius:12px;padding:0;box-shadow:0 12px 34px rgba(30,55,85,.08);overflow:hidden}.hero-grid{display:grid;grid-template-columns:1.05fr 1fr;align-items:stretch}.hero-art{background:#0a356b;min-height:360px}.hero-art img{width:100%;height:100%;object-fit:cover;display:block}.hero-copy{padding:28px;display:flex;flex-direction:column;justify-content:center}.hero-copy h1{font-size:38px;line-height:1.08}.hero-copy .lead{font-size:17px;line-height:1.6;color:#5f6f86;margin-top:14px}.hero-copy .cta{margin-top:18px}.hero-copy .cta a{display:inline-block;background:var(--blue);color:#fff;text-decoration:none;padding:12px 18px;border-radius:7px;font-weight:800}
 .brand{display:flex;align-items:center;gap:14px}.mark{width:64px;height:64px;border-radius:15px 31px 15px 31px;background:linear-gradient(145deg,#f5a21b 0 48%,#3156a6 48% 100%)}
 h1{margin:0;color:var(--blue)}.sub{color:#6b7890;margin-top:5px}
 .notice{margin-top:18px;background:#fff6df;border:1px solid #efd184;padding:13px;border-radius:7px;line-height:1.5}
 .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:20px}.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px}.card h3{margin:0 0 8px;color:var(--blue)}.card p{color:#5f6f86;line-height:1.5;min-height:66px}.btn{display:inline-block;text-decoration:none;background:var(--blue);color:#fff;padding:10px 13px;border-radius:6px;font-weight:800}.btn.alt{background:#edf2f7;color:#24435f;border:1px solid #cfd9e5}
 .section{margin-top:26px}.section h2{color:var(--blue)}
 .quick{display:flex;gap:10px;flex-wrap:wrap}
-.site-footer{background:#183b6f;color:#fff;padding:16px 24px;text-align:center;font-weight:700;margin-top:26px}.site-footer span{color:#f4b332}@media(max-width:900px){.app{grid-template-columns:1fr}.side{height:auto;position:static}.grid{grid-template-columns:1fr 1fr}}
+.site-footer{background:#183b6f;color:#fff;padding:16px 24px;text-align:center;font-weight:700;margin-top:26px}.site-footer span{color:#f4b332}@media(max-width:900px){.app{grid-template-columns:1fr}.side{height:auto;position:static}.grid{grid-template-columns:1fr 1fr}.hero-grid{grid-template-columns:1fr}.hero-art{min-height:280px}}
 @media(max-width:600px){.grid{grid-template-columns:1fr}.main{padding:16px}}
 </style>
 </head>
@@ -48,8 +48,15 @@ h1{margin:0;color:var(--blue)}.sub{color:#6b7890;margin-top:5px}
 
 <main class="main">
 <section class="hero">
-<div class="brand"><div class="mark"></div><div><h1>Practical Security Learning Hub</h1><div class="sub">Cybersecurity concepts through safe real-time classroom simulations</div></div></div>
-<div class="notice"><b>Teaching rule:</b> All activities are awareness simulations. Students should use invented/demo information only and should never enter real passwords, OTPs, banking information, or personal secrets.</div>
+<div class="hero-grid">
+  <div class="hero-art"><img src="/frontpage-hacker.svg" alt="Cybersecurity awareness illustration with a hooded attacker silhouette and cyber threat indicators"></div>
+  <div class="hero-copy">
+    <div class="brand"><div class="mark"></div><div><h1>Practical Security Learning Hub</h1><div class="sub">UTAS-Ibra</div></div></div>
+    <div class="lead">Learn. Practice. Stay Safe. Hands-on cybersecurity awareness activities to help students recognize real-world threats and protect themselves in the digital world.</div>
+    <div class="notice"><b>Teaching rule:</b> All activities are awareness simulations. Use invented/demo information only.</div>
+    <div class="cta"><a href="/phishing.html">Start Learning →</a></div>
+  </div>
+</div>
 </section>
 
 <section class="section">
