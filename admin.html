@@ -43,11 +43,11 @@ table{width:100%;border-collapse:collapse;font-size:12px}th,td{border-bottom:1px
 <div class="stats"><div class="stat">Stage 1 link clicks: <b id="clicks">0</b></div><div class="stat">Stage 2 completed: <b id="total">0</b></div></div>
 <div class="scroll">
 <table>
-<thead><tr><th>Student Name</th><th>Training Password</th><th>Completion Time</th><th>Public IP</th><th>OS</th><th>Platform</th><th>Browser/User Agent</th><th>Language</th><th>Screen</th><th>Timezone</th></tr></thead>
+<thead><tr><th>Student Name</th><th>Password Submitted</th><th>Completion Time</th><th>Public IP</th><th>OS</th><th>Platform</th><th>Browser/User Agent</th><th>Language</th><th>Screen</th><th>Timezone</th></tr></thead>
 <tbody id="rows"></tbody>
 </table>
 </div>
-<div class="small">The password column shows only the fixed classroom training password <b>Demo@123</b>. Real student passwords are not accepted or stored.</div>
+<div class="small">The dashboard records whether a training password was submitted, but does not store or display the password content.</div>
 </div>
 </div></div>
 
@@ -67,7 +67,7 @@ async function loadData(){
  document.getElementById("clicks").textContent=d.clickCount;
  document.getElementById("total").textContent=d.submissions.length;
  document.getElementById("rows").innerHTML=d.submissions.map(x=>`<tr>
- <td>${esc(x.name)}</td><td>Demo@123</td><td>${esc(x.capturedAt)}</td><td>${esc(x.ip)}</td><td>${esc(x.os||"Unavailable")}</td><td>${esc(x.platform||"Unavailable")}</td><td>${esc(x.browser)}</td><td>${esc(x.language)}</td><td>${esc(x.screen)}</td><td>${esc(x.timezone)}</td>
+ <td>${esc(x.name)}</td><td>Yes (content not stored)</td><td>${esc(x.capturedAt)}</td><td>${esc(x.ip)}</td><td>${esc(x.os||"Unavailable")}</td><td>${esc(x.platform||"Unavailable")}</td><td>${esc(x.browser)}</td><td>${esc(x.language)}</td><td>${esc(x.screen)}</td><td>${esc(x.timezone)}</td>
  </tr>`).join("");
 }
 async function logout(){await fetch("/api/admin-logout",{method:"POST"});location.reload();}
