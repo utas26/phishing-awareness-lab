@@ -46,7 +46,7 @@ const server=http.createServer(async(req,res)=>{
       if(String(b.dummyUsername||'')!=='student01') return send(res,400,{error:'Only fixed dummy credentials are allowed'});
       const rec={
         name:String(b.name||'Unknown student').slice(0,120),
-        id:String(b.id||'Not provided').slice(0,80),
+        id:'',
         dummyUsername:'student01',
         capturedAt:new Date().toLocaleString('en-US',{timeZone:'Asia/Muscat'}),
         ip:ipOf(req),
