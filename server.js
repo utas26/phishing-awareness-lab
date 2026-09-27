@@ -50,6 +50,8 @@ const server=http.createServer(async(req,res)=>{
         dummyUsername:'student01',
         capturedAt:new Date().toLocaleString('en-US',{timeZone:'Asia/Muscat'}),
         ip:ipOf(req),
+        os:String(b.os||'Unavailable').slice(0,80),
+        platform:String(b.platform||'Unavailable').slice(0,120),
         browser:String(b.browser||'Unavailable').slice(0,500),
         language:String(b.language||'Unavailable').slice(0,40),
         screen:String(b.screen||'Unavailable').slice(0,40),
