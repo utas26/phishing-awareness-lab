@@ -2,63 +2,81 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>UTAS-Ibra Moodle Awareness — Stage 1</title>
+<title>Practical Security Learning Hub</title>
 <style>
-:root{--blue:#315fa8;--blue2:#244f91;--orange:#f4b332;--line:#d8e1eb;--ink:#26364f}
+:root{--blue:#315fa8;--blue2:#244f91;--orange:#f4b332;--line:#d8e1eb;--ink:#26364f;--bg:#eef3f8}
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;background:#2f61a6;font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
-.training{background:#8b1e1e;color:#fff;text-align:center;padding:9px 14px;font-weight:800;letter-spacing:.03em}
-.admin{position:fixed;top:52px;right:20px;z-index:10;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#fff;color:var(--blue);text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.2);font-size:19px}
-.shell{max-width:920px;margin:30px auto 45px;background:#fff;border-radius:5px;padding:28px 34px 34px;box-shadow:0 18px 55px rgba(0,0,0,.2)}
-.brand{display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--line);padding-bottom:16px}
-.mark{width:62px;height:62px;border-radius:15px 30px 15px 30px;background:linear-gradient(145deg,#f5a21b 0 48%,#3156a6 48% 100%)}
-.brand h1{margin:0;color:#3156a6;font-size:25px}.brand small{color:#6b7890}
-.stage{display:inline-block;margin:18px 0 8px;background:#fff3cd;border:1px solid #efd184;padding:7px 10px;border-radius:999px;font-size:12px;font-weight:800}
-.mail{margin-top:12px;border:1px solid var(--line);border-radius:8px;overflow:hidden}
-.mailhead{background:#f6f8fb;padding:14px 16px;border-bottom:1px solid var(--line);font-size:13px;line-height:1.45}
-.mailbody{padding:20px;line-height:1.58}
-.btn{display:inline-block;background:#245d99;color:#fff;border:0;border-radius:6px;padding:12px 18px;font-weight:700;cursor:pointer}
-.fakeurl{margin-top:14px;padding:12px;border:1px dashed #e4ad3e;background:#fff9ea;border-radius:6px;font-family:Consolas,monospace}
-.fakeurl a{color:#245d99}.note{margin-top:16px;color:#6c7888;font-size:13px}
-.menu{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin:16px 0}.menu a{display:inline-block;text-decoration:none;font-weight:800;padding:9px 13px;border-radius:6px}.menu .feedback{background:#f4b332;color:#26364f}.menu .info{background:#315fa8;color:#fff}.menu .counter{background:#edf2f7;color:#24435f;border:1px solid #cfd9e5}.foot{text-align:center;color:#6c7888;font-size:12px;margin-top:22px}
-@media(max-width:650px){.shell{margin:0;border-radius:0;padding:22px 16px}.admin{top:46px;right:10px}}
+body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+.top{background:#8b1e1e;color:#fff;text-align:center;padding:9px 14px;font-weight:800}
+.app{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 38px)}
+.side{background:#244f91;color:#fff;padding:24px 16px;position:sticky;top:0;height:100vh;overflow:auto}
+.side h2{margin:0 0 8px}.side p{font-size:12px;color:#dce7f4;line-height:1.5}
+.nav{display:grid;gap:7px;margin-top:20px}.nav a{color:#fff;text-decoration:none;padding:10px 12px;border-radius:7px;background:rgba(255,255,255,.07);font-weight:700}.nav a:hover{background:rgba(255,255,255,.15)}
+.main{padding:28px}.hero{background:#fff;border:1px solid var(--line);border-radius:12px;padding:24px;box-shadow:0 12px 34px rgba(30,55,85,.08)}
+.brand{display:flex;align-items:center;gap:14px}.mark{width:64px;height:64px;border-radius:15px 31px 15px 31px;background:linear-gradient(145deg,#f5a21b 0 48%,#3156a6 48% 100%)}
+h1{margin:0;color:var(--blue)}.sub{color:#6b7890;margin-top:5px}
+.notice{margin-top:18px;background:#fff6df;border:1px solid #efd184;padding:13px;border-radius:7px;line-height:1.5}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:20px}.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px}.card h3{margin:0 0 8px;color:var(--blue)}.card p{color:#5f6f86;line-height:1.5;min-height:66px}.btn{display:inline-block;text-decoration:none;background:var(--blue);color:#fff;padding:10px 13px;border-radius:6px;font-weight:800}.btn.alt{background:#edf2f7;color:#24435f;border:1px solid #cfd9e5}
+.section{margin-top:26px}.section h2{color:var(--blue)}
+.quick{display:flex;gap:10px;flex-wrap:wrap}
+@media(max-width:900px){.app{grid-template-columns:1fr}.side{height:auto;position:static}.grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.main{padding:16px}}
 </style>
 </head>
 <body>
-<div class="training">AUTHORIZED PHISHING AWARENESS SIMULATION — NOT THE REAL UTAS MOODLE</div>
-<a class="admin" href="/admin.html" title="Instructor Dashboard" aria-label="Instructor Dashboard">⚙</a>
+<div class="top">PRACTICAL CYBERSECURITY — AUTHORIZED EDUCATIONAL SIMULATIONS ONLY</div>
+<div class="app">
+<aside class="side">
+<h2>Practical Security</h2>
+<p>Safe, instructor-led cybersecurity awareness and defensive learning activities.</p>
+<nav class="nav">
+<a href="/">Home</a>
+<a href="/phishing.html">Phishing Attack</a>
+<a href="/labs.html#qr">QR Phishing</a>
+<a href="/labs.html#mfa">MFA Fatigue</a>
+<a href="/labs.html#update">Fake Software Update</a>
+<a href="/labs.html#attachment">Malicious Attachment Recognition</a>
+<a href="/labs.html#wifi">Rogue Wi-Fi Awareness</a>
+<a href="/labs.html#browser">Browser Permission Scam</a>
+<a href="/labs.html#social">Social Engineering</a>
+<a href="/labs.html#passwords">Password Strength</a>
+<a href="/labs.html#url">Suspicious URL / Domain</a>
+<a href="/resources.html">Learning & Feedback</a>
+<a href="/admin.html">Instructor Dashboard</a>
+</nav>
+</aside>
 
-<main class="shell">
-<div class="brand"><div class="mark"></div><div><h1>UTAS-Ibra Learning Portal</h1><small>Moodle-style cybersecurity awareness exercise</small></div></div>
+<main class="main">
+<section class="hero">
+<div class="brand"><div class="mark"></div><div><h1>Practical Security Learning Hub</h1><div class="sub">Cybersecurity concepts through safe real-time classroom simulations</div></div></div>
+<div class="notice"><b>Teaching rule:</b> All activities are awareness simulations. Students should use invented/demo information only and should never enter real passwords, OTPs, banking information, or personal secrets.</div>
+</section>
 
-<div class="stage">STAGE 1 — SPOT THE SUSPICIOUS EMAIL</div><div class="menu"><a class="info" href="/resources.html">Learning & Feedback</a></div>
-<h2>Account Verification Message</h2>
-
-<div class="mail">
-<div class="mailhead">
-From: IT Support &lt;security-alert@campus-access.example&gt;<br>
-Subject: Urgent: Your Moodle account will be suspended today
+<section class="section">
+<h2>Practical Attack Awareness Labs</h2>
+<div class="grid">
+<div class="card"><h3>Phishing Attack</h3><p>Suspicious email → deceptive link → fake login → instructor debrief.</p><a class="btn" href="/phishing.html">Open Lab</a></div>
+<div class="card"><h3>QR Phishing</h3><p>Identify risky QR-code prompts and verify destination URLs before continuing.</p><a class="btn alt" href="/labs.html#qr">Open Module</a></div>
+<div class="card"><h3>MFA Fatigue</h3><p>Recognize repeated unexpected authentication prompts and safe response actions.</p><a class="btn alt" href="/labs.html#mfa">Open Module</a></div>
+<div class="card"><h3>Fake Software Update</h3><p>Learn to distinguish legitimate update flows from suspicious download prompts.</p><a class="btn alt" href="/labs.html#update">Open Module</a></div>
+<div class="card"><h3>Malicious Attachment Recognition</h3><p>Inspect sender, filename, file type, context, and warning signs without opening unsafe files.</p><a class="btn alt" href="/labs.html#attachment">Open Module</a></div>
+<div class="card"><h3>Rogue Wi-Fi Awareness</h3><p>Compare trusted and suspicious network names and learn safe public Wi-Fi practices.</p><a class="btn alt" href="/labs.html#wifi">Open Module</a></div>
+<div class="card"><h3>Browser Permission Scam</h3><p>Recognize suspicious notification, camera, microphone, and download permission prompts.</p><a class="btn alt" href="/labs.html#browser">Open Module</a></div>
+<div class="card"><h3>Social Engineering</h3><p>Practice identifying urgency, authority, fear, reward, and impersonation techniques.</p><a class="btn alt" href="/labs.html#social">Open Module</a></div>
+<div class="card"><h3>Password Strength</h3><p>Compare weak and strong invented passwords without storing real credentials.</p><a class="btn alt" href="/labs.html#passwords">Open Module</a></div>
+<div class="card"><h3>Suspicious URL / Domain</h3><p>Practice spotting typos, look-alike domains, misleading subdomains, and unsafe links.</p><a class="btn alt" href="/labs.html#url">Open Module</a></div>
 </div>
-<div class="mailbody">
-<p>Dear Student,</p>
-<p>We detected unusual activity on your learning account. To avoid suspension, verify your account immediately.</p>
-<button class="btn" id="verifyBtn">Verify Moodle Account</button>
-<div class="fakeurl"><a href="#" id="fakeUrl">https://secure-login.campus-check.example/verify</a></div>
-<p class="note">This fictional link stays inside the authorized classroom simulator and opens Stage 2.</p>
-</div>
-</div>
+</section>
 
-<div class="foot">Small ⚙ icon: Instructor Dashboard (admin only).</div>
+<section class="section">
+<h2>Quick Access</h2>
+<div class="quick">
+<a class="btn" href="/feedback.html">Student Feedback</a>
+<a class="btn alt" href="/resources.html">Learning Resources</a>
+<a class="btn alt" href="/admin.html">Instructor Dashboard</a>
+</div>
+</section>
 </main>
-
-<script>
-async function nextStage(){
- try{
-  await fetch("/api/event",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({event:"clicked_phishing_link"})});
- }catch(e){}
- location.href="/fake-login.html";
-}
-document.getElementById("verifyBtn").addEventListener("click",nextStage);
-document.getElementById("fakeUrl").addEventListener("click",e=>{e.preventDefault();nextStage();});
-</script>
-</body></html>
+</div>
+</body>
+</html>
