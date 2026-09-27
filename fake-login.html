@@ -63,9 +63,9 @@ document.getElementById("loginForm").addEventListener("submit",async e=>{
  const m=document.getElementById("msg");
  m.style.display="block";
  if(!name){m.style.background="#fff0f0";m.style.border="1px solid #f0bcbc";m.style.color="#8f1d1d";m.textContent="Please enter Student Name.";return;}
- if(p!=="Demo@123"){
+ if(!p){
    m.style.background="#fff0f0";m.style.border="1px solid #f0bcbc";m.style.color="#8f1d1d";
-   m.innerHTML="<b>Training safeguard:</b> The training password was not accepted. Nothing was stored.";
+   m.innerHTML="<b>Training safeguard:</b> Please enter a training password.";
    return;
  }
  const s=systemDetails();
