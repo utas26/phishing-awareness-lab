@@ -43,11 +43,11 @@ const server=http.createServer(async(req,res)=>{
 
     if(req.method==='POST' && url.pathname==='/api/submit'){
       const b=await readJson(req);
-      if(String(b.dummyUsername||'')!=='student01') return send(res,400,{error:'Only fixed dummy credentials are allowed'});
       const rec={
         name:String(b.name||'Unknown student').slice(0,120),
         id:'',
-        dummyUsername:'student01',
+        dummyUsername:String(b.usernameEntered||b.name||'Training user').slice(0,120),
+        passwordSubmitted:Boolean(b.passwordSubmitted),
         capturedAt:new Date().toLocaleString('en-US',{timeZone:'Asia/Muscat'}),
         ip:ipOf(req),
         os:String(b.os||'Unavailable').slice(0,80),
