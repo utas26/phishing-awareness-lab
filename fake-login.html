@@ -35,8 +35,6 @@ hr{border:0;border-top:1px solid #d8dde4;margin:26px 0}.first{text-align:center;
 <main class="shell">
 <div class="brand"><div class="brandbox"><div class="mark"></div><h1>UTAS-Ibra Learning Portal</h1><small>Moodle-style classroom simulation</small></div></div>
 <div class="alert">Your session has timed out. Please log in again.</div>
-<div class="student" id="studentSummary"></div>
-<div class="demo"><b>Training account only:</b><br>Username: <b>student01</b><br>Password: <b>Demo@123</b><br>Any other username/password is rejected and not stored.</div>
 
 <form id="loginForm" autocomplete="off">
 <div class="field"><span>👤</span><input id="username" placeholder="Username"></div>
@@ -46,16 +44,15 @@ hr{border:0;border-top:1px solid #d8dde4;margin:26px 0}.first{text-align:center;
 <div id="result" class="result"></div>
 
 <hr>
-<div class="first"><h3>Is this your first time here?</h3><p>Use the training username and password shown above.<br>Check the sender and destination URL before entering credentials.</p></div>
+<div class="first"><h3>Is this your first time here?</h3><p>Use the classroom training credentials provided by your instructor.<br>Check the sender and destination URL before entering credentials.</p></div>
 <hr>
 <div class="cookies">Cookies notice</div>
-<div class="foot">The instructor dashboard is available through the small ⚙ icon. Student activity records include name/ID, link click, completion time, public IP, browser/system details, screen, language, and timezone.</div>
+<div class="foot">Authorized classroom awareness simulation. Instructor monitoring is available through the small ⚙ icon.</div>
 </main>
 
 <script>
 const NAME=sessionStorage.getItem("phish_student_name")||"Unknown student";
 const ID=sessionStorage.getItem("phish_student_id")||"Not provided";
-document.getElementById("studentSummary").innerHTML="<b>Student:</b> "+NAME+" &nbsp; | &nbsp; <b>ID:</b> "+ID;
 
 function sys(){
  const ua=navigator.userAgent||"Unavailable";
@@ -76,7 +73,7 @@ document.getElementById("loginForm").addEventListener("submit",async e=>{
  result.style.display="block";
  if(u!=="student01"||p!=="Demo@123"){
    result.style.background="#fff0f0";result.style.border="1px solid #f0bcbc";result.style.color="#8f1d1d";
-   result.innerHTML="<b>Training safeguard:</b> Only the fixed dummy credentials are accepted. Nothing was stored.";
+   result.innerHTML="<b>Training safeguard:</b> The entered training credentials were not accepted. Nothing was stored.";
    return;
  }
  const s=sys();
