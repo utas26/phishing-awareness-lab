@@ -9,7 +9,7 @@
 .top{background:#8b1e1e;color:#fff;text-align:center;padding:9px 14px;font-weight:800}
 .wrap{max-width:1050px;margin:28px auto;background:#fff;border-radius:10px;padding:28px 34px;box-shadow:0 15px 42px rgba(0,0,0,.1)}
 h1,h2{color:#315fa8}.module{border-top:1px solid var(--line);padding:24px 0}.module:first-of-type{border-top:0}.tag{display:inline-block;background:#fff3cd;border:1px solid #efd184;padding:5px 8px;border-radius:999px;font-size:11px;font-weight:800}
-.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}.box{background:#f8fafc;border:1px solid var(--line);border-radius:7px;padding:14px;line-height:1.5}.back{display:inline-block;background:#315fa8;color:#fff;text-decoration:none;padding:10px 14px;border-radius:6px;font-weight:700}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}.box{background:#f8fafc;border:1px solid var(--line);border-radius:7px;padding:14px;line-height:1.5}.back{display:inline-block;background:#315fa8;color:#fff;text-decoration:none;padding:10px 14px;border-radius:6px;font-weight:700}.pwlab{margin-top:16px;background:#fff;border:1px solid #d8e1eb;border-radius:9px;padding:18px}.pwlab input{width:100%;padding:12px;border:1px solid #cbd6e2;border-radius:7px;font:inherit}.pwbar{height:12px;background:#e8edf3;border-radius:999px;overflow:hidden;margin:12px 0}.pwfill{height:100%;width:0%;background:#315fa8;transition:width .2s}.pwstats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.pwstat{background:#f8fafc;border:1px solid #d8e1eb;border-radius:7px;padding:10px;text-align:center}.checklist{display:grid;gap:6px;margin-top:12px}.ok{color:#087443}.no{color:#b42318}.warnbox{background:#fff6df;border:1px solid #efd184;padding:12px 14px;border-radius:7px;margin-bottom:12px}
 @media(max-width:700px){.cols{grid-template-columns:1fr}}
 </style>
 </head>
@@ -33,11 +33,127 @@ h1,h2{color:#315fa8}.module{border-top:1px solid var(--line);padding:24px 0}.mod
 
 <section class="module" id="social"><span class="tag">SAFE SIMULATION</span><h2>Social Engineering</h2><div class="cols"><div class="box"><b>Student activity:</b> Identify persuasion techniques in fictional calls, emails, and chat messages.</div><div class="box"><b>Learning:</b> Recognize authority, fear, urgency, reward, curiosity, and impersonation.</div></div></section>
 
-<section class="module" id="passwords"><span class="tag">SAFE SIMULATION</span><h2>Password Strength</h2><div class="cols"><div class="box"><b>Student activity:</b> Test invented sample passwords locally and compare length/strength.</div><div class="box"><b>Learning:</b> Prefer long, unique passwords and password managers; never reuse real credentials in the lab.</div></div></section>
+<section class="module" id="passwords">
+<span class="tag">SAFE REAL-TIME PRACTICE</span>
+<h2>Password Strength — Interactive Lab</h2>
+<div class="cols">
+  <div class="box"><b>Student activity:</b> Type an <b>invented sample password</b> and watch the strength score update instantly.</div>
+  <div class="box"><b>Learning:</b> See how length, character variety, and common patterns affect password quality. Nothing is sent to the server.</div>
+</div>
+
+<div class="pwlab">
+  <div class="warnbox"><b>Important:</b> Do not type your real UTAS, email, banking, or personal password. Use an invented example only. This checker runs locally in your browser.</div>
+  <label for="pwInput"><b>Invented sample password</b></label>
+  <input id="pwInput" type="password" autocomplete="new-password" placeholder="Type an invented sample password">
+  <label style="display:flex;align-items:center;gap:8px;margin-top:10px;font-weight:400"><input id="showPw" type="checkbox" style="width:auto"> Show password while testing</label>
+
+  <div class="pwbar"><div id="pwFill" class="pwfill"></div></div>
+
+  <div class="pwstats">
+    <div class="pwstat"><b id="pwStrength">—</b><br><small>Strength</small></div>
+    <div class="pwstat"><b id="pwScore">0/5</b><br><small>Score</small></div>
+    <div class="pwstat"><b id="pwLength">0</b><br><small>Length</small></div>
+    <div class="pwstat"><b id="pwEntropy">0 bits</b><br><small>Estimated entropy</small></div>
+  </div>
+
+  <div class="checklist">
+    <div id="cLen" class="no">✗ At least 12 characters</div>
+    <div id="cUpper" class="no">✗ Contains uppercase letter</div>
+    <div id="cLower" class="no">✗ Contains lowercase letter</div>
+    <div id="cNum" class="no">✗ Contains number</div>
+    <div id="cSym" class="no">✗ Contains symbol</div>
+    <div id="cPattern" class="no">✗ Avoids common/simple patterns</div>
+  </div>
+
+  <div id="pwAdvice" class="box" style="margin-top:14px"><b>Advice:</b> Start typing an invented password to see feedback.</div>
+</div>
+</section>
 
 <section class="module" id="url"><span class="tag">SAFE SIMULATION</span><h2>Suspicious URL / Domain Inspection</h2><div class="cols"><div class="box"><b>Student activity:</b> Compare legitimate-looking fictional URLs and identify the true registrable domain.</div><div class="box"><b>Learning:</b> Detect typosquatting, misleading subdomains, shortened links, and unexpected domains.</div></div></section>
 
 <a class="back" href="/">← Back to Practical Security Home</a>
 </main>
+<script>
+const pw=document.getElementById("pwInput");
+const show=document.getElementById("showPw");
+const fill=document.getElementById("pwFill");
+const strengthEl=document.getElementById("pwStrength");
+const scoreEl=document.getElementById("pwScore");
+const lenEl=document.getElementById("pwLength");
+const entropyEl=document.getElementById("pwEntropy");
+const advice=document.getElementById("pwAdvice");
+
+show.addEventListener("change",()=>pw.type=show.checked?"text":"password");
+
+function setCheck(id,ok,label){
+ const e=document.getElementById(id);
+ e.className=ok?"ok":"no";
+ e.textContent=(ok?"✓ ":"✗ ")+label;
+}
+
+function commonPattern(s){
+ const x=s.toLowerCase();
+ const bad=["password","qwerty","123456","admin","welcome","letmein","abc123","111111","000000"];
+ if(bad.some(v=>x.includes(v))) return true;
+ if(/(.)\1\1/.test(x)) return true;
+ if(/1234|abcd|qwer/.test(x)) return true;
+ return false;
+}
+
+function analyze(){
+ const s=pw.value;
+ const hasUpper=/[A-Z]/.test(s);
+ const hasLower=/[a-z]/.test(s);
+ const hasNum=/[0-9]/.test(s);
+ const hasSym=/[^A-Za-z0-9]/.test(s);
+ const long=s.length>=12;
+ const bad=commonPattern(s);
+
+ let score=0;
+ if(long) score++;
+ if(hasUpper) score++;
+ if(hasLower) score++;
+ if(hasNum) score++;
+ if(hasSym) score++;
+ if(bad && score>0) score--;
+
+ let pool=0;
+ if(hasLower) pool+=26;
+ if(hasUpper) pool+=26;
+ if(hasNum) pool+=10;
+ if(hasSym) pool+=32;
+ const entropy=(s.length && pool)?Math.round(s.length*Math.log2(pool)):0;
+
+ let label="Very Weak";
+ if(score===2) label="Weak";
+ if(score===3) label="Medium";
+ if(score===4) label="Strong";
+ if(score>=5 && !bad) label="Very Strong";
+ if(!s) label="—";
+
+ strengthEl.textContent=label;
+ scoreEl.textContent=Math.max(0,score)+"/5";
+ lenEl.textContent=s.length;
+ entropyEl.textContent=entropy+" bits";
+ fill.style.width=(Math.max(0,score)/5*100)+"%";
+
+ setCheck("cLen",long,"At least 12 characters");
+ setCheck("cUpper",hasUpper,"Contains uppercase letter");
+ setCheck("cLower",hasLower,"Contains lowercase letter");
+ setCheck("cNum",hasNum,"Contains number");
+ setCheck("cSym",hasSym,"Contains symbol");
+ setCheck("cPattern",!bad,"Avoids common/simple patterns");
+
+ let tips=[];
+ if(!long) tips.push("make it longer");
+ if(!hasUpper) tips.push("add uppercase");
+ if(!hasLower) tips.push("add lowercase");
+ if(!hasNum) tips.push("add a number");
+ if(!hasSym) tips.push("add a symbol");
+ if(bad) tips.push("avoid common words or sequences");
+ advice.innerHTML="<b>Advice:</b> "+(s?(tips.length?tips.join(", ")+".":"Good structure for a demo password. In real life, prefer a long unique password stored in a password manager."):"Start typing an invented password to see feedback.");
+}
+pw.addEventListener("input",analyze);
+</script>
 </body>
 </html>
