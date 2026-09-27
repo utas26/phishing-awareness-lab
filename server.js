@@ -8,6 +8,7 @@ const root=__dirname;
 const submissions=[];
 const events=[];
 const sessions=new Set();
+const feedbackResponses=[];
 
 const mime={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'application/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.svg':'image/svg+xml'};
 
@@ -61,6 +62,30 @@ const server=http.createServer(async(req,res)=>{
       if(submissions.length>1000) submissions.shift();
       console.log(JSON.stringify({type:'training_submission',...rec,password:'[not collected]'}));
       return send(res,200,{ok:true});
+    }
+
+    if(req.method==='POST' && url.pathname==='/api/feedback'){
+      const b=await readJson(req);
+      const rec={
+        name:String(b.name||'').slice(0,120),
+        studentId:String(b.studentId||'').slice(0,80),
+        className:String(b.className||'').slice(0,120),
+        level:String(b.level||'').slice(0,120),
+        subject:String(b.subject||'').slice(0,160),
+        q1:Number(b.q1)||0,q2:Number(b.q2)||0,q3:Number(b.q3)||0,q4:Number(b.q4)||0,q5:Number(b.q5)||0,
+        q6:Number(b.q6)||0,q7:Number(b.q7)||0,q8:Number(b.q8)||0,q9:Number(b.q9)||0,q10:Number(b.q10)||0,
+        usefulPart:String(b.usefulPart||'').slice(0,1200),
+        improvement:String(b.improvement||'').slice(0,1200),
+        submittedAt:new Date().toLocaleString('en-US',{timeZone:'Asia/Muscat'})
+      };
+      feedbackResponses.push(rec);
+      if(feedbackResponses.length>2000) feedbackResponses.shift();
+      return send(res,200,{ok:true});
+    }
+
+    if(req.method==='GET' && url.pathname==='/api/feedback'){
+      if(!isAdmin(req)) return send(res,401,{error:'Unauthorized'});
+      return send(res,200,{feedback:feedbackResponses});
     }
 
     if(req.method==='POST' && url.pathname==='/api/admin-login'){
