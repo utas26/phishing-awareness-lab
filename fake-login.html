@@ -2,58 +2,67 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>UTAS-Ibra Moodle Awareness Login</title>
+<title>UTAS-Ibra Moodle Awareness Simulation</title>
 <style>
-:root{--blue:#3156a6;--orange:#f6b62b;--line:#d9e2ec;--ink:#25344d}
-*{box-sizing:border-box} body{margin:0;background:#2f61a6;font-family:Arial,Helvetica,sans-serif;color:var(--ink);min-height:100vh}
+:root{--blue:#315fa8;--blue2:#234f91;--orange:#f4b332;--line:#d8e0ea}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:#2f61a6;font-family:Arial,Helvetica,sans-serif;color:#27364d}
 .training{background:#8b1e1e;color:#fff;text-align:center;padding:9px 14px;font-weight:800;letter-spacing:.03em}
-.topbar{position:fixed;top:48px;right:22px;z-index:5}
-.admin-icon{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#3156a6;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.18);font-size:20px;border:2px solid rgba(255,255,255,.85)}
-.admin-icon:hover{transform:translateY(-1px)}
-.bgmark{position:fixed;inset:0;pointer-events:none;opacity:.18;background:
-radial-gradient(circle at 4% 8%,transparent 0 74px,#fff 76px 79px,transparent 81px),
-linear-gradient(135deg,transparent 0 70%,rgba(255,255,255,.18) 70% 72%,transparent 72%)}
-.shell{position:relative;max-width:800px;margin:28px auto 40px;background:#fff;border-radius:4px;padding:38px 48px 34px;box-shadow:0 18px 55px rgba(0,0,0,.18)}
-.brand{text-align:center;margin-bottom:14px}.brandbox{width:min(540px,100%);margin:auto;border:1px solid #edf1f6;padding:18px;background:white}
-.mark{width:96px;height:96px;margin:0 auto 12px;border-radius:22px 48px 22px 48px;background:linear-gradient(145deg,var(--orange) 0 48%,#3156a6 48% 100%)}
-.brand h1{margin:0;color:#3156a6;font-size:27px}.brand small{display:block;color:#6f7d92;margin-top:5px}
-.alert{background:#fbdede;border:1px solid #efb8b8;color:#9d1d1d;text-align:center;padding:14px;border-radius:4px;margin:18px 0}
-.student{background:#f5f8fc;border:1px solid var(--line);padding:11px 14px;border-radius:5px;margin-bottom:15px}
-.demo{background:#fff6df;border:1px solid #efd184;color:#725000;padding:12px 14px;border-radius:5px;margin-bottom:18px;line-height:1.45}
-.field{display:flex;align-items:center;border-bottom:2px solid #c9d0da;padding:7px 5px;margin:12px 0 16px}.field span{width:28px;color:#f2a400;font-size:20px}.field input{width:100%;border:0;outline:0;padding:9px 4px;font-size:18px;background:transparent}
-.field.pwd{background:#eaf2ff}.login{display:block;margin:20px auto 34px;background:#f5bb3c;color:#fff;border:0;padding:14px 58px;border-radius:3px;font-size:16px;cursor:pointer}
-.result{display:none;padding:13px 14px;border-radius:5px;line-height:1.5}
-hr{border:0;border-top:1px solid #d8dde4;margin:26px 0}.first{text-align:center;line-height:1.5}.first p{font-family:Consolas,monospace}.cookies{color:#f0a000}.foot{text-align:center;color:#6c7888;font-size:12px;margin-top:22px}
-@media(max-width:650px){.shell{margin:0;border-radius:0;padding:24px 18px}.topbar{top:42px;right:10px}}
+.admin{position:fixed;top:52px;right:20px;z-index:10;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#fff;color:var(--blue);text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.2);font-size:19px}
+.panel{max-width:800px;margin:30px auto 45px;background:#fff;border-radius:4px;padding:42px 48px 36px;box-shadow:0 18px 55px rgba(0,0,0,.2)}
+.brand{text-align:center;margin-bottom:18px}.brandbox{width:min(550px,100%);margin:auto;padding:20px;border:1px solid #edf1f6}.mark{width:100px;height:100px;margin:0 auto 12px;border-radius:24px 50px 24px 50px;background:linear-gradient(145deg,#f5a21b 0 48%,#3156a6 48% 100%)}
+.brand h1{margin:0;color:#3156a6;font-size:28px}.brand small{display:block;margin-top:6px;color:#69788f;font-weight:700}
+.alert{background:#fbdede;border:1px solid #efbcbc;color:#a11d1d;text-align:center;padding:14px;border-radius:4px;margin:18px 0 25px}
+.field{display:flex;align-items:center;border-bottom:2px solid #c8ced8;margin:14px 0 16px;padding:7px 4px}.field.pwd{background:#eaf2ff}.field span{width:30px;color:#f4a500;font-size:20px}.field input{width:100%;border:0;outline:0;background:transparent;padding:9px 4px;font-size:18px}
+.login{display:block;margin:22px auto 36px;border:0;border-radius:3px;background:#f5bb3c;color:#fff;padding:14px 58px;font-size:16px;cursor:pointer;box-shadow:0 2px 7px rgba(0,0,0,.14)}
+.msg{display:none;margin-top:14px;padding:13px 14px;border-radius:5px;line-height:1.45}
+hr{border:0;border-top:1px solid #d8dde4;margin:26px 0}.first{text-align:center}.first p{font-family:Consolas,monospace;line-height:1.55}.cookies{color:#f0a000}
+.foot{text-align:center;color:#6c7888;font-size:12px;margin-top:20px}
+.modal{position:fixed;inset:0;background:rgba(20,35,55,.58);display:none;align-items:center;justify-content:center;padding:18px;z-index:20}.modal.show{display:flex}.modalbox{width:min(480px,100%);background:#fff;border-radius:8px;padding:24px;box-shadow:0 18px 55px rgba(0,0,0,.3)}.modalbox h2{margin-top:0}.modalbox label{display:block;font-weight:700;margin:12px 0 6px}.modalbox input{width:100%;padding:11px;border:1px solid #cbd6e2;border-radius:6px}.modalbtn{margin-top:16px;border:0;border-radius:6px;background:#3156a6;color:#fff;padding:11px 16px;font-weight:700;cursor:pointer}
+@media(max-width:650px){.panel{margin:0;border-radius:0;padding:24px 18px}.admin{top:46px;right:10px}}
 </style>
 </head>
 <body>
 <div class="training">AUTHORIZED PHISHING AWARENESS SIMULATION — NOT THE REAL UTAS MOODLE — DO NOT ENTER REAL PASSWORDS</div>
-<div class="bgmark"></div>
-<div class="topbar"><a class="admin-icon" href="/admin.html" title="Instructor Dashboard" aria-label="Instructor Dashboard">⚙</a></div>
+<a class="admin" href="/admin.html" title="Instructor Dashboard" aria-label="Instructor Dashboard">⚙</a>
 
-<main class="shell">
+<main class="panel">
 <div class="brand"><div class="brandbox"><div class="mark"></div><h1>UTAS-Ibra Learning Portal</h1><small>Moodle-style classroom simulation</small></div></div>
+
 <div class="alert">Your session has timed out. Please log in again.</div>
 
 <form id="loginForm" autocomplete="off">
-<div class="field"><span>👤</span><input id="username" placeholder="Username"></div>
-<div class="field pwd"><span>🔒</span><input id="password" type="password" placeholder="Password"></div>
+<div class="field"><span>👤</span><input id="username" placeholder="Username" aria-label="Username"></div>
+<div class="field pwd"><span>🔒</span><input id="password" type="password" placeholder="Password" aria-label="Password"></div>
 <button class="login" type="submit">Log in</button>
 </form>
-<div id="result" class="result"></div>
+<div id="msg" class="msg"></div>
 
 <hr>
-<div class="first"><h3>Is this your first time here?</h3><p>Use the classroom training credentials provided by your instructor.<br>Check the sender and destination URL before entering credentials.</p></div>
+<div class="first">
+<h3>Is this your first time here?</h3>
+<p>Use the classroom training credentials provided by your instructor.<br>
+Check the sender and website address before entering credentials.</p>
+</div>
 <hr>
 <div class="cookies">Cookies notice</div>
-<div class="foot">Authorized classroom awareness simulation. Instructor monitoring is available through the small ⚙ icon.</div>
+<div class="foot">Classroom awareness simulation. Instructor monitoring is available from the small ⚙ icon.</div>
 </main>
 
-<script>
-const NAME=sessionStorage.getItem("phish_student_name")||"Unknown student";
-const ID=sessionStorage.getItem("phish_student_id")||"Not provided";
+<div id="completeModal" class="modal">
+  <div class="modalbox">
+    <h2>Training Completion</h2>
+    <p>The simulated login step is complete. Enter your name and student ID so your instructor can record attendance/completion.</p>
+    <label>Student Name</label>
+    <input id="studentName" placeholder="Enter your name">
+    <label>Student ID</label>
+    <input id="studentId" placeholder="Enter your student ID">
+    <button id="saveCompletion" class="modalbtn">Submit Completion</button>
+    <div id="completeMsg" style="margin-top:10px;color:#a11d1d"></div>
+  </div>
+</div>
 
+<script>
 function sys(){
  const ua=navigator.userAgent||"Unavailable";
  let os="Unknown";
@@ -65,30 +74,39 @@ function sys(){
  return {ua,os,platform:navigator.platform||"Unavailable"};
 }
 
-document.getElementById("loginForm").addEventListener("submit",async e=>{
+document.getElementById("loginForm").addEventListener("submit",e=>{
  e.preventDefault();
  const u=document.getElementById("username").value.trim();
  const p=document.getElementById("password").value;
- const result=document.getElementById("result");
- result.style.display="block";
- if(u!=="student01"||p!=="Demo@123"){
-   result.style.background="#fff0f0";result.style.border="1px solid #f0bcbc";result.style.color="#8f1d1d";
-   result.innerHTML="<b>Training safeguard:</b> The entered training credentials were not accepted. Nothing was stored.";
+ const m=document.getElementById("msg");
+ m.style.display="block";
+ if(u!=="student01" || p!=="Demo@123"){
+   m.style.background="#fff0f0";m.style.border="1px solid #f0bcbc";m.style.color="#8f1d1d";
+   m.innerHTML="<b>Training safeguard:</b> The entered training credentials were not accepted. Nothing was stored.";
    return;
  }
+ m.style.display="none";
+ document.getElementById("completeModal").classList.add("show");
+});
+
+document.getElementById("saveCompletion").addEventListener("click",async()=>{
+ const name=document.getElementById("studentName").value.trim();
+ const id=document.getElementById("studentId").value.trim();
+ const cm=document.getElementById("completeMsg");
+ if(!name||!id){cm.textContent="Please enter Student Name and Student ID.";return;}
  const s=sys();
- const payload={name:NAME,id:ID,dummyUsername:"student01",browser:s.ua,os:s.os,platform:s.platform,language:navigator.language||"Unavailable",screen:screen.width+" × "+screen.height,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||"Unavailable"};
+ const payload={name,id,dummyUsername:"student01",browser:s.ua,os:s.os,platform:s.platform,language:navigator.language||"Unavailable",screen:screen.width+" × "+screen.height,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||"Unavailable"};
  try{
    const r=await fetch("/api/submit",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
-   if(!r.ok)throw new Error();
-   result.style.background="#effaf3";result.style.border="1px solid #b7dfc8";result.style.color="#16623a";
-   result.innerHTML="<b>Awareness activity completed.</b><br>Your training event was recorded for the instructor. Only the fixed dummy password was used.";
+   if(!r.ok) throw new Error();
+   document.getElementById("completeModal").classList.remove("show");
+   const m=document.getElementById("msg");
+   m.style.display="block";m.style.background="#effaf3";m.style.border="1px solid #b7dfc8";m.style.color="#16623a";
+   m.innerHTML="<b>Awareness activity completed.</b><br>Your completion was recorded for the instructor.";
+   document.getElementById("loginForm").reset();
  }catch(e){
-   result.style.background="#fff7df";result.style.border="1px solid #efd184";result.style.color="#725000";
-   result.textContent="The activity completed, but the central record could not be saved. Please inform the instructor.";
+   cm.textContent="Could not save the completion record. Please inform your instructor.";
  }
- document.getElementById("username").value="";
- document.getElementById("password").value="";
 });
 </script>
 </body></html>
