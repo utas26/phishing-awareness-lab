@@ -5,6 +5,10 @@ const crypto=require('crypto');
 
 const port=process.env.PORT||3000;
 const root=__dirname;
+// Lossless source chunks keep the supplied PNG intact during asset upload.
+const homepageImage=Buffer.from(Array.from({length:24},(_,i)=>
+  fs.readFileSync(path.join(root,'homepage-image-parts',String(i).padStart(2,'0')+'.base64'),'utf8')
+).join(''),'base64');
 const submissions=[];
 const events=[];
 const sessions=new Set();
@@ -35,6 +39,10 @@ function isAdmin(req){return sessions.has(cookies(req).admin_session);}
 const server=http.createServer(async(req,res)=>{
   const url=new URL(req.url,'http://localhost');
   try{
+    if(req.method==='GET' && url.pathname==='/homepage-awareness.png'){
+      res.writeHead(200,{'Content-Type':'image/png','Content-Length':homepageImage.length,'Cache-Control':'no-store'});
+      return res.end(homepageImage);
+    }
     if(req.method==='POST' && url.pathname==='/api/event'){
       const b=await readJson(req);
       events.push({name:String(b.name||''),id:String(b.id||''),event:String(b.event||''),time:new Date().toISOString(),ip:ipOf(req)});

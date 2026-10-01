@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Practical Security — Real-Time Labs</title>
+<link rel="stylesheet" href="/port-scanning.css">
 <style>
 :root{--blue:#315fa8;--orange:#f4b332;--line:#d8e1eb;--ink:#26364f;--good:#087443;--bad:#b42318;--bg:#eef3f8}
 *{box-sizing:border-box}
@@ -25,10 +26,11 @@ h1,h2,h3{color:var(--blue)}
 </style>
 </head>
 <body>
-<div class="top">PRACTICAL CYBERSECURITY — FIVE REAL-TIME AWARENESS LABS + PASSWORD CHECKER</div>
+<div class="top">PRACTICAL CYBERSECURITY — SIX REAL-TIME AWARENESS LABS + PASSWORD CHECKER</div>
 <main class="wrap">
 <h1>Real-Time Practical Security Labs</h1>
 <div class="intro"><b>Safe classroom mode:</b> All scenarios are fictional and defensive. No real accounts, real passwords, OTPs, real downloads, or real malicious content are used.</div>
+<p><a href="#ports">New: Port Scanning Simulation ↓</a></p>
 
 <section class="module" id="qr">
 <span class="tag">REAL-TIME LAB 1</span><h2>QR Phishing (Quishing)</h2>
@@ -84,6 +86,49 @@ h1,h2,h3{color:var(--blue)}
 <div class="actions"><button class="btn good" onclick="answerURL(true)">Trust</button><button class="btn bad" onclick="answerURL(false)">Do Not Trust</button><button class="btn alt" onclick="nextURL()">Next URL</button></div>
 <div id="urlFeedback" class="feedback"></div><div id="urlScore" class="score">Score: 0 / 0</div>
 </div>
+</section>
+
+<section class="module port-module" id="ports" aria-labelledby="portTitle">
+<span class="tag">REAL-TIME LAB 6 · SIMULATION ONLY</span>
+<h2 id="portTitle">Port Scanning Simulation</h2>
+<p class="port-lead">Discover a host’s network services one port at a time. Watch the replies, read the evidence, and decide what the results actually mean.</p>
+<div class="warnbox"><b>Safe by design:</b> This lab uses fictional targets and preset results entirely in your browser. It sends no scan traffic, runs no commands, and accepts no real IP addresses. Scan real systems only with the owner’s explicit permission.</div>
+<div class="port-workbench">
+  <div class="port-controls">
+    <div><label for="portTarget">1. Choose a fictional target</label><select id="portTarget"><option value="web">Campus web server · 192.0.2.10</option><option value="workstation">Staff workstation · 192.0.2.20</option></select></div>
+    <div><label for="portProfile">2. Choose ports</label><select id="portProfile"><option value="common">Common services · 8 TCP ports</option><option value="web">Web services · TCP 80 and 443</option></select></div>
+    <div><label for="portSpeed">Playback speed</label><select id="portSpeed"><option value="normal">Normal · about 1 second / port</option><option value="slow">Slow · about 2 seconds / port</option><option value="fast">Fast · about 0.4 seconds / port</option></select></div>
+  </div>
+  <p id="portTargetNote" class="port-note"></p>
+  <div class="port-command"><span>ILLUSTRATIVE COMMAND · NOT EXECUTED</span><code id="portCommand"></code></div>
+  <div class="actions port-actions"><button id="portStart" class="btn" type="button">Start simulated scan</button><button id="portCancel" class="btn alt" type="button" disabled>Cancel scan</button><button id="portReset" class="btn alt" type="button">Reset lab</button></div>
+  <div class="port-connection" id="portConnection" aria-hidden="true"><span>YOUR SIMULATED SCANNER</span><div class="port-wire"><i></i></div><span>FICTIONAL TARGET</span></div>
+  <div class="port-progress-label"><strong id="portStatus" role="status" aria-live="polite">Ready to scan</strong><span id="portProgressText">0 / 8 ports</span></div>
+  <progress id="portProgress" max="8" value="0" aria-label="Ports checked"></progress>
+  <div class="port-counters" aria-label="Scan totals"><div><b id="portOpenCount">0</b><span>Open</span></div><div><b id="portClosedCount">0</b><span>Closed</span></div><div><b id="portFilteredCount">0</b><span>Filtered</span></div></div>
+  <div class="port-output-grid">
+    <div class="port-results"><table><caption>Simulated TCP port results</caption><thead><tr><th scope="col">Port</th><th scope="col">Common service</th><th scope="col">State</th></tr></thead><tbody id="portRows"></tbody></table></div>
+    <div class="port-terminal"><div class="port-terminal-title"><span class="port-terminal-dot"></span> LIVE SIMULATION OUTPUT</div><pre id="portLog" aria-label="Simulated scan output" tabindex="0">Ready. Choose a target, then start the simulated scan.</pre></div>
+  </div>
+  <p class="port-note">Service names are common port conventions, not verified software. A real service can use a different port. Timing and responses here are simplified for learning.</p>
+</div>
+<div class="port-legend">
+  <div><span class="port-state open">Open</span><p>An application accepted the connection. A service is listening; this alone does not prove a vulnerability.</p></div>
+  <div><span class="port-state closed">Closed</span><p>The host replied but rejected the connection. No application is listening on that port in this scenario.</p></div>
+  <div><span class="port-state filtered">Filtered</span><p>The probe was blocked or received no usable reply. The scanner cannot tell whether the port is open or closed.</p></div>
+</div>
+<div class="port-challenge">
+  <h3>Read the evidence</h3><p id="portChallengeHint">Finish a scan to unlock three quick questions. Use the results above.</p>
+  <fieldset id="portQuestions" disabled><legend>Your findings</legend>
+    <label for="portAnswerCount">1. How many scanned ports are open?</label><select id="portAnswerCount"><option value="">Choose a count</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select>
+    <label for="portAnswerFiltered">2. What can you conclude about a filtered port?</label><select id="portAnswerFiltered"><option value="">Choose an interpretation</option><option value="closed">It is definitely closed</option><option value="unknown">Its open/closed state cannot be determined</option><option value="infected">The host is infected</option></select>
+    <label for="portAnswerRisk">3. What is the right next step after finding an open port?</label><select id="portAnswerRisk"><option value="">Choose a next step</option><option value="breach">Declare that the host has been breached</option><option value="review">Check whether the service is needed, restricted, and updated</option><option value="ignore">Ignore it because every open port is safe</option></select>
+    <button id="portCheck" class="btn" type="button">Check my findings</button>
+  </fieldset>
+  <div id="portFeedback" class="feedback" role="status" aria-live="polite"></div>
+  <div id="portDebrief" class="resultbox" hidden></div>
+</div>
+<p class="port-note"><b>Instructor prompt:</b> Compare the two targets. Which exposed services are expected? Why would a firewall make the same service appear different to different scanners?</p>
 </section>
 
 <section class="module" id="passwords">
@@ -179,5 +224,6 @@ document.getElementById("genPhrase").onclick=()=>{const W=["Blue","Falcon","Palm
 document.getElementById("compareBtn").onclick=()=>{const a=document.getElementById("cmpA").value,b=document.getElementById("cmpB").value,o=document.getElementById("compareOut");if(!a||!b){o.textContent="Enter both invented passwords first.";return;}const ra=scorePassword(a),rb=scorePassword(b);let v="Both are similar.";if(ra.entropy>rb.entropy+5)v="Password A is stronger by this local estimate.";else if(rb.entropy>ra.entropy+5)v="Password B is stronger by this local estimate.";o.innerHTML="<b>Password A:</b> "+ra.score+"/5, "+ra.entropy+" bits, "+crackTimeLabel(ra.entropy)+"<br><b>Password B:</b> "+rb.score+"/5, "+rb.entropy+" bits, "+crackTimeLabel(rb.entropy)+"<br><b>Result:</b> "+v;};
 renderMFA();renderPerm();renderURL();
 </script>
+<script src="/port-scanning.js" defer></script>
 </body>
 </html>
