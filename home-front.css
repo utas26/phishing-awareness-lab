@@ -1,61 +1,26 @@
-/* Homepage-only spacious layout. The directory and every lab keep their own UI. */
-.cyber-front{background:#f5f8fb}
-.cyber-front .cyber-safety{padding:12px 20px;font-size:11px;letter-spacing:1.5px}
-.cyber-front .cyber-header{max-width:1464px;padding:32px 40px;gap:28px}
-.cyber-front .cyber-brand{font-size:26px;letter-spacing:-.7px;gap:15px}
-.cyber-front .cyber-brand small{font-size:12px;letter-spacing:.25px;margin-top:7px}
-.cyber-front .cyber-brand-symbol{width:50px;height:55px;font-size:31px}
-.cyber-front .cyber-header nav{gap:30px}
-.cyber-front .cyber-header nav a{font-size:15px;line-height:1.5}
-.cyber-front .cyber-hero{width:calc(100% - 64px);max-width:1384px;margin:4px auto 0;grid-template-columns:1fr 1.06fr;min-height:520px;border-radius:24px;box-shadow:none}
-.cyber-front .cyber-hero-copy{padding:54px 46px}
-.cyber-front .cyber-eyebrow{font-size:12px;letter-spacing:1.9px;margin-bottom:21px;line-height:1.6}
-.cyber-front .cyber-hero h1{font-size:clamp(46px,4.8vw,68px);line-height:1.07;letter-spacing:-2.1px}
-.cyber-front .cyber-hero-copy>p{font-size:19px;line-height:1.75;max-width:470px;margin:27px 0 30px}
-.cyber-front .cyber-hero-actions{gap:13px}
-.cyber-front .cyber-primary,.cyber-front .cyber-secondary{font-size:16px;min-height:54px;padding:15px 21px;border-radius:9px}
-.cyber-front .cyber-hero-chips{gap:12px 19px;font-size:12px;line-height:1.6;margin-top:27px}
-.cyber-front .cyber-hero-art{padding:24px 16px;min-height:520px}
-.cyber-front .cyber-hero-art img{width:100%;max-height:none;object-fit:contain}
-.cyber-front .cyber-journey{max-width:1344px;margin:36px auto 76px;padding:0 38px;gap:42px}
-.cyber-front .cyber-journey article{align-items:center;gap:15px}
-.cyber-front .cyber-journey article>span{width:42px;height:42px;border-radius:12px;font-size:14px}
-.cyber-front .cyber-journey h2{font-size:18px;margin:0;line-height:1.4}
-.cyber-front .cyber-library,.cyber-front .cyber-bottom{max-width:1384px;padding:0 32px}
-.cyber-front .cyber-section-heading{align-items:flex-start;margin-bottom:30px;gap:35px}
-.cyber-front .cyber-section-heading h2{font-size:44px;line-height:1.1;letter-spacing:-1.1px}
-.cyber-front .cyber-section-heading .cyber-eyebrow{margin-bottom:12px}
-.cyber-front .cyber-section-heading>p{font-size:16px;line-height:1.7;max-width:360px;margin:24px 0 0}
-.cyber-front .cyber-filters{gap:10px}
-.cyber-front .cyber-filters button{font-size:15px;line-height:1.4;padding:12px 19px;border-radius:9px;min-height:46px}
-.cyber-front .cyber-filter-status{font-size:14px;margin:20px 0;line-height:1.6}
-.cyber-front .cyber-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
-.cyber-front .cyber-card{padding:30px 32px 28px;border-radius:16px;min-height:300px;border-color:#dae5ec;box-shadow:0 2px 3px #102b4603}
-.cyber-front .cyber-card-top{margin-bottom:21px;gap:18px}
-.cyber-front .cyber-icon{min-width:52px;height:52px;border-radius:13px;font-size:15px;padding:0 9px}
-.cyber-front .cyber-category{font-size:12px;line-height:1.5;padding:6px 10px;border-radius:6px}
-.cyber-front .cyber-kind{display:none}
-.cyber-front .cyber-card h3{font-size:28px;line-height:1.2;letter-spacing:-.55px;margin:0 0 14px}
-.cyber-front .cyber-card>p{font-size:17px;line-height:1.7;max-width:520px;margin:0 0 25px}
-.cyber-front .cyber-meta{font-size:13px;line-height:1.6;margin-bottom:20px;gap:12px}
-.cyber-front .cyber-card-link{font-size:16px;line-height:1.5;padding:13px 17px;border-radius:8px;min-height:50px}
-.cyber-front .cyber-card-link span{font-size:21px}
-.cyber-front .lab-report-link{font-size:13px;line-height:1.5;margin-top:15px}
-.cyber-front .cyber-scope{margin:32px 0 48px;padding:24px 28px;border-radius:12px;font-size:17px}
-.cyber-front .cyber-scope p{font-size:15px;line-height:1.8;margin-top:8px;max-width:1050px}
-.cyber-front .cyber-bottom{margin-bottom:46px}
-.cyber-front .cyber-bottom .install-card{padding:30px;gap:24px;border-radius:16px}
-.cyber-front .cyber-bottom .install-copy h2{font-size:26px;line-height:1.25;margin-bottom:10px}
-.cyber-front .cyber-bottom .install-copy p{font-size:16px;line-height:1.7}
-.cyber-front .cyber-bottom .install-copy .install-status{font-size:14px;margin-top:8px}
-.cyber-front .cyber-bottom .install-action{font-size:16px;padding:15px 22px;min-height:52px;border-radius:9px}
-.cyber-front .cyber-feedback{margin-top:25px;padding:32px;border-radius:16px;gap:30px}
-.cyber-front .cyber-feedback h2{font-size:27px;line-height:1.25;margin-bottom:12px}
-.cyber-front .cyber-feedback p{font-size:16px;line-height:1.7}
-.cyber-front .cyber-resources{gap:22px 32px;margin-top:30px}
-.cyber-front .cyber-resources a{font-size:14px;line-height:1.6}
-.cyber-front .site-footer{font-size:14px;padding:30px 22px;line-height:2}
-@media(max-width:1200px){.cyber-front .cyber-header{padding:28px 32px}.cyber-front .cyber-hero-copy{padding:44px 34px}.cyber-front .cyber-hero h1{font-size:52px}.cyber-front .cyber-hero-copy>p{font-size:18px}.cyber-front .cyber-primary,.cyber-front .cyber-secondary{font-size:15px;padding:14px 17px}.cyber-front .cyber-hero-chips{font-size:11px;gap:8px 13px}}
-@media(max-width:1000px){.cyber-front .cyber-header{align-items:center;flex-wrap:wrap;gap:24px}.cyber-front .cyber-hero{grid-template-columns:1fr;max-width:900px;min-height:0}.cyber-front .cyber-hero-copy{padding:48px}.cyber-front .cyber-hero h1{font-size:60px}.cyber-front .cyber-hero-copy>p{max-width:590px;font-size:20px}.cyber-front .cyber-hero-art{min-height:0;padding:22px 30px}.cyber-front .cyber-hero-art img{max-height:430px}.cyber-front .cyber-hero-chips{font-size:13px;gap:12px 23px}.cyber-front .cyber-journey{margin-bottom:62px;gap:25px}.cyber-front .cyber-journey h2{font-size:16px}.cyber-front .cyber-card{padding:25px}.cyber-front .cyber-card h3{font-size:25px}.cyber-front .cyber-card>p{font-size:16px}.cyber-front .cyber-section-heading>p{max-width:300px}}
-@media(max-width:740px){.cyber-front .cyber-safety{font-size:9px;letter-spacing:1px}.cyber-front .cyber-header{padding:23px 22px;gap:23px;align-items:flex-start}.cyber-front .cyber-brand{font-size:23px}.cyber-front .cyber-header nav{gap:16px 24px;justify-content:flex-start}.cyber-front .cyber-header nav a{font-size:14px}.cyber-front .cyber-hero{width:calc(100% - 32px);border-radius:18px}.cyber-front .cyber-hero-copy{padding:34px 28px}.cyber-front .cyber-hero h1{font-size:48px;letter-spacing:-1.7px}.cyber-front .cyber-hero-copy>p{font-size:18px}.cyber-front .cyber-hero-art{padding:18px 12px}.cyber-front .cyber-journey{grid-template-columns:1fr;gap:17px;margin:27px auto 52px;padding:0 28px}.cyber-front .cyber-journey h2{font-size:18px}.cyber-front .cyber-library,.cyber-front .cyber-bottom{padding:0 20px}.cyber-front .cyber-section-heading{display:block;margin-bottom:24px}.cyber-front .cyber-section-heading h2{font-size:36px}.cyber-front .cyber-section-heading>p{font-size:16px;max-width:none;margin-top:15px}.cyber-front .cyber-grid{grid-template-columns:1fr;gap:19px}.cyber-front .cyber-card{padding:27px;min-height:0}.cyber-front .cyber-card h3{font-size:27px}.cyber-front .cyber-card>p{font-size:17px}.cyber-front .cyber-filters{gap:8px}.cyber-front .cyber-filters button{font-size:14px;padding:10px 13px}.cyber-front .cyber-scope{padding:23px;margin-bottom:30px}.cyber-front .cyber-bottom .install-card{padding:24px;gap:18px;align-items:flex-start;flex-wrap:wrap}.cyber-front .cyber-bottom .install-copy h2{font-size:24px}.cyber-front .cyber-feedback{padding:26px;align-items:flex-start;flex-direction:column}.cyber-front .cyber-feedback h2{font-size:25px}.cyber-front .cyber-resources{justify-content:flex-start;gap:14px 22px}}
-@media(max-width:420px){.cyber-front .cyber-header{padding:20px 17px}.cyber-front .cyber-brand{font-size:21px;gap:11px}.cyber-front .cyber-brand-symbol{width:43px;height:48px;font-size:27px}.cyber-front .cyber-brand small{font-size:10px}.cyber-front .cyber-header nav a{font-size:13px}.cyber-front .cyber-hero-copy{padding:30px 23px}.cyber-front .cyber-hero h1{font-size:40px;letter-spacing:-1.4px}.cyber-front .cyber-hero-copy>p{font-size:17px;margin:22px 0 25px}.cyber-front .cyber-eyebrow{font-size:10px;letter-spacing:1.3px}.cyber-front .cyber-hero-chips{font-size:11px;gap:8px 12px}.cyber-front .cyber-library,.cyber-front .cyber-bottom{padding:0 15px}.cyber-front .cyber-card{padding:24px 22px}.cyber-front .cyber-card h3{font-size:25px}.cyber-front .cyber-card>p{font-size:16px}.cyber-front .cyber-meta{font-size:12px}.cyber-front .cyber-bottom .install-copy{flex-basis:calc(100% - 76px)}.cyber-front .cyber-bottom .install-action{width:100%}}
+/* Image-led welcome screen only; all lab content remains on labs.html. */
+.cyber-welcome{margin:0;background:#f5f8fb;color:#102b46;min-height:620px;height:100vh;height:100svh;display:grid;grid-template-rows:auto minmax(280px,1fr) auto;font-family:Arial,Helvetica,sans-serif}
+.welcome-header{width:100%;max-width:1440px;margin:0 auto;padding:20px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.welcome-brand{display:flex;align-items:center;gap:13px;font-size:25px;line-height:1.2;font-weight:800;letter-spacing:-.6px;color:#102b46;text-decoration:none}
+.welcome-brand small{display:block;font-size:12px;line-height:1.5;font-weight:600;letter-spacing:.2px;color:#627b8e;margin-top:5px}
+.welcome-mark{display:grid;place-items:center;flex:none;width:43px;height:48px;background:#102b46;color:#5de0ca;font-size:28px;clip-path:polygon(0 0,100% 0,100% 72%,50% 100%,0 72%)}
+.welcome-header nav{display:flex;align-items:center;gap:25px;flex-wrap:wrap}
+.welcome-header nav>a{font-size:14px;line-height:1.5;font-weight:700;color:#3b566b;text-decoration:none}
+.welcome-header nav>a:hover{text-decoration:underline}
+.welcome-install{min-height:42px;padding:10px 16px;border:1px solid #ccdde4;border-radius:8px;background:white;color:#20495a;font:700 14px/1.4 Arial,Helvetica,sans-serif;cursor:pointer}
+.welcome-install:disabled{opacity:.55;cursor:wait}.welcome-install[hidden]{display:none}
+.welcome-main{width:100%;max-width:1440px;margin:0 auto;padding:0 28px;min-height:0;display:flex}
+.welcome-image{width:100%;height:100%;min-height:280px;margin:0;border-radius:22px;background:#d3f3f5;display:flex;align-items:center;justify-content:center;padding:16px 20px;overflow:hidden}
+.welcome-image img{display:block;width:100%;height:100%;min-height:0;object-fit:contain;object-position:center}
+.welcome-footer{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;padding:15px 24px 13px;text-align:center}
+.welcome-enter{display:inline-flex;align-items:center;justify-content:center;gap:28px;min-width:230px;min-height:52px;padding:14px 24px;border-radius:9px;background:#087f80;color:white;font-size:17px;line-height:1.4;font-weight:800;text-decoration:none;box-shadow:0 3px 10px #087f8012}
+.welcome-enter:hover{background:#086b71}.welcome-enter span{font-size:23px;line-height:1}
+.welcome-credit{margin:0;color:#627b8e;font-size:11px;line-height:1.5}
+.welcome-status{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+.welcome-skip{position:absolute;left:12px;top:-100px;padding:12px 18px;background:white;z-index:10;border:2px solid #087f80;border-radius:6px;color:#102b46}
+.welcome-skip:focus{top:10px}
+.cyber-welcome a:focus-visible,.cyber-welcome button:focus-visible{outline:3px solid #dc9e1f;outline-offset:4px}
+@media(min-width:1500px){.welcome-header{padding-top:25px;padding-bottom:25px}.welcome-brand{font-size:28px}.welcome-header nav>a,.welcome-install{font-size:15px}.welcome-main{padding:0 32px}.welcome-image{padding:18px 24px}.welcome-footer{padding-top:19px;padding-bottom:18px}}
+@media(max-width:740px){.cyber-welcome{min-height:580px;grid-template-rows:auto minmax(260px,1fr) auto}.welcome-header{padding:17px 21px;gap:17px;flex-wrap:wrap}.welcome-brand{font-size:23px}.welcome-header nav{gap:20px}.welcome-main{padding:0 16px}.welcome-image{min-height:260px;padding:12px;border-radius:16px}.welcome-footer{padding:14px 18px;gap:10px}.welcome-credit{max-width:520px;font-size:10px}.welcome-enter{min-width:225px;font-size:16px}}
+@media(max-width:420px){.cyber-welcome{min-height:560px}.welcome-header{padding:15px 17px;gap:14px}.welcome-brand{font-size:21px;gap:11px}.welcome-brand small{font-size:11px}.welcome-mark{width:38px;height:43px;font-size:25px}.welcome-header nav{width:100%;justify-content:space-between;gap:12px}.welcome-header nav>a{font-size:13px}.welcome-install{font-size:13px;padding:9px 13px}.welcome-main{padding:0 12px}.welcome-image{padding:9px;border-radius:14px}.welcome-footer{padding:13px 15px}.welcome-enter{min-height:48px;min-width:220px}.welcome-credit{font-size:10px;line-height:1.5}}
+@media(max-height:580px) and (min-width:741px){.cyber-welcome{height:auto;min-height:580px}.welcome-main{height:360px}.welcome-header{padding-top:14px;padding-bottom:14px}}
