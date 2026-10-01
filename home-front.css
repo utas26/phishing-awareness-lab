@@ -1,9 +1,9 @@
 /* Image-led welcome screen only; all lab content remains on labs.html. */
 .cyber-welcome{margin:0;background:#f5f8fb;color:#102b46;min-height:620px;height:100vh;height:100svh;display:grid;grid-template-rows:auto minmax(280px,1fr) auto;font-family:Arial,Helvetica,sans-serif}
-.welcome-header{width:100%;max-width:1440px;margin:0 auto;padding:20px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-.welcome-brand{display:flex;align-items:center;gap:13px;font-size:25px;line-height:1.2;font-weight:800;letter-spacing:-.6px;color:#102b46;text-decoration:none}
-.welcome-brand small{display:block;font-size:12px;line-height:1.5;font-weight:600;letter-spacing:.2px;color:#627b8e;margin-top:5px}
-.welcome-mark{display:grid;place-items:center;flex:none;width:43px;height:48px;background:#102b46;color:#5de0ca;font-size:28px;clip-path:polygon(0 0,100% 0,100% 72%,50% 100%,0 72%)}
+.welcome-header{width:100%;max-width:1440px;margin:0 auto;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.welcome-brand{display:flex;align-items:center;gap:20px;min-width:0;font-size:36px;line-height:1.15;font-weight:800;letter-spacing:-.6px;color:#102b46;text-decoration:none}
+.welcome-brand>span{min-width:0}.welcome-brand small{display:block;font-size:13px;line-height:1.5;font-weight:600;letter-spacing:.2px;color:#627b8e;margin-top:5px}
+.welcome-logo{display:block;flex:none;width:176px;height:auto;object-fit:contain}
 .welcome-header nav{display:flex;align-items:center;gap:25px;flex-wrap:wrap}
 .welcome-header nav>a{font-size:14px;line-height:1.5;font-weight:700;color:#3b566b;text-decoration:none}
 .welcome-header nav>a:hover{text-decoration:underline}
@@ -20,7 +20,9 @@
 .welcome-skip{position:absolute;left:12px;top:-100px;padding:12px 18px;background:white;z-index:10;border:2px solid #087f80;border-radius:6px;color:#102b46}
 .welcome-skip:focus{top:10px}
 .cyber-welcome a:focus-visible,.cyber-welcome button:focus-visible{outline:3px solid #dc9e1f;outline-offset:4px}
-@media(min-width:1500px){.welcome-header{padding-top:25px;padding-bottom:25px}.welcome-brand{font-size:28px}.welcome-header nav>a,.welcome-install{font-size:15px}.welcome-main{padding:0 32px}.welcome-image{padding:18px 24px}.welcome-footer{padding-top:19px;padding-bottom:18px}}
-@media(max-width:740px){.cyber-welcome{min-height:580px;grid-template-rows:auto minmax(260px,1fr) auto}.welcome-header{padding:17px 21px;gap:17px;flex-wrap:wrap}.welcome-brand{font-size:23px}.welcome-header nav{gap:20px}.welcome-main{padding:0 16px}.welcome-image{min-height:260px;padding:12px;border-radius:16px}.welcome-footer{padding:14px 18px;gap:10px}.welcome-credit{max-width:520px;font-size:10px}.welcome-enter{min-width:225px;font-size:16px}}
-@media(max-width:420px){.cyber-welcome{min-height:560px}.welcome-header{padding:15px 17px;gap:14px}.welcome-brand{font-size:21px;gap:11px}.welcome-brand small{font-size:11px}.welcome-mark{width:38px;height:43px;font-size:25px}.welcome-header nav{width:100%;justify-content:space-between;gap:12px}.welcome-header nav>a{font-size:13px}.welcome-install{font-size:13px;padding:9px 13px}.welcome-main{padding:0 12px}.welcome-image{padding:9px;border-radius:14px}.welcome-footer{padding:13px 15px}.welcome-enter{min-height:48px;min-width:220px}.welcome-credit{font-size:10px;line-height:1.5}}
+@media(min-width:1500px){.welcome-header{padding-top:25px;padding-bottom:25px}.welcome-brand{font-size:42px}.welcome-header nav>a,.welcome-install{font-size:15px}.welcome-main{padding:0 32px}.welcome-image{padding:18px 24px}.welcome-footer{padding-top:19px;padding-bottom:18px}}
+@media(max-width:960px){.welcome-header{gap:14px;flex-wrap:wrap}.welcome-brand{font-size:34px}.welcome-header nav{margin-left:auto}}
+@media(max-width:740px){.cyber-welcome{min-height:580px;grid-template-rows:auto minmax(260px,1fr) auto}.welcome-header{padding:17px 21px;gap:17px;flex-wrap:wrap}.welcome-brand{font-size:30px;gap:16px}.welcome-logo{width:146px}.welcome-header nav{gap:20px}.welcome-main{padding:0 16px}.welcome-image{min-height:260px;padding:12px;border-radius:16px}.welcome-footer{padding:14px 18px;gap:10px}.welcome-credit{max-width:520px;font-size:10px}.welcome-enter{min-width:225px;font-size:16px}}
+@media(max-width:420px){.cyber-welcome{min-height:560px}.welcome-header{padding:15px 17px;gap:14px}.welcome-brand{font-size:27px;gap:12px}.welcome-brand small{font-size:11px}.welcome-logo{width:110px}.welcome-header nav{width:100%;justify-content:space-between;gap:12px}.welcome-header nav>a{font-size:13px}.welcome-install{font-size:13px;padding:9px 13px}.welcome-main{padding:0 12px}.welcome-image{padding:9px;border-radius:14px}.welcome-footer{padding:13px 15px}.welcome-enter{min-height:48px;min-width:220px}.welcome-credit{font-size:10px;line-height:1.5}}
 @media(max-height:580px) and (min-width:741px){.cyber-welcome{height:auto;min-height:580px}.welcome-main{height:360px}.welcome-header{padding-top:14px;padding-bottom:14px}}
+@media(max-width:360px){.welcome-brand{font-size:24px;gap:10px}.welcome-logo{width:94px}.welcome-brand small{font-size:10px}}
