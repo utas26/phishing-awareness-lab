@@ -27,6 +27,8 @@
   const start = byId('portStart'), cancel = byId('portCancel'), reset = byId('portReset');
   const status = byId('portStatus'), progress = byId('portProgress'), log = byId('portLog');
   const questions = byId('portQuestions'), feedback = byId('portFeedback');
+  const lookupAddress = byId('portLookupAddress'), findHost = byId('portFindHost'), lookupStatus = byId('portLookupStatus');
+  let lookupPending = false;
   let timer = null, run = 0, running = false, completed = false, checked = 0;
   let scanPorts = [], currentTarget = targets.web, counts = { open: 0, closed: 0, filtered: 0 };
   const network = { ipFound: false, ready: false, discovering: false, timer: null, run: 0 };
@@ -43,6 +45,9 @@
     byId('portDiscoveredHosts').replaceChildren(); hostButtons.length = 0;
     byId('portNetworkStatus').textContent = 'Start with Find my IP to reveal your virtual lab address.';
     byId('portScanHint').textContent = 'Complete the two discovery steps to unlock the scan controls.';
+    lookupPending = false; if (!targets[target.value]) target.value = 'web'; lookupAddress.value = ''; lookupAddress.removeAttribute('aria-invalid');
+    lookupAddress.disabled = findHost.disabled = true;
+    setLookupStatus('Complete network discovery to look up a virtual device.');
   }
   function findIp() {
     if (network.ipFound) return;
@@ -73,7 +78,7 @@
         const button = document.createElement('button');
         button.type = 'button'; button.className = 'btn alt'; button.textContent = 'Use this host';
         button.setAttribute('aria-label', 'Use ' + host.name); button.disabled = true;
-        button.addEventListener('click', () => { if (!network.ready || running) return; target.value = key; prepare(); byId('portScanHint').textContent = host.name + ' selected. Choose ports and start the simulated scan.'; });
+        button.addEventListener('click', () => { if (!network.ready || running) return; target.value = key; selectPresetTarget(); byId('portScanHint').textContent = host.name + ' selected. Choose ports and start the simulated scan.'; });
         hostButtons.push(button); card.appendChild(button); byId('portDiscoveredHosts').appendChild(card);
         byId('portNetworkStatus').textContent = 'Simulated discovery: ' + (index + 1) + ' / 2 hosts found on 192.0.2.0/24.';
         if (index === 0) discover(1);
@@ -82,6 +87,7 @@
           byId('portCancelNetwork').hidden = true;
           byId('portNetworkStatus').textContent = 'Discovery complete: 2 fictional hosts found on 192.0.2.0/24. Your learner computer is 192.0.2.50; no real network was contacted.';
           byId('portScanHint').textContent = 'Choose either discovered host below, then start the simulated scan.';
+          setLookupStatus('Enter 192.0.2.10 or 192.0.2.20 to find a preset device, or use the target selector.');
           lockControls(false); setStatus('Ready to scan');
         }
       }, 650);
@@ -96,6 +102,55 @@
   }
   function resetLab() { resetNetwork(); prepare(); }
 
+  function setLookupStatus(message, type = '') {
+    lookupStatus.textContent = message;
+    lookupStatus.className = 'port-lookup-status' + (type ? ' ' + type : '');
+  }
+  function selectPresetTarget() {
+    if (!network.ready || running || !targets[target.value]) return;
+    lookupPending = false;
+    lookupAddress.value = targets[target.value].address;
+    lookupAddress.removeAttribute('aria-invalid');
+    prepare();
+    setLookupStatus('Selected ' + currentTarget.name + ' · ' + currentTarget.address + '. Ready for a simulated scan; no real device is contacted.', 'success');
+  }
+  function addressEdited() {
+    if (!network.ready || running) return;
+    lookupPending = true; target.value = '';
+    lookupAddress.removeAttribute('aria-invalid');
+    prepare();
+    setLookupStatus('Address edited. Choose Find virtual host before scanning. Previous scan results have been cleared.');
+  }
+  function findVirtualHost() {
+    if (!network.ready || network.discovering || running) return;
+    const address = lookupAddress.value.trim();
+    lookupPending = true; target.value = '';
+    prepare();
+    let message = '';
+    if (!/^(?:0|[1-9]\d{0,2})(?:\.(?:0|[1-9]\d{0,2})){3}$/.test(address) || address.split('.').some(octet => Number(octet) > 255)) {
+      message = 'Enter a valid IPv4 address in dotted-decimal form, without leading zeros, a URL, port, or subnet suffix. Nothing was looked up or scanned.';
+    } else if (!address.startsWith('192.0.2.')) {
+      message = 'That address is outside the virtual lab 192.0.2.0/24. It was not contacted or scanned. Use 192.0.2.10 or 192.0.2.20.';
+    } else if (address === '192.0.2.0' || address === '192.0.2.255') {
+      message = 'That is the virtual network or broadcast address, not a device target. Nothing was scanned.';
+    } else if (address === '192.0.2.50') {
+      message = 'That is your fictional learner computer, not one of the two preset scan targets. Nothing was scanned. Use 192.0.2.10 or 192.0.2.20.';
+    } else {
+      const match = Object.keys(targets).find(key => targets[key].address === address);
+      if (match) {
+        target.value = match;
+        selectPresetTarget();
+        setLookupStatus('Found preset virtual device: ' + currentTarget.name + ' · ' + currentTarget.address + '. Choose Start simulated scan. No real network lookup was made.', 'success');
+        byId('portScanHint').textContent = currentTarget.name + ' selected by virtual IP. Choose ports and start the simulated scan.';
+        return;
+      }
+      message = 'No preset virtual device exists at ' + address + '. No real network lookup or scan was made. Try 192.0.2.10 or 192.0.2.20.';
+    }
+    lookupAddress.setAttribute('aria-invalid', 'true');
+    setLookupStatus(message, 'error');
+    setStatus('No valid virtual target selected for this address · not scanned');
+  }
+
   function setStatus(message) { status.textContent = message; }
   function appendLog(message) { log.textContent += '\n' + message; log.scrollTop = log.scrollHeight; }
   function updateProgress() {
@@ -106,7 +161,9 @@
     }
   }
   function lockControls(locked) {
-    target.disabled = profile.disabled = speed.disabled = start.disabled = locked || !network.ready;
+    target.disabled = profile.disabled = speed.disabled = locked || !network.ready;
+    lookupAddress.disabled = findHost.disabled = locked || !network.ready;
+    start.disabled = locked || !network.ready || lookupPending || !targets[target.value];
     hostButtons.forEach(button => { button.disabled = locked || !network.ready; });
     cancel.disabled = !locked;
     byId('portConnection').classList.toggle('is-scanning', locked);
@@ -128,11 +185,11 @@
     completed = false;
     checked = 0;
     counts = { open: 0, closed: 0, filtered: 0 };
-    currentTarget = targets[target.value];
+    currentTarget = targets[target.value] || currentTarget;
     scanPorts = ports.map((port, index) => ({ ...port, state: currentTarget.states[index] }))
       .filter(port => profile.value === 'common' || port.number === 80 || port.number === 443);
-    byId('portTargetNote').textContent = currentTarget.note + ' These 192.0.2.x addresses are reserved for documentation.';
-    byId('portCommand').textContent = 'nmap -sT -Pn -p ' + scanPorts.map(port => port.number).join(',') + ' ' + currentTarget.address;
+    byId('portTargetNote').textContent = lookupPending ? 'No device selected for the entered address. Find a preset virtual host or use the discovered-target selector.' : currentTarget.note + ' These 192.0.2.x addresses are reserved for documentation.';
+    byId('portCommand').textContent = lookupPending ? 'Find a preset virtual host or choose a discovered target to see the example command.' : 'nmap -sT -Pn -p ' + scanPorts.map(port => port.number).join(',') + ' ' + currentTarget.address;
     byId('portRows').replaceChildren();
     scanPorts.forEach((port, index) => {
       const row = document.createElement('tr');
@@ -146,7 +203,7 @@
     progress.max = scanPorts.length;
     updateProgress();
     log.textContent = 'Ready. Choose a target, then start the simulated scan.';
-    setStatus(network.ready ? 'Ready to scan' : 'Waiting for virtual network discovery');
+    setStatus(network.ready ? (lookupPending ? 'Find a virtual host before scanning' : 'Ready to scan') : 'Waiting for virtual network discovery');
     start.textContent = 'Start simulated scan';
     questions.disabled = true;
     for (const id of ['portAnswerCount', 'portAnswerFiltered', 'portAnswerRisk']) byId(id).value = '';
@@ -185,7 +242,7 @@
     }, delay);
   }
   function startScan() {
-    if (running || !network.ready) return;
+    if (running || !network.ready || lookupPending || !targets[target.value]) return;
     prepare();
     running = true;
     lockControls(true);
@@ -230,7 +287,10 @@
   byId('portFindIp').addEventListener('click', findIp);
   byId('portFindNetwork').addEventListener('click', findNetwork);
   byId('portCancelNetwork').addEventListener('click', cancelDiscovery);
-  target.addEventListener('change', prepare);
+  target.addEventListener('change', selectPresetTarget);
+  lookupAddress.addEventListener('input', addressEdited);
+  findHost.addEventListener('click', findVirtualHost);
+  lookupAddress.addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); findVirtualHost(); } });
   profile.addEventListener('change', prepare);
   byId('portCheck').addEventListener('click', checkFindings);
   window.addEventListener('pagehide', () => { cancelScan(); cancelDiscovery(); });

@@ -3,6 +3,16 @@
 .port-module .port-lead{max-width:760px;color:#52627a;font-size:17px}
 .port-module .port-workbench{border:1px solid #d8e1eb;border-radius:10px;padding:22px;background:#f8fafc}
 .port-module .port-controls{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:14px}
+.port-module .port-address-lookup{margin:0 0 20px;padding:16px;border:1px solid #d8e1eb;border-radius:8px;background:#fff}
+.port-module .port-lookup-controls{display:flex;gap:10px;align-items:stretch}
+.port-module .port-lookup-controls input{flex:1;min-width:0;min-height:44px;border:1px solid #b8c8d9;border-radius:6px;padding:9px 10px;color:#26364f;background:#fff;font:15px Consolas,monospace}
+.port-module .port-lookup-controls input:disabled{background:#f1f4f8;color:#6b7890}
+.port-module .port-lookup-controls input[aria-invalid="true"]{border-color:#b42318}
+.port-module .port-lookup-controls .btn{white-space:nowrap}
+.port-module .port-lookup-status{margin:10px 0 0;font-size:13px;line-height:1.6;color:#244f91}
+.port-module .port-lookup-status.error{color:#b42318}
+.port-module .port-lookup-status.success{color:#087443}
+@media(max-width:600px){.port-module .port-lookup-controls{flex-direction:column}.port-module .port-lookup-controls .btn{width:100%}}
 .port-module .port-discovery{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .port-module .port-step{padding:18px;border:1px solid #d8e1eb;border-radius:8px;background:#fff;min-width:0}
 .port-module .port-step-number{font-size:10px;font-weight:800;letter-spacing:1px;color:#315fa8}
@@ -25,7 +35,7 @@
 .port-module .port-scan-step{margin-top:22px;padding-top:20px;border-top:1px solid #d8e1eb}
 .port-module label{display:block;font-weight:700;font-size:14px;margin-bottom:6px}
 .port-module select{width:100%;min-width:0;min-height:44px;border:1px solid #b8c8d9;border-radius:6px;padding:9px 10px;background:#fff;color:#26364f;font:inherit;font-size:14px}
-.port-module :is(button,select,a):focus-visible{outline:3px solid #f4b332;outline-offset:3px}
+.port-module :is(button,input,select,a):focus-visible{outline:3px solid #f4b332;outline-offset:3px}
 .port-module button:disabled{opacity:.5;cursor:not-allowed}
 .port-module .port-note{color:#596a80;font-size:13px;line-height:1.6}
 .port-module .port-command{background:#eaf0f8;border:1px solid #cedbec;border-left:4px solid #315fa8;border-radius:6px;padding:12px 14px}

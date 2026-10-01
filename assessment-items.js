@@ -1,9 +1,9 @@
 /* Original draft instrument for demo preview; not validated for research use. */
 window.UTAS_ASSESSMENT = {
   "title": "UTAS-Ibra Student Feedback",
-  "instrumentVersion": "utas-cyberlab-draft-1.0",
+  "instrumentVersion": "utas-cyberlab-draft-2.0",
   "previewNotice": "Draft preview only. This is not research enrollment. Practice answers stay in this browser tab for this session and are not submitted for research. Do not enter names, student IDs, email addresses, passwords, or other identifying information.",
-  "perceivedInstructions": "How well do you understand each topic right now?",
+  "perceivedInstructions": "How well do you understand each general cybersecurity learning outcome right now?",
   "perceivedScale": [
     {
       "value": 1,
@@ -28,172 +28,172 @@ window.UTAS_ASSESSMENT = {
   ],
   "perceivedKnowledge": [
     {
-      "id": "pk_phishing",
-      "text": "Recognizing phishing messages"
+      "id": "pk_general_1",
+      "text": "Understanding core cybersecurity concepts"
     },
     {
-      "id": "pk_passwords",
-      "text": "Choosing strong password practices"
+      "id": "pk_general_2",
+      "text": "Recognizing potential risks in digital situations"
     },
     {
-      "id": "pk_qr",
-      "text": "Checking whether a QR-code destination is trustworthy"
+      "id": "pk_general_3",
+      "text": "Explaining why a digital action may be safe or unsafe"
     },
     {
-      "id": "pk_mfa",
-      "text": "Responding safely to unexpected MFA approval requests"
+      "id": "pk_general_4",
+      "text": "Choosing appropriate actions to protect information and accounts"
     },
     {
-      "id": "pk_updates",
-      "text": "Distinguishing legitimate software updates from fake update prompts"
+      "id": "pk_general_5",
+      "text": "Applying cybersecurity knowledge to unfamiliar situations"
     },
     {
-      "id": "pk_permissions",
-      "text": "Deciding whether a website needs a requested browser permission"
+      "id": "pk_general_6",
+      "text": "Understanding the possible consequences of unsafe digital behavior"
     },
     {
-      "id": "pk_urls",
-      "text": "Identifying the actual website in a suspicious URL"
+      "id": "pk_general_7",
+      "text": "Knowing when to seek help or report a security concern"
     },
     {
-      "id": "pk_network",
-      "text": "Interpreting discovery and port-scan results in an authorized virtual network"
+      "id": "pk_general_8",
+      "text": "Explaining safe digital practices to another person"
     }
   ],
-  "objectiveInstructions": "Choose the single best answer. Select “I don't know” rather than guessing if you are unsure. You may skip any question. All network examples refer to an authorized simulation.",
+  "objectiveInstructions": "Choose the single best answer. Select “I don’t know” rather than guessing if you are unsure. You may skip any question. These general questions do not depend on completing a particular activity.",
   "objective": [
     {
-      "id": "k01_phishing",
-      "prompt": "An unexpected email says your university account will close today unless you sign in through its link. What is the safest next step?",
+      "id": "k01_general",
+      "prompt": "An unexpected message says your account will close today unless you sign in through its link. What is the safest next step?",
       "options": [
-        "Use the link because the message is urgent",
-        "Open the university's known website independently and check through an official channel",
-        "Reply to the sender with your login details",
-        "Trust the message if it includes the university logo",
-        "I don't know"
+        "Use the link because the request is urgent",
+        "Open the service’s known website independently and check through an official channel",
+        "Reply with your account details",
+        "Trust the message if it includes a familiar logo",
+        "I don’t know"
       ],
       "correctIndex": 1,
-      "explanation": "Urgency and logos do not establish authenticity. Independently reach a known official website or contact channel; do not rely on the message's link."
+      "explanation": "Urgency and familiar branding do not establish authenticity. Check independently using a known official website or contact channel."
     },
     {
-      "id": "k02_passwords",
+      "id": "k02_general",
       "prompt": "Which approach best protects several online accounts?",
       "options": [
         "Use one complex password for every account",
-        "Use your student number with a different final digit for each account",
+        "Use a personal identifier with a different final digit for each account",
         "Use long, unique passwords generated and stored by a reputable password manager",
         "Use short passwords and change them every day",
-        "I don't know"
+        "I don’t know"
       ],
       "correctIndex": 2,
       "explanation": "Long, unique passwords reduce guessing and password-reuse risks. A reputable password manager can help generate and store them."
     },
     {
-      "id": "k03_qr",
-      "prompt": "A QR code on a poster opens a page asking you to sign in. What should you do before entering credentials?",
+      "id": "k03_general",
+      "prompt": "You receive an unexpected file attachment from someone you know. What should you do before opening it?",
       "options": [
-        "Check the destination and use a known official route if the request is unexpected",
-        "Assume a printed QR code has been verified",
-        "Enter credentials if the page design looks familiar",
-        "Trust it automatically if the link uses HTTPS",
-        "I don't know"
+        "Confirm the request through a separate trusted channel if it seems unusual",
+        "Open it because the sender’s name is familiar",
+        "Enable every feature the file requests",
+        "Forward it to others so they can check it first",
+        "I don’t know"
       ],
       "correctIndex": 0,
-      "explanation": "QR codes can lead to spoofed websites. A familiar design or HTTPS alone does not prove the site is the intended service."
+      "explanation": "Familiar accounts can be impersonated or compromised. Independently verify unusual files or requests before acting."
     },
     {
-      "id": "k04_mfa",
-      "prompt": "You receive repeated MFA approval requests, but you are not trying to sign in. What is the best response?",
+      "id": "k04_general",
+      "prompt": "Someone contacts you claiming to be support and asks for a one-time sign-in code you just received. What is the safest response?",
       "options": [
-        "Approve one request so the alerts stop",
-        "Share an approval code with anyone claiming to be support",
-        "Disable MFA immediately to avoid more alerts",
-        "Deny the requests and report them through the service's known security channel",
-        "I don't know"
+        "Share it if they know your name",
+        "Post it in a group chat to ask for advice",
+        "Share it quickly because the code expires",
+        "Do not share it; contact the service through a known official channel",
+        "I don’t know"
       ],
       "correctIndex": 3,
-      "explanation": "Unexpected repeated requests can be an MFA-fatigue attack. Do not approve a sign-in you did not initiate; report it through a trusted channel."
+      "explanation": "A sign-in code can grant access to an account. Do not disclose it to an unexpected caller or message sender."
     },
     {
-      "id": "k05_updates",
-      "prompt": "While browsing an unrelated website, a pop-up says you must install a browser update from its download button. What is the safest action?",
+      "id": "k05_general",
+      "prompt": "You need to install a security update. Which source is the safest choice?",
       "options": [
-        "Install it immediately because updates are important",
-        "Dismiss the prompt and check updates through the browser's built-in settings or official source",
-        "Disable browser updates permanently",
-        "Install it if the pop-up uses the browser's logo",
-        "I don't know"
+        "A download link in an unexpected pop-up",
+        "The application’s built-in updater or the vendor’s verified official source",
+        "The first advertisement in a search result",
+        "Any file with the product’s logo",
+        "I don’t know"
       ],
       "correctIndex": 1,
-      "explanation": "Updates are important, but an unrelated website's prompt may be deceptive. Use the application's built-in updater or its official source."
+      "explanation": "Use trusted built-in update mechanisms or verified official sources. Names, logos and advertisements alone do not verify a download."
     },
     {
-      "id": "k06_permissions",
-      "prompt": "A website asks for microphone access when you only want to read an article. What is the best default response?",
+      "id": "k06_general",
+      "prompt": "A digital service requests access to information that is unrelated to the feature you want to use. What is the best default response?",
       "options": [
-        "Allow it because every website needs microphone access",
-        "Allow it if the website uses HTTPS",
-        "Deny it unless a feature you choose has a clear, trusted need for it",
+        "Grant all requested access so the service works faster",
+        "Allow it because the service is popular",
+        "Deny unnecessary access and check what the feature actually needs",
         "Allow it once because temporary access cannot expose information",
-        "I don't know"
+        "I don’t know"
       ],
       "correctIndex": 2,
-      "explanation": "Grant permissions only when a trusted feature needs them. Reading an article normally does not require microphone access."
+      "explanation": "Limit access to what is necessary for a trusted activity. Even temporary access can expose information."
     },
     {
-      "id": "k07_urls",
-      "prompt": "The real service uses accounts.example.edu. A message links to https://accounts.example.edu.verify-login.example/sign-in. Which statement is correct?",
+      "id": "k07_general",
+      "prompt": "Before sharing a document online, what is the best information-protection practice?",
       "options": [
-        "The address belongs to verify-login.example, so it is not the stated official host",
-        "The address is official because it begins with accounts.example.edu",
-        "The address is official because it contains a sign-in path",
-        "HTTPS proves the address belongs to the university",
-        "I don't know"
+        "Check who needs access and remove information they do not need",
+        "Make it public so recipients can find it easily",
+        "Include every personal detail in case it becomes useful later",
+        "Assume a long link prevents other people from accessing it",
+        "I don’t know"
       ],
       "correctIndex": 0,
-      "explanation": "The hostname ends in verify-login.example; the familiar text appears in its subdomain. HTTPS protects a connection but does not establish that the site is the intended organization."
+      "explanation": "Share the minimum information needed with the intended audience. A difficult-to-guess link is not a substitute for appropriate access controls."
     },
     {
-      "id": "k08_ports",
-      "prompt": "An authorized simulated scan reports TCP port 443 as open. What does that establish?",
+      "id": "k08_general",
+      "prompt": "A website uses an encrypted connection. Which statement is correct?",
       "options": [
-        "The host has definitely been compromised",
-        "The service has a known exploitable vulnerability",
-        "The service is automatically safe because 443 is commonly used for HTTPS",
-        "A service is accepting connections on that port; its security needs separate assessment",
-        "I don't know"
+        "Every claim on the website must be true",
+        "The website can never be compromised",
+        "It is safe to provide any information the website requests",
+        "Encryption protects the connection, but the website’s identity and request still need checking",
+        "I don’t know"
       ],
       "correctIndex": 3,
-      "explanation": "An open port indicates a listening service from the scanner's perspective. It alone proves neither compromise, vulnerability, nor safety."
+      "explanation": "Connection encryption protects data in transit. It does not by itself establish the trustworthiness of the organization or the request."
     },
     {
-      "id": "k09_subnet",
-      "prompt": "Your authorized virtual lab range is 192.0.2.0/24. Which target is inside that range?",
+      "id": "k09_general",
+      "prompt": "You notice unexpected activity on one of your accounts. What is the most appropriate next step?",
       "options": [
-        "192.0.3.37",
-        "192.0.2.37",
-        "198.51.100.37",
-        "203.0.113.37",
-        "I don't know"
+        "Ignore it if you can still sign in",
+        "Use the service’s known official security or recovery channel and follow its guidance",
+        "Share your password with a stranger who offers help",
+        "Follow any recovery link sent by the same unknown contact",
+        "I don’t know"
       ],
       "correctIndex": 1,
-      "explanation": "A /24 IPv4 prefix fixes the first three octets here, so 192.0.2.37 is within 192.0.2.0/24. Keep activity within the approved lab scope."
+      "explanation": "Use trusted official channels to investigate and recover an account. Avoid disclosing credentials or following unverified recovery links."
     },
     {
-      "id": "k10_discovery",
-      "prompt": "Within an approved virtual lab, how does host discovery differ from port scanning?",
+      "id": "k10_general",
+      "prompt": "You are unsure whether an unfamiliar digital action is safe. What is the best general approach?",
       "options": [
-        "Host discovery changes IP addresses; port scanning changes passwords",
-        "They always produce identical information",
-        "Host discovery looks for responding hosts; port scanning checks the state of service ports",
-        "Host discovery proves every host is secure; port scanning proves every host is vulnerable",
-        "I don't know"
+        "Proceed quickly to avoid inconvenience",
+        "Copy what an unknown online commenter recommends",
+        "Pause, verify the source and purpose, and seek trusted guidance when needed",
+        "Disable security warnings so the action can continue",
+        "I don’t know"
       ],
       "correctIndex": 2,
-      "explanation": "Host discovery identifies hosts that respond to its probes; port scanning investigates port states. Nonresponse may reflect filtering, so discovery can miss active hosts."
+      "explanation": "Pausing to verify the source, purpose and consequences helps avoid preventable mistakes. Seek trusted guidance rather than bypassing safeguards."
     }
   ],
-  "satisfactionInstructions": "Thinking about the lab you just completed, how much do you agree with each statement?",
+  "satisfactionInstructions": "Thinking about the learning experience you just completed, how much do you agree with each statement?",
   "satisfactionScale": [
     {
       "value": 1,
@@ -223,12 +223,12 @@ window.UTAS_ASSESSMENT = {
   "satisfaction": [
     {
       "id": "s01_overall",
-      "text": "Overall, I am satisfied with this lab experience.",
+      "text": "Overall, I am satisfied with this learning experience.",
       "group": "Overall satisfaction"
     },
     {
       "id": "s02_navigation",
-      "text": "It was easy to find my way around the lab.",
+      "text": "It was easy to find my way around the application.",
       "group": "Usability"
     },
     {
@@ -263,25 +263,25 @@ window.UTAS_ASSESSMENT = {
     },
     {
       "id": "s09_value",
-      "text": "The lab was useful for learning cybersecurity concepts.",
+      "text": "The learning experience was useful for learning cybersecurity concepts.",
       "group": "Perceived learning value"
     },
     {
       "id": "s10_reuse",
-      "text": "I would choose to use these simulations for further practice.",
+      "text": "I would choose to use these learning activities for further practice.",
       "group": "Future-use intention"
     }
   ],
   "openPrompts": [
     {
       "id": "open_helpful",
-      "text": "Which activity or explanation was most helpful, and why?",
+      "text": "What helped your learning most, and why?",
       "optional": true,
       "maxLength": 1000
     },
     {
       "id": "open_improve",
-      "text": "What was confusing, or what one change would improve the lab?",
+      "text": "What was confusing, or what one change would improve the learning experience?",
       "optional": true,
       "maxLength": 1000
     }

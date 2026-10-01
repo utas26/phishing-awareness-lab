@@ -29,7 +29,7 @@
 <span class="tag">REAL-TIME LAB 6 · SIMULATION ONLY</span>
 <h1 id="portTitle">Port Scanning Simulation</h1>
 <p class="port-lead">Find my IP → Find my network IP → Scan. Discover your virtual lab network, choose a fictional host, and watch its simulated port replies arrive.</p>
-<div class="warnbox"><b>Safe by design:</b> This lab uses fictional targets and preset results entirely in your browser. It sends no scan traffic, runs no commands, and accepts no real IP addresses. Scan real systems only with the owner’s explicit permission.</div>
+<div class="warnbox"><b>Safe by design:</b> This lab uses fictional targets and preset results entirely in your browser. Address lookup accepts only the two preset virtual hosts. Other addresses are never contacted or scanned. No scan traffic is sent and no commands are run. Scan real systems only with the owner’s explicit permission.</div>
 <div class="port-workbench">
   <div class="port-discovery">
     <section class="port-step" aria-labelledby="portIpTitle">
@@ -48,8 +48,14 @@
   <p id="portNetworkStatus" class="port-network-status" role="status" aria-live="polite">Start with Find my IP to reveal your virtual lab address.</p>
   <div id="portDiscoveredHosts" class="port-discovered-hosts" aria-label="Discovered fictional hosts"></div>
   <div class="port-scan-step"><span class="port-step-number">STEP 3</span><h3>Scan a discovered host</h3><p id="portScanHint" class="port-note">Complete the two discovery steps to unlock the scan controls.</p></div>
+  <div class="port-address-lookup">
+    <label for="portLookupAddress">Enter virtual target IP</label>
+    <div class="port-lookup-controls"><input id="portLookupAddress" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" maxlength="15" placeholder="e.g. 192.0.2.10" aria-describedby="portLookupHelp portLookupStatus" disabled><button id="portFindHost" class="btn" type="button" disabled>Find virtual host</button></div>
+    <p id="portLookupHelp" class="port-note">Use 192.0.2.10 or 192.0.2.20 after discovery, or choose a discovered target below. This lookup only searches the preset virtual lab.</p>
+    <p id="portLookupStatus" class="port-lookup-status" role="status" aria-live="polite">Complete network discovery to look up a virtual device.</p>
+  </div>
   <div class="port-controls">
-    <div><label for="portTarget">Choose a discovered target</label><select id="portTarget" disabled><option value="web">Campus web server · 192.0.2.10</option><option value="workstation">Staff workstation · 192.0.2.20</option></select></div>
+    <div><label for="portTarget">Choose a discovered target</label><select id="portTarget" disabled><option value="web">Campus web server · 192.0.2.10</option><option value="workstation">Staff workstation · 192.0.2.20</option><option value="" disabled>Find or choose a virtual target</option></select></div>
     <div><label for="portProfile">Choose ports</label><select id="portProfile" disabled><option value="common">Common services · 8 TCP ports</option><option value="web">Web services · TCP 80 and 443</option></select></div>
     <div><label for="portSpeed">Playback speed</label><select id="portSpeed" disabled><option value="normal">Normal · about 1 second / port</option><option value="slow">Slow · about 2 seconds / port</option><option value="fast">Fast · about 0.4 seconds / port</option></select></div>
   </div>

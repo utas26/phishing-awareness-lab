@@ -103,25 +103,31 @@
     const savePhase=event=>{
       event.preventDefault();
       if(phase==='before') {
-        if(state.before)return;state.before=values(form);persist();show('lab');$('assessment-message').textContent='Before-lab demo saved only in this tab. No response has been submitted.';
+        if(state.before)return;state.before=values(form);persist();show('lab');$('assessment-message').textContent='Before-activity demo saved only in this tab. No response has been submitted.';
       } else {
-        if(!state.before){show('before');return;}state.after=values(form);persist();showSummary();$('assessment-message').textContent='After-lab demo complete. Your comparison is local to this tab and has not been submitted.';
+        if(!state.before){show('before');return;}state.after=values(form);persist();showSummary();$('assessment-message').textContent='After-activity demo complete. Your comparison is local to this tab and has not been submitted.';
       }window.scrollTo({top:0,behavior:'smooth'});
     };
     form.addEventListener('submit',savePhase);
     $('save-'+phase).addEventListener('click',savePhase);
   }
-  $('start-after').addEventListener('click',()=>{if(state.before){show('after');$('assessment-message').textContent='After-lab preview. Use demo answers; no research response is submitted.';window.scrollTo({top:0,behavior:'smooth'});}});
+  $('start-after').addEventListener('click',()=>{if(state.before){show('after');$('assessment-message').textContent='After-activity preview. Use demo answers; no research response is submitted.';window.scrollTo({top:0,behavior:'smooth'});}});
   $('return-to-labs').addEventListener('click',()=>{show('lab');window.scrollTo({top:0,behavior:'smooth'});});
   $('reset-assessment').addEventListener('click',()=>{
     state=newState();$('before-form').reset();$('after-form').reset();persist();show('before');
     $('objective-summary').replaceChildren();$('perceived-summary').replaceChildren();$('satisfaction-summary').replaceChildren();$('answer-review').replaceChildren();
-    $('assessment-message').textContent='Demo responses cleared. Start a new before-lab preview whenever you are ready.';
+    $('assessment-message').textContent='Demo responses cleared. Start a new before-activity preview whenever you are ready.';
   });
   // Back/Forward can restore an older page snapshot. Re-read tab storage so
   // cleared answers cannot reappear or be saved again from a stale closure.
   window.addEventListener('pageshow',event=>{
-    if(event.persisted && storageAvailable) window.location.reload();
+    if(event.persisted && storageAvailable) {window.location.reload();return;}
+    // History restoration may restore checked controls after initial scripts.
+    // Reapply the current tab draft after that browser-managed restoration.
+    window.requestAnimationFrame(()=>{
+      restore($('before-form'),state.draftBefore);
+      restore($('after-form'),state.draftAfter);
+    });
   });
   persist();if(state.before&&state.after)showSummary();else show(state.before?'lab':'before');
   $('save-before').disabled=false;$('save-after').disabled=false;
