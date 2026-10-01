@@ -2,245 +2,35 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Practical Security — Real-Time Labs</title>
-<link rel="stylesheet" href="/port-scanning.css">
-<style>
-:root{--blue:#315fa8;--orange:#f4b332;--line:#d8e1eb;--ink:#26364f;--good:#087443;--bad:#b42318;--bg:#eef3f8}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
-.top{background:#8b1e1e;color:#fff;text-align:center;padding:9px 14px;font-weight:800}
-.wrap{max-width:1100px;margin:28px auto;background:#fff;border-radius:10px;padding:28px 34px;box-shadow:0 15px 42px rgba(0,0,0,.1)}
-h1,h2,h3{color:var(--blue)}
-.module{border-top:1px solid var(--line);padding:28px 0}.module:first-of-type{border-top:0}
-.tag{display:inline-block;background:#fff3cd;border:1px solid #efd184;padding:5px 8px;border-radius:999px;font-size:11px;font-weight:800}
-.intro{background:#f8fafc;border:1px solid var(--line);padding:14px;border-radius:8px;line-height:1.5}
-.lab{margin-top:16px;border:1px solid var(--line);border-radius:10px;padding:18px;background:#fff}
-.scenario{background:#f8fafc;border:1px solid var(--line);border-radius:8px;padding:16px;margin-bottom:14px}
-.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{border:0;border-radius:6px;padding:10px 14px;background:var(--blue);color:#fff;font-weight:800;cursor:pointer}.btn.alt{background:#edf2f7;color:#24435f;border:1px solid #cfd9e5}.btn.good{background:#087443}.btn.bad{background:#b42318}
-.feedback{margin-top:12px;padding:12px;border-radius:7px;display:none}.feedback.good{display:block;background:#effaf3;border:1px solid #b7dfc8;color:#16623a}.feedback.bad{display:block;background:#fff0f0;border:1px solid #f0bcbc;color:#8f1d1d}
-.score{font-weight:800;margin-top:10px}.mono{font-family:Consolas,monospace;word-break:break-all}
-.cardgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.choice{border:1px solid var(--line);border-radius:8px;padding:14px;background:#fafcff;cursor:pointer}.choice:hover{border-color:#315fa8}
-.pwlab input,.compare input{width:100%;padding:12px;border:1px solid #cbd6e2;border-radius:7px;font:inherit}.pwbar{height:12px;background:#e8edf3;border-radius:999px;overflow:hidden;margin:12px 0}.pwfill{height:100%;width:0;background:#315fa8;transition:width .2s}.pwstats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.pwstat{background:#f8fafc;border:1px solid var(--line);border-radius:7px;padding:10px;text-align:center}.checklist{display:grid;gap:6px;margin-top:12px}.ok{color:var(--good)}.no{color:var(--bad)}.warnbox{background:#fff6df;border:1px solid #efd184;padding:12px 14px;border-radius:7px;margin-bottom:12px}.toolrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.toolbtn{border:0;border-radius:6px;background:#315fa8;color:#fff;padding:10px 13px;font-weight:700;cursor:pointer}.toolbtn.alt{background:#edf2f7;color:#24435f;border:1px solid #cfd9e5}.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}.resultbox{background:#f8fafc;border:1px solid var(--line);border-radius:7px;padding:12px;margin-top:12px}
-.back{display:inline-block;background:#315fa8;color:#fff;text-decoration:none;padding:10px 14px;border-radius:6px;font-weight:700}
-@media(max-width:800px){.cardgrid{grid-template-columns:1fr}.pwstats{grid-template-columns:1fr 1fr}.compare{grid-template-columns:1fr}}
-</style>
+<title>All Security Labs | Practical Security Learning Hub</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#244f91">
+<link rel="icon" href="/icons/security-lab.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icons/security-lab-180.png">
+<link rel="stylesheet" href="/labs.css">
+<script src="/lab-routing.js" defer></script>
 </head>
 <body>
-<div class="top">PRACTICAL CYBERSECURITY — SIX REAL-TIME AWARENESS LABS + PASSWORD CHECKER</div>
+<div class="top">PRACTICAL CYBERSECURITY — AUTHORIZED EDUCATIONAL SIMULATIONS ONLY</div>
 <main class="wrap">
-<h1>Real-Time Practical Security Labs</h1>
-<div class="intro"><b>Safe classroom mode:</b> All scenarios are fictional and defensive. No real accounts, real passwords, OTPs, real downloads, or real malicious content are used.</div>
-<p><a href="#ports">New: Port Scanning Simulation ↓</a></p>
-
-<section class="module" id="qr">
-<span class="tag">REAL-TIME LAB 1</span><h2>QR Phishing (Quishing)</h2>
-<p>Inspect the fictional QR destination shown below and decide whether it is safe or suspicious.</p>
-<div class="lab">
-<div class="scenario">
-<b>Scenario:</b> A poster says: “Scan to confirm your university account immediately.”<br><br>
-<b>QR destination:</b> <span class="mono" id="qrUrl">https://utas-login-check.example/verify</span>
+<header class="site-brand"><span class="brand-mark" aria-hidden="true"></span><div><a href="/">Practical Security Learning Hub</a><small>UTAS-Ibra · Learn. Practice. Stay Safe.</small></div></header>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">All labs</span></nav>
+<h1>Choose a Security Lab</h1>
+<p>Each activity opens on its own page. Choose a lab below to start learning.</p>
+<div class="intro"><b>Safe classroom mode:</b> All scenarios are fictional and defensive. Use invented/demo information only.</div>
+<p class="assessment-link"><a class="btn alt" href="/feedback.html">Before &amp; after knowledge + feedback preview</a></p>
+<div class="catalog-grid">
+<article class="catalog-card"><span class="tag">AWARENESS SIMULATION</span><h2>Phishing Attack Lab</h2><p>Follow the suspicious email, deceptive link, fake login, and instructor debrief.</p><a class="btn" href="/phishing.html">Open lab →</a></article>
+<article class="catalog-card"><span class="tag">AWARENESS SIMULATION</span><h2>QR Phishing Lab</h2><p>Inspect fictional QR destinations and decide whether each one is safe or suspicious.</p><a class="btn" href="/qr-phishing.html">Open lab →</a></article>
+<article class="catalog-card"><span class="tag">AWARENESS SIMULATION</span><h2>MFA Fatigue Lab</h2><p>Respond to fictional authentication prompts and practice denying and reporting unexpected requests.</p><a class="btn" href="/mfa-fatigue.html">Open lab →</a></article>
+<article class="catalog-card"><span class="tag">AWARENESS SIMULATION</span><h2>Fake Software Update Lab</h2><p>Compare update prompts and choose the trustworthy update channel.</p><a class="btn" href="/fake-update.html">Open lab →</a></article>
+<article class="catalog-card"><span class="tag">AWARENESS SIMULATION</span><h2>Browser Permission Lab</h2><p>Decide when browser permissions are appropriate for the activity you initiated.</p><a class="btn" href="/browser-permissions.html">Open lab →</a></article>
+<article class="catalog-card"><span class="tag">AWARENESS SIMULATION</span><h2>Suspicious URL Lab</h2><p>Identify the real domain, misleading subdomains, and deceptive login links.</p><a class="btn" href="/suspicious-url.html">Open lab →</a></article>
+<article class="catalog-card"><span class="tag">AWARENESS SIMULATION</span><h2>Port Scanning Lab</h2><p>Find your virtual IP and network, discover fictional hosts, and interpret simulated port replies.</p><a class="btn" href="/port-scanning.html">Open lab →</a></article>
+<article class="catalog-card"><span class="tag">PASSWORD CHECKER</span><h2>Password Strength Lab</h2><p>Test and compare invented passwords locally with live feedback and demo generators.</p><a class="btn" href="/password-strength.html">Open lab →</a></article>
 </div>
-<div class="actions"><button class="btn good" onclick="answerQR(false)">Safe</button><button class="btn bad" onclick="answerQR(true)">Suspicious</button><button class="btn alt" onclick="nextQR()">Next Scenario</button></div>
-<div id="qrFeedback" class="feedback"></div><div id="qrScore" class="score">Score: 0 / 0</div>
-</div>
-</section>
-
-<section class="module" id="mfa">
-<span class="tag">REAL-TIME LAB 2</span><h2>MFA Fatigue</h2>
-<p>Respond to unexpected fictional MFA prompts as they appear.</p>
-<div class="lab">
-<div class="scenario" id="mfaScenario"></div>
-<div class="actions"><button class="btn good" onclick="answerMFA('approve')">Approve</button><button class="btn bad" onclick="answerMFA('deny')">Deny</button><button class="btn alt" onclick="answerMFA('report')">Deny & Report</button></div>
-<div id="mfaFeedback" class="feedback"></div><div id="mfaScore" class="score">Score: 0 / 0</div>
-</div>
-</section>
-
-<section class="module" id="update">
-<span class="tag">REAL-TIME LAB 3</span><h2>Fake Software Update</h2>
-<p>Choose which fictional update prompt is safer.</p>
-<div class="lab">
-<div class="cardgrid">
-<div class="choice" onclick="answerUpdate(0)"><b>Prompt A</b><br><br>Browser popup: “CRITICAL UPDATE! Download <span class="mono">Flash_Update_2026.exe</span> now.”</div>
-<div class="choice" onclick="answerUpdate(1)"><b>Prompt B</b><br><br>Operating system Settings → Update page shows a normal signed system update.</div>
-<div class="choice" onclick="answerUpdate(2)"><b>Prompt C</b><br><br>Email attachment named <span class="mono">SecurityPatch.zip</span> from an unknown sender.</div>
-</div>
-<div id="updateFeedback" class="feedback"></div><div id="updateScore" class="score">Score: 0 / 0</div>
-</div>
-</section>
-
-<section class="module" id="browser">
-<span class="tag">REAL-TIME LAB 4</span><h2>Browser Permission Scam</h2>
-<p>Decide whether each fictional browser permission should be allowed or denied.</p>
-<div class="lab">
-<div class="scenario" id="permScenario"></div>
-<div class="actions"><button class="btn good" onclick="answerPerm('allow')">Allow</button><button class="btn bad" onclick="answerPerm('deny')">Deny</button><button class="btn alt" onclick="nextPerm()">Next Prompt</button></div>
-<div id="permFeedback" class="feedback"></div><div id="permScore" class="score">Score: 0 / 0</div>
-</div>
-</section>
-
-<section class="module" id="url">
-<span class="tag">REAL-TIME LAB 5</span><h2>Suspicious URL / Domain Inspection</h2>
-<p>Classify each fictional URL and focus on the real domain, not the page appearance.</p>
-<div class="lab">
-<div class="scenario"><b>URL:</b> <span class="mono" id="urlText"></span><br><br><b>Question:</b> Would you trust this link for a university login?</div>
-<div class="actions"><button class="btn good" onclick="answerURL(true)">Trust</button><button class="btn bad" onclick="answerURL(false)">Do Not Trust</button><button class="btn alt" onclick="nextURL()">Next URL</button></div>
-<div id="urlFeedback" class="feedback"></div><div id="urlScore" class="score">Score: 0 / 0</div>
-</div>
-</section>
-
-<section class="module port-module" id="ports" aria-labelledby="portTitle">
-<span class="tag">REAL-TIME LAB 6 · SIMULATION ONLY</span>
-<h2 id="portTitle">Port Scanning Simulation</h2>
-<p class="port-lead">Find my IP → Find my network IP → Scan. Discover your virtual lab network, choose a fictional host, and watch its simulated port replies arrive.</p>
-<div class="warnbox"><b>Safe by design:</b> This lab uses fictional targets and preset results entirely in your browser. It sends no scan traffic, runs no commands, and accepts no real IP addresses. Scan real systems only with the owner’s explicit permission.</div>
-<div class="port-workbench">
-  <div class="port-discovery">
-    <section class="port-step" aria-labelledby="portIpTitle">
-      <span class="port-step-number">STEP 1</span><h3 id="portIpTitle">Find my IP</h3>
-      <p>Reveal the address of your fictional learner computer. Your real device IP is never detected or collected.</p>
-      <button id="portFindIp" class="btn" type="button">Find my IP</button>
-      <div id="portIpOutput" class="port-address-box" hidden><span>VIRTUAL LEARNER IP</span><strong>192.0.2.50</strong><small>Subnet mask: 255.255.255.0 · /24</small></div>
-    </section>
-    <section class="port-step" aria-labelledby="portNetworkTitle">
-      <span class="port-step-number">STEP 2</span><h3 id="portNetworkTitle">Find my network IP</h3>
-      <p>Calculate the network address, then discover the two preset hosts in this simulated subnet.</p>
-      <div class="actions"><button id="portFindNetwork" class="btn" type="button" disabled>Find my network IP</button><button id="portCancelNetwork" class="btn alt" type="button" hidden>Cancel discovery</button></div>
-      <div id="portNetworkOutput" class="port-address-box" hidden><span>VIRTUAL NETWORK ADDRESS</span><strong>192.0.2.0/24</strong><small>Host range: 192.0.2.1–192.0.2.254<br>Broadcast: 192.0.2.255</small><details><summary>How is the network IP calculated?</summary><p>IP address AND subnet mask = network address. With mask 255.255.255.0, the first three octets stay the same and the last becomes 0:<br><code>192.0.2.50 AND 255.255.255.0 = 192.0.2.0</code><br>/24 means the first 24 bits identify the network. Devices in this lab share those bits.</p></details></div>
-    </section>
-  </div>
-  <p id="portNetworkStatus" class="port-network-status" role="status" aria-live="polite">Start with Find my IP to reveal your virtual lab address.</p>
-  <div id="portDiscoveredHosts" class="port-discovered-hosts" aria-label="Discovered fictional hosts"></div>
-  <div class="port-scan-step"><span class="port-step-number">STEP 3</span><h3>Scan a discovered host</h3><p id="portScanHint" class="port-note">Complete the two discovery steps to unlock the scan controls.</p></div>
-  <div class="port-controls">
-    <div><label for="portTarget">Choose a discovered target</label><select id="portTarget" disabled><option value="web">Campus web server · 192.0.2.10</option><option value="workstation">Staff workstation · 192.0.2.20</option></select></div>
-    <div><label for="portProfile">Choose ports</label><select id="portProfile" disabled><option value="common">Common services · 8 TCP ports</option><option value="web">Web services · TCP 80 and 443</option></select></div>
-    <div><label for="portSpeed">Playback speed</label><select id="portSpeed" disabled><option value="normal">Normal · about 1 second / port</option><option value="slow">Slow · about 2 seconds / port</option><option value="fast">Fast · about 0.4 seconds / port</option></select></div>
-  </div>
-  <p id="portTargetNote" class="port-note"></p>
-  <div class="port-command"><span>ILLUSTRATIVE COMMAND · NOT EXECUTED</span><code id="portCommand"></code></div>
-  <div class="actions port-actions"><button id="portStart" class="btn" type="button" disabled>Start simulated scan</button><button id="portCancel" class="btn alt" type="button" disabled>Cancel scan</button><button id="portReset" class="btn alt" type="button">Reset lab</button></div>
-  <div class="port-connection" id="portConnection" aria-hidden="true"><span>YOUR SIMULATED SCANNER</span><div class="port-wire"><i></i></div><span>FICTIONAL TARGET</span></div>
-  <div class="port-progress-label"><strong id="portStatus" role="status" aria-live="polite">Ready to scan</strong><span id="portProgressText">0 / 8 ports</span></div>
-  <progress id="portProgress" max="8" value="0" aria-label="Ports checked"></progress>
-  <div class="port-counters" aria-label="Scan totals"><div><b id="portOpenCount">0</b><span>Open</span></div><div><b id="portClosedCount">0</b><span>Closed</span></div><div><b id="portFilteredCount">0</b><span>Filtered</span></div></div>
-  <div class="port-output-grid">
-    <div class="port-results"><table><caption>Simulated TCP port results</caption><thead><tr><th scope="col">Port</th><th scope="col">Common service</th><th scope="col">State</th></tr></thead><tbody id="portRows"></tbody></table></div>
-    <div class="port-terminal"><div class="port-terminal-title"><span class="port-terminal-dot"></span> LIVE SIMULATION OUTPUT</div><pre id="portLog" aria-label="Simulated scan output" tabindex="0">Ready. Choose a target, then start the simulated scan.</pre></div>
-  </div>
-  <p class="port-note">Service names are common port conventions, not verified software. A real service can use a different port. Timing and responses here are simplified for learning.</p>
-</div>
-<div class="port-legend">
-  <div><span class="port-state open">Open</span><p>An application accepted the connection. A service is listening; this alone does not prove a vulnerability.</p></div>
-  <div><span class="port-state closed">Closed</span><p>The host replied but rejected the connection. No application is listening on that port in this scenario.</p></div>
-  <div><span class="port-state filtered">Filtered</span><p>The probe was blocked or received no usable reply. The scanner cannot tell whether the port is open or closed.</p></div>
-</div>
-<div class="port-challenge">
-  <h3>Read the evidence</h3><p id="portChallengeHint">Finish a scan to unlock three quick questions. Use the results above.</p>
-  <fieldset id="portQuestions" disabled><legend>Your findings</legend>
-    <label for="portAnswerCount">1. How many scanned ports are open?</label><select id="portAnswerCount"><option value="">Choose a count</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select>
-    <label for="portAnswerFiltered">2. What can you conclude about a filtered port?</label><select id="portAnswerFiltered"><option value="">Choose an interpretation</option><option value="closed">It is definitely closed</option><option value="unknown">Its open/closed state cannot be determined</option><option value="infected">The host is infected</option></select>
-    <label for="portAnswerRisk">3. What is the right next step after finding an open port?</label><select id="portAnswerRisk"><option value="">Choose a next step</option><option value="breach">Declare that the host has been breached</option><option value="review">Check whether the service is needed, restricted, and updated</option><option value="ignore">Ignore it because every open port is safe</option></select>
-    <button id="portCheck" class="btn" type="button">Check my findings</button>
-  </fieldset>
-  <div id="portFeedback" class="feedback" role="status" aria-live="polite"></div>
-  <div id="portDebrief" class="resultbox" hidden></div>
-</div>
-<p class="port-note"><b>Instructor prompt:</b> Compare the two targets. Which exposed services are expected? Why would a firewall make the same service appear different to different scanners?</p>
-</section>
-
-<section class="module" id="passwords">
-<span class="tag">PASSWORD CHECKER</span><h2>Password Strength — Interactive Lab</h2>
-<div class="pwlab">
-<div class="warnbox"><b>Important:</b> Do not type your real UTAS, email, banking, or personal password. Use an invented example only. This checker runs locally in your browser.</div>
-<label><b>Invented sample password</b></label>
-<input id="pwInput" type="password" autocomplete="new-password" placeholder="Type an invented sample password">
-<label style="display:flex;align-items:center;gap:8px;margin-top:10px;font-weight:400"><input id="showPw" type="checkbox" style="width:auto"> Show password while testing</label>
-<div class="pwbar"><div id="pwFill" class="pwfill"></div></div>
-<div class="pwstats">
-<div class="pwstat"><b id="pwStrength">—</b><br><small>Strength</small></div>
-<div class="pwstat"><b id="pwScore">0/5</b><br><small>Score</small></div>
-<div class="pwstat"><b id="pwLength">0</b><br><small>Length</small></div>
-<div class="pwstat"><b id="pwEntropy">0 bits</b><br><small>Estimated entropy</small></div>
-<div class="pwstat"><b id="pwCrack">—</b><br><small>Illustrative crack time</small></div>
-</div>
-<div class="checklist">
-<div id="cLen" class="no">✗ At least 12 characters</div>
-<div id="cUpper" class="no">✗ Contains uppercase letter</div>
-<div id="cLower" class="no">✗ Contains lowercase letter</div>
-<div id="cNum" class="no">✗ Contains number</div>
-<div id="cSym" class="no">✗ Contains symbol</div>
-<div id="cPattern" class="no">✗ Avoids common/simple patterns</div>
-</div>
-<div id="pwAdvice" class="resultbox"><b>Advice:</b> Start typing an invented password to see feedback.</div>
-<div class="toolrow"><button class="toolbtn" id="genPw" type="button">Generate Strong Demo Password</button><button class="toolbtn alt" id="genPhrase" type="button">Generate Demo Passphrase</button><button class="toolbtn alt" id="clearPw" type="button">Clear</button></div>
-<div id="generatedOut" class="resultbox mono" style="display:none"></div>
-<h3>Compare Two Invented Passwords</h3>
-<div class="compare"><div><label><b>Password A</b></label><input id="cmpA" type="password"></div><div><label><b>Password B</b></label><input id="cmpB" type="password"></div></div>
-<div class="toolrow"><button class="toolbtn" id="compareBtn" type="button">Compare</button></div>
-<div id="compareOut" class="resultbox">Enter two invented passwords and click Compare.</div>
-</div>
-</section>
-
-<a class="back" href="/">← Back to Practical Security Home</a>
+<nav class="lab-return" aria-label="Return navigation"><a class="btn" href="/">← Back to Home</a></nav>
 </main>
-
-<script>
-let qrIndex=0,qrCorrect=0,qrTotal=0;
-const qrCases=[
- {url:"https://utas-login-check.example/verify",suspicious:true,why:"The domain is not the official university domain and the message creates urgency."},
- {url:"https://student-portal.example.edu/announcements",suspicious:false,why:"In this fictional scenario, this is the expected official training domain and no credential request is made."},
- {url:"https://utas.account-security.example/reset",suspicious:true,why:"The important domain is account-security.example, not UTAS."}
-];
-function nextQR(){qrIndex=(qrIndex+1)%qrCases.length;document.getElementById("qrUrl").textContent=qrCases[qrIndex].url;document.getElementById("qrFeedback").className="feedback";}
-function answerQR(choice){qrTotal++;const c=qrCases[qrIndex];const ok=choice===c.suspicious;if(ok)qrCorrect++;const f=document.getElementById("qrFeedback");f.className="feedback "+(ok?"good":"bad");f.innerHTML=(ok?"Correct. ":"Not quite. ")+c.why;document.getElementById("qrScore").textContent="Score: "+qrCorrect+" / "+qrTotal;}
-
-let mfaIndex=0,mfaCorrect=0,mfaTotal=0;
-const mfaCases=[
- {text:"You are not logging in, but your phone suddenly shows an MFA approval request.",answer:"report",why:"Unexpected MFA prompts should be denied and reported."},
- {text:"You just entered your password into the official training portal and immediately receive one MFA prompt.",answer:"approve",why:"This prompt matches the action you just initiated."},
- {text:"You receive six MFA prompts in one minute while not using the account.",answer:"report",why:"Repeated unexpected prompts are a classic MFA-fatigue warning sign."}
-];
-function renderMFA(){document.getElementById("mfaScenario").innerHTML="<b>Prompt:</b> "+mfaCases[mfaIndex].text;}
-function answerMFA(a){mfaTotal++;const c=mfaCases[mfaIndex];const ok=a===c.answer;if(ok)mfaCorrect++;const f=document.getElementById("mfaFeedback");f.className="feedback "+(ok?"good":"bad");f.innerHTML=(ok?"Correct. ":"Incorrect. ")+c.why;document.getElementById("mfaScore").textContent="Score: "+mfaCorrect+" / "+mfaTotal;mfaIndex=(mfaIndex+1)%mfaCases.length;renderMFA();}
-
-let updateCorrect=0,updateTotal=0;
-function answerUpdate(i){updateTotal++;const ok=i===1;if(ok)updateCorrect++;const f=document.getElementById("updateFeedback");f.className="feedback "+(ok?"good":"bad");f.innerHTML=ok?"Correct. Use official operating-system or application update channels.":"Suspicious. Avoid unexpected executable downloads or email attachments presented as updates.";document.getElementById("updateScore").textContent="Score: "+updateCorrect+" / "+updateTotal;}
-
-let permIndex=0,permCorrect=0,permTotal=0;
-const permCases=[
- {text:"A news website asks for camera access immediately on page load.",answer:"deny",why:"Camera access is unrelated to reading news."},
- {text:"A video-conference page you intentionally opened asks for microphone access before joining.",answer:"allow",why:"Microphone access is expected for the activity you initiated."},
- {text:"A random page says 'Allow notifications to prove you are not a robot'.",answer:"deny",why:"That is a common deceptive permission pattern."}
-];
-function renderPerm(){document.getElementById("permScenario").innerHTML="<b>Prompt:</b> "+permCases[permIndex].text;}
-function nextPerm(){permIndex=(permIndex+1)%permCases.length;renderPerm();document.getElementById("permFeedback").className="feedback";}
-function answerPerm(a){permTotal++;const c=permCases[permIndex];const ok=a===c.answer;if(ok)permCorrect++;const f=document.getElementById("permFeedback");f.className="feedback "+(ok?"good":"bad");f.innerHTML=(ok?"Correct. ":"Incorrect. ")+c.why;document.getElementById("permScore").textContent="Score: "+permCorrect+" / "+permTotal;nextPerm();}
-
-let urlIndex=0,urlCorrect=0,urlTotal=0;
-const urlCases=[
- {url:"https://utas-portal.example-login.com/signin",trust:false,why:"The real domain is example-login.com; 'utas-portal' is only a subdomain."},
- {url:"https://portal.training-university.example/login",trust:true,why:"In this fictional lab, training-university.example is the expected domain."},
- {url:"https://university-secure.example/reset?continue=login",trust:false,why:"The domain does not match the expected training university domain."},
- {url:"https://training-university.example.security-check.com/",trust:false,why:"The real domain is security-check.com, not training-university.example."}
-];
-function renderURL(){document.getElementById("urlText").textContent=urlCases[urlIndex].url;}
-function nextURL(){urlIndex=(urlIndex+1)%urlCases.length;renderURL();document.getElementById("urlFeedback").className="feedback";}
-function answerURL(trust){urlTotal++;const c=urlCases[urlIndex];const ok=trust===c.trust;if(ok)urlCorrect++;const f=document.getElementById("urlFeedback");f.className="feedback "+(ok?"good":"bad");f.innerHTML=(ok?"Correct. ":"Incorrect. ")+c.why;document.getElementById("urlScore").textContent="Score: "+urlCorrect+" / "+urlTotal;nextURL();}
-
-const pw=document.getElementById("pwInput"),show=document.getElementById("showPw"),fill=document.getElementById("pwFill"),strengthEl=document.getElementById("pwStrength"),scoreEl=document.getElementById("pwScore"),lenEl=document.getElementById("pwLength"),entropyEl=document.getElementById("pwEntropy"),crackEl=document.getElementById("pwCrack"),advice=document.getElementById("pwAdvice");
-show.addEventListener("change",()=>pw.type=show.checked?"text":"password");
-function setCheck(id,ok,label){const e=document.getElementById(id);e.className=ok?"ok":"no";e.textContent=(ok?"✓ ":"✗ ")+label;}
-function commonPattern(s){const x=s.toLowerCase();const bad=["password","qwerty","123456","admin","welcome","letmein","abc123","111111","000000"];return bad.some(v=>x.includes(v))||/(.)\1\1/.test(x)||/1234|abcd|qwer/.test(x);}
-function scorePassword(s){const hasUpper=/[A-Z]/.test(s),hasLower=/[a-z]/.test(s),hasNum=/[0-9]/.test(s),hasSym=/[^A-Za-z0-9]/.test(s),long=s.length>=12,bad=commonPattern(s);let score=0;if(long)score++;if(hasUpper)score++;if(hasLower)score++;if(hasNum)score++;if(hasSym)score++;if(bad&&score>0)score--;let pool=0;if(hasLower)pool+=26;if(hasUpper)pool+=26;if(hasNum)pool+=10;if(hasSym)pool+=32;const entropy=(s.length&&pool)?Math.round(s.length*Math.log2(pool)):0;return{score:Math.max(0,score),entropy,hasUpper,hasLower,hasNum,hasSym,long,bad};}
-function crackTimeLabel(e){if(!e)return"—";const sec=Math.pow(2,e)/1e10;if(sec<1)return"<1 sec";if(sec<60)return Math.round(sec)+" sec";if(sec<3600)return Math.round(sec/60)+" min";if(sec<86400)return Math.round(sec/3600)+" hr";if(sec<31557600)return Math.round(sec/86400)+" days";const y=sec/31557600;if(y<1000)return Math.round(y)+" yrs";if(y<1e6)return Math.round(y/1000)+"k yrs";if(y<1e9)return Math.round(y/1e6)+"M yrs";return">1B yrs";}
-function analyze(){const s=pw.value,r=scorePassword(s),{score,entropy,hasUpper,hasLower,hasNum,hasSym,long,bad}=r;let label="Very Weak";if(score===2)label="Weak";if(score===3)label="Medium";if(score===4)label="Strong";if(score>=5&&!bad)label="Very Strong";if(!s)label="—";strengthEl.textContent=label;scoreEl.textContent=score+"/5";lenEl.textContent=s.length;entropyEl.textContent=entropy+" bits";crackEl.textContent=crackTimeLabel(entropy);fill.style.width=(score/5*100)+"%";setCheck("cLen",long,"At least 12 characters");setCheck("cUpper",hasUpper,"Contains uppercase letter");setCheck("cLower",hasLower,"Contains lowercase letter");setCheck("cNum",hasNum,"Contains number");setCheck("cSym",hasSym,"Contains symbol");setCheck("cPattern",!bad,"Avoids common/simple patterns");let tips=[];if(!long)tips.push("make it longer");if(!hasUpper)tips.push("add uppercase");if(!hasLower)tips.push("add lowercase");if(!hasNum)tips.push("add a number");if(!hasSym)tips.push("add a symbol");if(bad)tips.push("avoid common words or sequences");advice.innerHTML="<b>Advice:</b> "+(s?(tips.length?tips.join(", ")+".":"Good structure for a demo password. In real life, prefer a long unique password stored in a password manager."):"Start typing an invented password to see feedback.");}
-pw.addEventListener("input",analyze);
-document.getElementById("clearPw").onclick=()=>{pw.value="";show.checked=false;pw.type="password";analyze();document.getElementById("generatedOut").style.display="none";};
-document.getElementById("genPw").onclick=()=>{const U="ABCDEFGHJKLMNPQRSTUVWXYZ",L="abcdefghijkmnopqrstuvwxyz",N="23456789",S="!@#$%^&*_-+=",A=U+L+N+S;let out=U[Math.floor(Math.random()*U.length)]+L[Math.floor(Math.random()*L.length)]+N[Math.floor(Math.random()*N.length)]+S[Math.floor(Math.random()*S.length)];while(out.length<16)out+=A[Math.floor(Math.random()*A.length)];const box=document.getElementById("generatedOut");box.style.display="block";box.textContent="Generated demo password: "+out;};
-document.getElementById("genPhrase").onclick=()=>{const W=["Blue","Falcon","Palm","Shield","Desert","Harbor","Cloud","Cedar","Oasis","Quartz","River","Star"];let x=[];while(x.length<4){const w=W[Math.floor(Math.random()*W.length)];if(!x.includes(w))x.push(w);}const box=document.getElementById("generatedOut");box.style.display="block";box.textContent="Generated demo passphrase: "+x.join("-")+"-"+(10+Math.floor(Math.random()*90))+"!";};
-document.getElementById("compareBtn").onclick=()=>{const a=document.getElementById("cmpA").value,b=document.getElementById("cmpB").value,o=document.getElementById("compareOut");if(!a||!b){o.textContent="Enter both invented passwords first.";return;}const ra=scorePassword(a),rb=scorePassword(b);let v="Both are similar.";if(ra.entropy>rb.entropy+5)v="Password A is stronger by this local estimate.";else if(rb.entropy>ra.entropy+5)v="Password B is stronger by this local estimate.";o.innerHTML="<b>Password A:</b> "+ra.score+"/5, "+ra.entropy+" bits, "+crackTimeLabel(ra.entropy)+"<br><b>Password B:</b> "+rb.score+"/5, "+rb.entropy+" bits, "+crackTimeLabel(rb.entropy)+"<br><b>Result:</b> "+v;};
-renderMFA();renderPerm();renderURL();
-</script>
-<script src="/port-scanning.js" defer></script>
+<footer class="site-footer">Powered by : <span>Dr. Ramesh Palanisamy, Professor, UTAS-Ibra</span></footer>
 </body>
 </html>

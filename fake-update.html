@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fake Software Update Lab | Practical Security Learning Hub</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#244f91">
+<link rel="icon" href="/icons/security-lab.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icons/security-lab-180.png">
+<link rel="stylesheet" href="/labs.css">
+<script src="/awareness-labs.js" defer></script>
+</head>
+<body>
+<div class="top">PRACTICAL CYBERSECURITY — AUTHORIZED EDUCATIONAL SIMULATIONS ONLY</div>
+<main class="wrap">
+<header class="site-brand"><span class="brand-mark" aria-hidden="true"></span><div><a href="/">Practical Security Learning Hub</a><small>UTAS-Ibra · Learn. Practice. Stay Safe.</small></div></header>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/labs.html">All labs</a><span aria-hidden="true">/</span><span aria-current="page">Fake Software Update Lab</span></nav>
+<div class="intro"><b>Safe classroom mode:</b> All scenarios are fictional and defensive. Use invented/demo information only. No real credentials, OTPs, downloads, or scan traffic.</div>
+<details class="lab-switcher"><summary>Switch lab</summary><nav class="lab-links" aria-label="Security labs"><a href="/phishing.html">Phishing Attack Lab</a>
+<a href="/qr-phishing.html">QR Phishing Lab</a>
+<a href="/mfa-fatigue.html">MFA Fatigue Lab</a>
+<a href="/fake-update.html" aria-current="page">Fake Software Update Lab</a>
+<a href="/browser-permissions.html">Browser Permission Lab</a>
+<a href="/suspicious-url.html">Suspicious URL Lab</a>
+<a href="/port-scanning.html">Port Scanning Lab</a>
+<a href="/password-strength.html">Password Strength Lab</a></nav></details>
+<section class="module" id="update">
+<span class="tag">REAL-TIME LAB 3</span><h1>Fake Software Update</h1>
+<p>Choose which fictional update prompt is safer.</p>
+<div class="lab">
+<div class="cardgrid">
+<button class="choice" type="button" data-answer="0"><b>Prompt A</b><br><br>Browser popup: “CRITICAL UPDATE! Download <span class="mono">Flash_Update_2026.exe</span> now.”</button>
+<button class="choice" type="button" data-answer="1"><b>Prompt B</b><br><br>Operating system Settings → Update page shows a normal signed system update.</button>
+<button class="choice" type="button" data-answer="2"><b>Prompt C</b><br><br>Email attachment named <span class="mono">SecurityPatch.zip</span> from an unknown sender.</button>
+</div>
+<div class="actions"><button class="btn alt" type="button" data-retry>Try again</button></div>
+<div id="updateFeedback" class="feedback" role="status" aria-live="polite"></div><div id="updateScore" class="score">Score: 0 / 0</div>
+</div>
+</section>
+<nav class="lab-return" aria-label="Return navigation"><a class="btn" href="/">← Back to Home</a><a class="btn alt" href="/labs.html">View all labs</a></nav>
+</main>
+<footer class="site-footer">Powered by : <span>Dr. Ramesh Palanisamy, Professor, UTAS-Ibra</span></footer>
+</body>
+</html>

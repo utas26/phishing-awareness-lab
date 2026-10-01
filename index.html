@@ -22,6 +22,12 @@ h1{margin:0;color:var(--blue)}.sub{color:#6b7890;margin-top:5px}
 .site-footer{background:#183b6f;color:#fff;padding:16px 24px;text-align:center;font-weight:700;margin-top:26px}.site-footer span{color:#f4b332}@media(max-width:900px){.app{grid-template-columns:1fr}.side{height:auto;position:static}.grid{grid-template-columns:1fr 1fr}.hero-grid{grid-template-columns:1fr}.hero-art{min-height:0}}
 @media(max-width:600px){.grid{grid-template-columns:1fr}.main{padding:16px}}
 </style>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#244f91">
+<link rel="icon" href="/icons/security-lab.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icons/security-lab-180.png">
+<link rel="stylesheet" href="/install.css">
+<script src="/install.js" defer></script>
 </head>
 <body>
 <div class="top">PRACTICAL CYBERSECURITY — AUTHORIZED EDUCATIONAL SIMULATIONS ONLY</div>
@@ -31,14 +37,15 @@ h1{margin:0;color:var(--blue)}.sub{color:#6b7890;margin-top:5px}
 <p>Safe, instructor-led cybersecurity awareness and defensive learning activities.</p>
 <nav class="nav">
 <a href="/">Home</a>
+<a href="/labs.html">All Labs</a>
 <a href="/phishing.html">Phishing Attack</a>
-<a href="/labs.html#qr">QR Phishing Lab</a>
-<a href="/labs.html#mfa">MFA Fatigue Lab</a>
-<a href="/labs.html#update">Fake Update Lab</a>
-<a href="/labs.html#browser">Browser Permission Lab</a>
-<a href="/labs.html#url">Suspicious URL Lab</a>
-<a href="/labs.html#ports">Port Scanning Lab</a>
-<a href="/labs.html#passwords">Password Strength</a>
+<a href="/qr-phishing.html">QR Phishing Lab</a>
+<a href="/mfa-fatigue.html">MFA Fatigue Lab</a>
+<a href="/fake-update.html">Fake Update Lab</a>
+<a href="/browser-permissions.html">Browser Permission Lab</a>
+<a href="/suspicious-url.html">Suspicious URL Lab</a>
+<a href="/port-scanning.html">Port Scanning Lab</a>
+<a href="/password-strength.html">Password Strength</a>
 <a href="/resources.html">Learning & Feedback</a>
 <a href="/admin.html">Instructor Dashboard</a>
 </nav>
@@ -61,20 +68,44 @@ h1{margin:0;color:var(--blue)}.sub{color:#6b7890;margin-top:5px}
 <h2>Practical Attack Awareness Labs</h2>
 <div class="grid">
 <div class="card"><h3>Phishing Attack</h3><p>Suspicious email → deceptive link → fake login → instructor debrief.</p><a class="btn" href="/phishing.html">Open Real-Time Lab</a></div>
-<div class="card"><h3>QR Phishing Lab</h3><p>Inspect fictional QR destinations and decide whether each one is safe or suspicious.</p><a class="btn alt" href="/labs.html#qr">Open Real-Time Lab</a></div>
-<div class="card"><h3>MFA Fatigue Lab</h3><p>Respond to repeated fictional authentication prompts and practice the correct action.</p><a class="btn alt" href="/labs.html#mfa">Open Real-Time Lab</a></div>
-<div class="card"><h3>Fake Software Update Lab</h3><p>Compare update prompts and identify which one should be trusted or rejected.</p><a class="btn alt" href="/labs.html#update">Open Real-Time Lab</a></div>
-<div class="card"><h3>Browser Permission Lab</h3><p>Practice deciding when camera, microphone, notification, and download permissions are appropriate.</p><a class="btn alt" href="/labs.html#browser">Open Real-Time Lab</a></div>
-<div class="card"><h3>Suspicious URL Lab</h3><p>Classify fictional URLs and learn to identify the real domain, typos, and misleading subdomains.</p><a class="btn alt" href="/labs.html#url">Open Real-Time Lab</a></div>
-<div class="card"><h3>Port Scanning Lab</h3><p>Watch a simulated scan reveal open, closed, and filtered ports, then interpret the results.</p><a class="btn alt" href="/labs.html#ports">Open Port Scanning Lab</a></div>
-<div class="card"><h3>Password Strength</h3><p>Test invented passwords locally with live strength, entropy, comparison, and advice.</p><a class="btn alt" href="/labs.html#passwords">Open Password Checker</a></div>
+<div class="card"><h3>QR Phishing Lab</h3><p>Inspect fictional QR destinations and decide whether each one is safe or suspicious.</p><a class="btn alt" href="/qr-phishing.html">Open Real-Time Lab</a></div>
+<div class="card"><h3>MFA Fatigue Lab</h3><p>Respond to repeated fictional authentication prompts and practice the correct action.</p><a class="btn alt" href="/mfa-fatigue.html">Open Real-Time Lab</a></div>
+<div class="card"><h3>Fake Software Update Lab</h3><p>Compare update prompts and identify which one should be trusted or rejected.</p><a class="btn alt" href="/fake-update.html">Open Real-Time Lab</a></div>
+<div class="card"><h3>Browser Permission Lab</h3><p>Practice deciding when camera, microphone, notification, and download permissions are appropriate.</p><a class="btn alt" href="/browser-permissions.html">Open Real-Time Lab</a></div>
+<div class="card"><h3>Suspicious URL Lab</h3><p>Classify fictional URLs and learn to identify the real domain, typos, and misleading subdomains.</p><a class="btn alt" href="/suspicious-url.html">Open Real-Time Lab</a></div>
+<div class="card"><h3>Port Scanning Lab</h3><p>Watch a simulated scan reveal open, closed, and filtered ports, then interpret the results.</p><a class="btn alt" href="/port-scanning.html">Open Port Scanning Lab</a></div>
+<div class="card"><h3>Password Strength</h3><p>Test invented passwords locally with live strength, entropy, comparison, and advice.</p><a class="btn alt" href="/password-strength.html">Open Password Checker</a></div>
 </div>
 </section>
+
+<section class="install-card" aria-labelledby="install-heading">
+  <img class="install-icon" src="/icons/security-lab-192.png" width="68" height="68" alt="">
+  <div class="install-copy">
+    <h2 id="install-heading">Keep your learning hub one click away</h2>
+    <p>Add Security Lab to your computer or phone with its own app icon. Internet connection required.</p>
+    <p id="install-status" class="install-status" role="status" aria-live="polite">Install with your browser, or view the steps for your device.</p>
+  </div>
+  <button id="install-app" class="install-action" type="button" aria-describedby="install-status">Install App</button>
+  <noscript><p>Use your browser’s menu to install this page as an app.</p></noscript>
+</section>
+<dialog id="install-help" class="install-dialog" aria-labelledby="install-help-heading">
+  <h2 id="install-help-heading">Add Security Lab to your device</h2>
+  <p>Your browser manages installation and asks you to confirm. If an install prompt is available, close this guide and choose <strong>Install App</strong> again.</p>
+  <ul>
+    <li><strong>Chrome on a computer:</strong> Open the ⋮ menu, then <strong>Cast, save, and share → Install page as app</strong>. You may also see an install icon beside the address bar.</li>
+    <li><strong>Microsoft Edge:</strong> Open the ⋯ menu, then <strong>More tools → Apps → Install this site as an app</strong> (some versions show Apps directly). After installation, Edge may offer a desktop shortcut or taskbar pin.</li>
+    <li><strong>Safari on Mac:</strong> On macOS Sonoma 14 or later, choose <strong>File → Add to Dock</strong>.</li>
+    <li><strong>Phone or tablet:</strong> Look for <strong>Install app</strong> or <strong>Add to Home Screen</strong> in your browser’s menu or Share menu.</li>
+  </ul>
+  <p class="install-note">Menu names and icon placement vary by browser and device. If installation is unavailable, bookmark this page or open it in Chrome or Edge. If already installed, look for Security Lab in your device’s apps.</p>
+  <p>All labs still need an internet connection. Installing does not download student records or add special device permissions.</p>
+  <button id="install-help-close" class="install-close" type="button" autofocus>Got it</button>
+</dialog>
 
 <section class="section">
 <h2>Quick Access</h2>
 <div class="quick">
-<a class="btn" href="/feedback.html">Student Feedback</a>
+<a class="btn" href="/feedback.html">Before &amp; After Knowledge + Feedback</a>
 <a class="btn alt" href="/resources.html">Learning Resources</a>
 <a class="btn alt" href="/admin.html">Instructor Dashboard</a>
 </div>

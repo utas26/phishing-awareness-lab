@@ -2,6 +2,7 @@
 (() => {
   'use strict';
   const byId = id => document.getElementById(id);
+  if (!byId('portTarget')) return;
   const ports = [
     { number: 21, service: 'FTP' }, { number: 22, service: 'SSH' },
     { number: 25, service: 'SMTP' }, { number: 53, service: 'DNS' },

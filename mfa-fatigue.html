@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MFA Fatigue Lab | Practical Security Learning Hub</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#244f91">
+<link rel="icon" href="/icons/security-lab.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icons/security-lab-180.png">
+<link rel="stylesheet" href="/labs.css">
+<script src="/awareness-labs.js" defer></script>
+</head>
+<body>
+<div class="top">PRACTICAL CYBERSECURITY — AUTHORIZED EDUCATIONAL SIMULATIONS ONLY</div>
+<main class="wrap">
+<header class="site-brand"><span class="brand-mark" aria-hidden="true"></span><div><a href="/">Practical Security Learning Hub</a><small>UTAS-Ibra · Learn. Practice. Stay Safe.</small></div></header>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/labs.html">All labs</a><span aria-hidden="true">/</span><span aria-current="page">MFA Fatigue Lab</span></nav>
+<div class="intro"><b>Safe classroom mode:</b> All scenarios are fictional and defensive. Use invented/demo information only. No real credentials, OTPs, downloads, or scan traffic.</div>
+<details class="lab-switcher"><summary>Switch lab</summary><nav class="lab-links" aria-label="Security labs"><a href="/phishing.html">Phishing Attack Lab</a>
+<a href="/qr-phishing.html">QR Phishing Lab</a>
+<a href="/mfa-fatigue.html" aria-current="page">MFA Fatigue Lab</a>
+<a href="/fake-update.html">Fake Software Update Lab</a>
+<a href="/browser-permissions.html">Browser Permission Lab</a>
+<a href="/suspicious-url.html">Suspicious URL Lab</a>
+<a href="/port-scanning.html">Port Scanning Lab</a>
+<a href="/password-strength.html">Password Strength Lab</a></nav></details>
+<section class="module" id="mfa">
+<span class="tag">REAL-TIME LAB 2</span><h1>MFA Fatigue</h1>
+<p>Respond to unexpected fictional MFA prompts as they appear.</p>
+<div class="lab">
+<div class="scenario" id="mfaScenario"></div>
+<div class="actions"><button class="btn good" data-answer="approve">Approve</button><button class="btn bad" data-answer="deny">Deny</button><button class="btn alt" data-answer="report">Deny &amp; Report</button><button class="btn alt" type="button" data-next>Next Prompt</button></div>
+<div id="mfaFeedback" class="feedback" role="status" aria-live="polite"></div><div id="mfaScore" class="score">Score: 0 / 0</div>
+</div>
+</section>
+<nav class="lab-return" aria-label="Return navigation"><a class="btn" href="/">← Back to Home</a><a class="btn alt" href="/labs.html">View all labs</a></nav>
+</main>
+<footer class="site-footer">Powered by : <span>Dr. Ramesh Palanisamy, Professor, UTAS-Ibra</span></footer>
+</body>
+</html>

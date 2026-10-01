@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Security Lab shield and lock</title>
+  <rect width="512" height="512" rx="96" fill="#244f91"/>
+  <path d="M256 94 383 142v108c0 85-55 143-127 169-72-26-127-84-127-169V142Z" fill="#f4b332"/>
+  <path d="M256 125 355 162v88c0 67-41 115-99 140-58-25-99-73-99-140v-88Z" fill="#315fa8"/>
+  <path d="M217 235v-28a39 39 0 0 1 78 0v28" fill="none" stroke="#fff" stroke-width="19" stroke-linecap="round"/>
+  <rect x="199" y="226" width="114" height="94" rx="17" fill="#fff"/>
+  <circle cx="256" cy="264" r="12" fill="#244f91"/>
+  <path d="M256 272v20" stroke="#244f91" stroke-width="11" stroke-linecap="round"/>
+</svg>

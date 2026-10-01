@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Port Scanning Lab | Practical Security Learning Hub</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#244f91">
+<link rel="icon" href="/icons/security-lab.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icons/security-lab-180.png">
+<link rel="stylesheet" href="/labs.css">
+<link rel="stylesheet" href="/port-scanning.css">
+<script src="/port-scanning.js" defer></script>
+</head>
+<body>
+<div class="top">PRACTICAL CYBERSECURITY — AUTHORIZED EDUCATIONAL SIMULATIONS ONLY</div>
+<main class="wrap">
+<header class="site-brand"><span class="brand-mark" aria-hidden="true"></span><div><a href="/">Practical Security Learning Hub</a><small>UTAS-Ibra · Learn. Practice. Stay Safe.</small></div></header>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/labs.html">All labs</a><span aria-hidden="true">/</span><span aria-current="page">Port Scanning Lab</span></nav>
+<div class="intro"><b>Safe classroom mode:</b> All scenarios are fictional and defensive. Use invented/demo information only. No real credentials, OTPs, downloads, or scan traffic.</div>
+<details class="lab-switcher"><summary>Switch lab</summary><nav class="lab-links" aria-label="Security labs"><a href="/phishing.html">Phishing Attack Lab</a>
+<a href="/qr-phishing.html">QR Phishing Lab</a>
+<a href="/mfa-fatigue.html">MFA Fatigue Lab</a>
+<a href="/fake-update.html">Fake Software Update Lab</a>
+<a href="/browser-permissions.html">Browser Permission Lab</a>
+<a href="/suspicious-url.html">Suspicious URL Lab</a>
+<a href="/port-scanning.html" aria-current="page">Port Scanning Lab</a>
+<a href="/password-strength.html">Password Strength Lab</a></nav></details>
+<section class="module port-module" id="ports" aria-labelledby="portTitle">
+<span class="tag">REAL-TIME LAB 6 · SIMULATION ONLY</span>
+<h1 id="portTitle">Port Scanning Simulation</h1>
+<p class="port-lead">Find my IP → Find my network IP → Scan. Discover your virtual lab network, choose a fictional host, and watch its simulated port replies arrive.</p>
+<div class="warnbox"><b>Safe by design:</b> This lab uses fictional targets and preset results entirely in your browser. It sends no scan traffic, runs no commands, and accepts no real IP addresses. Scan real systems only with the owner’s explicit permission.</div>
+<div class="port-workbench">
+  <div class="port-discovery">
+    <section class="port-step" aria-labelledby="portIpTitle">
+      <span class="port-step-number">STEP 1</span><h3 id="portIpTitle">Find my IP</h3>
+      <p>Reveal the address of your fictional learner computer. Your real device IP is never detected or collected.</p>
+      <button id="portFindIp" class="btn" type="button">Find my IP</button>
+      <div id="portIpOutput" class="port-address-box" hidden><span>VIRTUAL LEARNER IP</span><strong>192.0.2.50</strong><small>Subnet mask: 255.255.255.0 · /24</small></div>
+    </section>
+    <section class="port-step" aria-labelledby="portNetworkTitle">
+      <span class="port-step-number">STEP 2</span><h3 id="portNetworkTitle">Find my network IP</h3>
+      <p>Calculate the network address, then discover the two preset hosts in this simulated subnet.</p>
+      <div class="actions"><button id="portFindNetwork" class="btn" type="button" disabled>Find my network IP</button><button id="portCancelNetwork" class="btn alt" type="button" hidden>Cancel discovery</button></div>
+      <div id="portNetworkOutput" class="port-address-box" hidden><span>VIRTUAL NETWORK ADDRESS</span><strong>192.0.2.0/24</strong><small>Host range: 192.0.2.1–192.0.2.254<br>Broadcast: 192.0.2.255</small><details><summary>How is the network IP calculated?</summary><p>IP address AND subnet mask = network address. With mask 255.255.255.0, the first three octets stay the same and the last becomes 0:<br><code>192.0.2.50 AND 255.255.255.0 = 192.0.2.0</code><br>/24 means the first 24 bits identify the network. Devices in this lab share those bits.</p></details></div>
+    </section>
+  </div>
+  <p id="portNetworkStatus" class="port-network-status" role="status" aria-live="polite">Start with Find my IP to reveal your virtual lab address.</p>
+  <div id="portDiscoveredHosts" class="port-discovered-hosts" aria-label="Discovered fictional hosts"></div>
+  <div class="port-scan-step"><span class="port-step-number">STEP 3</span><h3>Scan a discovered host</h3><p id="portScanHint" class="port-note">Complete the two discovery steps to unlock the scan controls.</p></div>
+  <div class="port-controls">
+    <div><label for="portTarget">Choose a discovered target</label><select id="portTarget" disabled><option value="web">Campus web server · 192.0.2.10</option><option value="workstation">Staff workstation · 192.0.2.20</option></select></div>
+    <div><label for="portProfile">Choose ports</label><select id="portProfile" disabled><option value="common">Common services · 8 TCP ports</option><option value="web">Web services · TCP 80 and 443</option></select></div>
+    <div><label for="portSpeed">Playback speed</label><select id="portSpeed" disabled><option value="normal">Normal · about 1 second / port</option><option value="slow">Slow · about 2 seconds / port</option><option value="fast">Fast · about 0.4 seconds / port</option></select></div>
+  </div>
+  <p id="portTargetNote" class="port-note"></p>
+  <div class="port-command"><span>ILLUSTRATIVE COMMAND · NOT EXECUTED</span><code id="portCommand"></code></div>
+  <div class="actions port-actions"><button id="portStart" class="btn" type="button" disabled>Start simulated scan</button><button id="portCancel" class="btn alt" type="button" disabled>Cancel scan</button><button id="portReset" class="btn alt" type="button">Reset lab</button></div>
+  <div class="port-connection" id="portConnection" aria-hidden="true"><span>YOUR SIMULATED SCANNER</span><div class="port-wire"><i></i></div><span>FICTIONAL TARGET</span></div>
+  <div class="port-progress-label"><strong id="portStatus" role="status" aria-live="polite">Ready to scan</strong><span id="portProgressText">0 / 8 ports</span></div>
+  <progress id="portProgress" max="8" value="0" aria-label="Ports checked"></progress>
+  <div class="port-counters" aria-label="Scan totals"><div><b id="portOpenCount">0</b><span>Open</span></div><div><b id="portClosedCount">0</b><span>Closed</span></div><div><b id="portFilteredCount">0</b><span>Filtered</span></div></div>
+  <div class="port-output-grid">
+    <div class="port-results"><table><caption>Simulated TCP port results</caption><thead><tr><th scope="col">Port</th><th scope="col">Common service</th><th scope="col">State</th></tr></thead><tbody id="portRows"></tbody></table></div>
+    <div class="port-terminal"><div class="port-terminal-title"><span class="port-terminal-dot"></span> LIVE SIMULATION OUTPUT</div><pre id="portLog" aria-label="Simulated scan output" tabindex="0">Ready. Choose a target, then start the simulated scan.</pre></div>
+  </div>
+  <p class="port-note">Service names are common port conventions, not verified software. A real service can use a different port. Timing and responses here are simplified for learning.</p>
+</div>
+<div class="port-legend">
+  <div><span class="port-state open">Open</span><p>An application accepted the connection. A service is listening; this alone does not prove a vulnerability.</p></div>
+  <div><span class="port-state closed">Closed</span><p>The host replied but rejected the connection. No application is listening on that port in this scenario.</p></div>
+  <div><span class="port-state filtered">Filtered</span><p>The probe was blocked or received no usable reply. The scanner cannot tell whether the port is open or closed.</p></div>
+</div>
+<div class="port-challenge">
+  <h3>Read the evidence</h3><p id="portChallengeHint">Finish a scan to unlock three quick questions. Use the results above.</p>
+  <fieldset id="portQuestions" disabled><legend>Your findings</legend>
+    <label for="portAnswerCount">1. How many scanned ports are open?</label><select id="portAnswerCount"><option value="">Choose a count</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select>
+    <label for="portAnswerFiltered">2. What can you conclude about a filtered port?</label><select id="portAnswerFiltered"><option value="">Choose an interpretation</option><option value="closed">It is definitely closed</option><option value="unknown">Its open/closed state cannot be determined</option><option value="infected">The host is infected</option></select>
+    <label for="portAnswerRisk">3. What is the right next step after finding an open port?</label><select id="portAnswerRisk"><option value="">Choose a next step</option><option value="breach">Declare that the host has been breached</option><option value="review">Check whether the service is needed, restricted, and updated</option><option value="ignore">Ignore it because every open port is safe</option></select>
+    <button id="portCheck" class="btn" type="button">Check my findings</button>
+  </fieldset>
+  <div id="portFeedback" class="feedback" role="status" aria-live="polite"></div>
+  <div id="portDebrief" class="resultbox" hidden></div>
+</div>
+<p class="port-note"><b>Instructor prompt:</b> Compare the two targets. Which exposed services are expected? Why would a firewall make the same service appear different to different scanners?</p>
+</section>
+<nav class="lab-return" aria-label="Return navigation"><a class="btn" href="/">← Back to Home</a><a class="btn alt" href="/labs.html">View all labs</a></nav>
+</main>
+<footer class="site-footer">Powered by : <span>Dr. Ramesh Palanisamy, Professor, UTAS-Ibra</span></footer>
+</body>
+</html>

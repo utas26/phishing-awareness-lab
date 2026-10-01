@@ -1,97 +1,69 @@
 <!doctype html>
-<html lang="en">
-<head>
+<html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Student Feedback — Practical Cybersecurity Teaching</title>
-<style>
-:root{--blue:#315fa8;--orange:#f4b332;--line:#d8e1eb;--ink:#26364f}
-*{box-sizing:border-box}
-body{margin:0;min-height:100vh;background:#2f61a6;font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
-.top{background:#8b1e1e;color:white;text-align:center;padding:9px 14px;font-weight:800}
-.admin{position:fixed;top:52px;right:20px;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#fff;color:var(--blue);text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.2)}
-.wrap{max-width:980px;margin:30px auto 45px;background:#fff;border-radius:6px;padding:28px 34px;box-shadow:0 18px 55px rgba(0,0,0,.2)}
-.brand{display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--line);padding-bottom:16px}
-.mark{width:58px;height:58px;border-radius:14px 29px 14px 29px;background:linear-gradient(145deg,#f5a21b 0 48%,#3156a6 48% 100%)}
-h1{margin:0;color:#3156a6}.intro{background:#f7f9fc;border:1px solid var(--line);padding:14px;border-radius:7px;margin:18px 0}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.full{grid-column:1/-1}
-label{font-weight:700;display:block;margin:0 0 6px}input,select,textarea{width:100%;padding:10px;border:1px solid #cbd6e2;border-radius:6px;font:inherit}textarea{min-height:90px}
-.q{border-top:1px solid #e6ebf1;padding:14px 0}.q p{margin:0 0 8px;font-weight:700}.scale{display:flex;gap:12px;flex-wrap:wrap}.scale label{font-weight:400}
-button{background:#315fa8;color:#fff;border:0;border-radius:6px;padding:12px 18px;font-weight:800;cursor:pointer}.msg{margin-top:14px;padding:12px;border-radius:6px;display:none}
-.note{font-size:12px;color:#66758a;margin-top:14px}
-@media(max-width:650px){.wrap{margin:0;border-radius:0;padding:22px 16px}.grid{grid-template-columns:1fr}.full{grid-column:auto}}
-</style>
-</head>
-<body>
-<div class="top">STUDENT FEEDBACK — PRACTICAL CYBERSECURITY TEACHING STUDY</div>
-<a class="admin" href="/admin.html" title="Instructor Dashboard">⚙</a>
-<main class="wrap">
-<div class="brand"><div class="mark"></div><div><h1>UTAS-Ibra Student Feedback</h1><div>Comparing theory-only and practical real-time cybersecurity teaching</div></div></div>
-
-<div class="intro">
-<b>Research purpose:</b> This survey gathers student feedback about practical, real-time cybersecurity teaching compared with theory-based teaching. Participation should be voluntary. Your responses should be used only for the stated educational/research purpose and handled according to your institution's research-ethics requirements.
+<title>UTAS-Ibra Student Feedback | Draft Preview</title>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#244f91">
+<link rel="icon" href="/icons/security-lab.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icons/security-lab-180.png">
+<link rel="stylesheet" href="/assessment.css"><script src="/assessment-items.js" defer></script><script src="/assessment.js" defer></script>
+</head><body>
+<div class="research-top">CYBERSECURITY LEARNING • DRAFT QUESTIONNAIRE PREVIEW</div>
+<main class="research-wrap">
+<header class="research-header">
+<nav class="research-nav" aria-label="Page navigation"><a href="/">← Home</a><a href="/labs.html">Explore all labs</a></nav>
+<h1>UTAS-Ibra Student Feedback</h1>
+<p>Compare understanding before and after the labs, then review satisfaction with the learning experience.</p>
+<span class="draft-badge">Original draft · Not a validated research instrument</span>
+<p class="draft-warning"><strong>Draft instrument, responses not submitted.</strong> This preview is not research enrollment. Use demo responses only. Do not enter names, student IDs, email addresses, passwords, or other identifying information.</p>
+<p class="privacy-note">Demo responses stay in this browser tab for this session so you can visit the labs and return. Closing the tab may lose them. Nothing from this questionnaire is sent to the feedback server. Normal website hosting logs may still exist; this is not a promise of anonymity.</p>
+<p id="demo-reference" class="privacy-note"></p>
+<div class="assessment-actions"><button id="reset-assessment" class="assessment-btn secondary" type="button">Clear demo responses and start again</button></div>
+<div id="storage-message" class="assessment-message" role="status" aria-live="polite"></div>
+</header>
+<div class="assessment-steps" aria-label="Preview steps">
+<div class="assessment-step"><strong>1. Before the lab</strong>Rate understanding and answer 10 knowledge questions</div>
+<div class="assessment-step"><strong>2. Explore the labs</strong>Complete the activities you want to evaluate</div>
+<div class="assessment-step"><strong>3. After the lab</strong>Repeat the check and give satisfaction feedback</div>
 </div>
-
-<form id="survey">
-<div class="grid">
-<div><label>Student Name</label><input name="name" required></div>
-<div><label>Student ID</label><input name="studentId" required></div>
-<div><label>Class / Section</label><input name="className" required></div>
-<div><label>Level</label><input name="level" required placeholder="e.g., Diploma / Advanced Diploma / Bachelor"></div>
-<div class="full"><label>Subject</label><input name="subject" required placeholder="e.g., Ethical Hacking"></div>
-</div>
-
-<h2>Feedback Questions</h2>
-<div class="note">Scale: 1 = Strongly Disagree, 2 = Disagree, 3 = Neutral, 4 = Agree, 5 = Strongly Agree</div>
-
-<div id="questions"></div>
-
-<div class="q"><p>What was the most useful part of the practical activity?</p><textarea name="usefulPart"></textarea></div>
-<div class="q"><p>What should be improved in future practical cybersecurity sessions?</p><textarea name="improvement"></textarea></div>
-
-<div class="q">
-<label style="font-weight:400"><input type="checkbox" name="consent" style="width:auto;margin-right:8px" required>
-I understand the purpose of this feedback activity and consent to my responses being used for educational evaluation/research, subject to institutional approval and applicable research-ethics requirements.</label>
-</div>
-
-<button type="submit">Submit Feedback</button>
-<div id="msg" class="msg"></div>
-</form>
-</main>
-
-<script>
-const questions=[
-["q1","The practical activity helped me understand phishing better than theory alone."],
-["q2","The real-time simulation made the cybersecurity concepts easier to remember."],
-["q3","I felt more engaged during the practical activity than during a theory-only lesson."],
-["q4","The practical activity improved my ability to identify suspicious links and login pages."],
-["q5","The activity improved my confidence in responding to phishing attempts."],
-["q6","The practical activity connected classroom concepts to realistic cybersecurity situations."],
-["q7","The instructions and stages of the activity were clear and easy to follow."],
-["q8","The practical activity helped me understand how attackers may collect technical information such as IP, browser, and device details."],
-["q9","I would like more cybersecurity topics to be taught using practical real-time activities."],
-["q10","Overall, the practical teaching approach improved my learning experience compared with theory-only teaching."]
-];
-const qbox=document.getElementById("questions");
-questions.forEach(([id,text])=>{
- const d=document.createElement("div"); d.className="q";
- d.innerHTML='<p>'+text+'</p><div class="scale">'+[1,2,3,4,5].map(n=>'<label><input type="radio" name="'+id+'" value="'+n+'" required style="width:auto"> '+n+'</label>').join("")+'</div>';
- qbox.appendChild(d);
-});
-
-document.getElementById("survey").addEventListener("submit",async e=>{
- e.preventDefault();
- const fd=new FormData(e.target); const data=Object.fromEntries(fd.entries());
- const msg=document.getElementById("msg");
- try{
-  const r=await fetch("/api/feedback",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});
-  if(!r.ok) throw new Error();
-  msg.style.display="block";msg.style.background="#effaf3";msg.style.border="1px solid #b7dfc8";msg.style.color="#16623a";
-  msg.innerHTML="<b>Thank you.</b> Your feedback has been submitted.";
-  e.target.reset();
- }catch(err){
-  msg.style.display="block";msg.style.background="#fff0f0";msg.style.border="1px solid #f0bcbc";msg.style.color="#8f1d1d";
-  msg.textContent="Could not submit feedback. Please inform the instructor.";
- }
-});
-</script>
-</body></html>
+<div id="assessment-message" class="assessment-message" role="status" aria-live="polite"></div>
+<section id="before-panel" class="assessment-panel" aria-labelledby="before-heading">
+<h2 id="before-heading">Before the lab: understanding and knowledge</h2>
+<p>Take this before exploring the simulations. Questions can be skipped. Baseline answers and scores remain hidden until the after-lab preview is complete.</p>
+<form id="before-form">
+<h3>Your understanding right now</h3><p>How well do you understand each topic right now? Choose from 1 (Not at all) to 5 (Extremely well).</p><div id="before-perceived"></div>
+<h3>Knowledge questions</h3><p>Choose the single best answer. Select “I don’t know” rather than guessing if unsure, or leave a question blank to skip it. All network examples refer to an authorized simulation.</p><div id="before-objective"></div>
+<div class="assessment-actions"><button id="save-before" class="assessment-btn" type="button" disabled>Save before-lab demo in this tab</button></div>
+</form></section>
+<section id="lab-panel" class="assessment-panel" aria-labelledby="lab-heading" hidden>
+<h2 id="lab-heading">Before-lab demo saved in this tab</h2>
+<p>Explore the learning activities, then return here for the after-lab questions. Your before-lab answers are locked for this demo; start again above if you need a new baseline.</p>
+<p>Continue in this same browser tab to keep the two phases together. You can use every lab without completing this questionnaire.</p>
+<div class="assessment-actions"><a class="assessment-btn" href="/labs.html">Explore the labs</a><button id="start-after" class="assessment-btn secondary" type="button">Continue to after-lab preview</button></div>
+</section>
+<section id="after-panel" class="assessment-panel" aria-labelledby="after-heading" hidden>
+<h2 id="after-heading">After the lab: understanding, knowledge and feedback</h2>
+<p>Answer based on your understanding now. These are the same knowledge and understanding items used before the lab. Skipping an item does not prevent you from using the activities.</p>
+<form id="after-form">
+<h3>Your understanding now</h3><p>How well do you understand each topic right now?</p><div id="after-perceived"></div>
+<h3>Knowledge questions</h3><p>Choose the single best answer, “I don’t know”, or leave the item blank to skip it.</p><div id="after-objective"></div>
+<h3>Satisfaction with the learning experience</h3><p>Thinking about the lab you just completed, how much do you agree with each statement? Choose 1 (Strongly disagree) to 5 (Strongly agree), or Not applicable.</p><div id="after-satisfaction"></div>
+<h3>Optional comments</h3><p class="privacy-note">Do not include identifying details about yourself or anyone else.</p><div id="after-open" class="assessment-open"></div>
+<div class="assessment-actions"><button id="save-after" class="assessment-btn" type="button" disabled>View local before-and-after comparison</button><button id="return-to-labs" class="assessment-btn secondary" type="button">Back to lab step</button></div>
+</form></section>
+<section id="summary-panel" class="assessment-panel" aria-labelledby="summary-heading" hidden>
+<h2 id="summary-heading">Your local demo comparison</h2>
+<p class="draft-warning"><strong>Not submitted.</strong> This is a preview of an unvalidated questionnaire. Score changes do not prove that the lab caused learning. Self-rated understanding, quiz scores and satisfaction are different outcomes.</p>
+<div id="objective-summary" class="assessment-summary"></div><div id="score-change" class="assessment-message"></div>
+<h3>Change in self-rated understanding</h3><p>Individual 1–5 ratings. A higher self-rating is not an objective knowledge score.</p><div id="perceived-summary"></div>
+<h3>Satisfaction responses</h3><p>Item-level ratings only. These items are not combined into a validated scale.</p><div id="satisfaction-summary"></div>
+<details class="research-details"><summary>Review knowledge answers and explanations</summary><div id="answer-review"></div></details>
+<div class="assessment-actions"><a class="assessment-btn" href="/labs.html">Keep practicing</a><a class="assessment-btn secondary" href="/">Return home</a></div>
+</section>
+<details class="research-details"><summary>Instructor notes: preparing a real study</summary><ul>
+<li>This original instrument is a draft for expert review, pilot testing and revision. It does not establish validity, reliability or ethics approval.</li>
+<li>Before recruiting students or collecting research responses, confirm institutional ethics requirements, eligibility, voluntary grade-neutral participation, consent, researcher contact details, secure storage, authorized access, retention and withdrawal procedures.</li>
+<li>Keep baseline and posttest wording stable. Repeating the same quiz can introduce practice effects. Specify outcomes, sample-size rationale and missing-data rules before the study; a comparison design is needed for causal claims.</li>
+<li>A questionnaire alone cannot ensure acceptance in a Q1 journal. The research design, evidence and transparent reporting matter.</li>
+</ul></details>
+<noscript><p class="draft-warning">Enable JavaScript to preview the questionnaire. You can still open the labs from the navigation links.</p></noscript>
+<footer class="research-footer">Powered by Dr. Ramesh Palanisamy, Professor, UTAS-Ibra<br>Safe educational simulations · Demo responses only</footer>
+</main></body></html>
