@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wi-Fi Password Auditing Lab | UTAS-Ibra CyberLab</title>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#102b46">
+<link rel="icon" href="/icons/security-lab.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icons/security-lab-180.png">
+<link rel="stylesheet" href="/labs.css"><link rel="stylesheet" href="/wifi-auditing.css"><link rel="stylesheet" href="/lab-report.css">
+<script src="/lab-report.js" defer></script><script src="/wifi-auditing.js" defer></script>
+</head>
+<body>
+<div class="top">PRACTICAL CYBERSECURITY — AUTHORIZED EDUCATIONAL SIMULATIONS ONLY</div>
+<main class="wrap">
+<header class="site-brand"><span class="brand-mark" aria-hidden="true"></span><div><a href="/">UTAS-Ibra CyberLab</a><small>Explore. Practise. Defend.</small></div></header>
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/labs.html">All labs</a><span aria-hidden="true">/</span><span aria-current="page">Wi-Fi Password Auditing Lab</span></nav>
+<div class="intro"><b>Safe classroom mode:</b> Fictional access points, supplied example passwords, and synthetic evidence only. Nothing scans, captures, or connects to a wireless network.</div>
+<details class="lab-switcher"><summary>Switch lab</summary><nav class="lab-links" aria-label="Security labs"><a href="/phishing.html">Phishing Attack Lab</a><a href="/qr-phishing.html">QR Phishing Lab</a><a href="/mfa-fatigue.html">MFA Fatigue Lab</a><a href="/fake-update.html">Fake Software Update Lab</a><a href="/browser-permissions.html">Browser Permission Lab</a><a href="/suspicious-url.html">Suspicious URL Lab</a><a href="/port-scanning.html">Port Scanning Lab</a><a href="/password-strength.html">Password Strength Lab</a><a href="/wifi-auditing.html" aria-current="page">Wi-Fi Password Auditing Lab</a><a href="/dos-ddos.html">DoS / DDoS Simulation</a><a href="/sql-injection.html">SQL Injection Lab</a><a href="/xss.html">XSS Lab</a></nav></details>
+<section class="module wifi-module" aria-labelledby="wifiTitle">
+<span class="tag">HANDS-ON LOCAL VERIFICATION · SYNTHETIC FIXTURES</span>
+<h1 id="wifiTitle">Wi-Fi Password Auditing</h1>
+<p class="wifi-lead">Discover a virtual access point → inspect its supplied evidence → test fixed candidates → compare → harden and retest.</p>
+<div class="warnbox"><b>This is a synthetic teaching verifier, not a WPA capture or cracking tool.</b> Each candidate really is hashed and compared locally, using a deliberately simplified SHA-256 format. Discovery, timing, access points, and settings are simulated. The lab accepts no targets, files, or passwords from you, requests no device permissions, and saves no session data. Never test real wireless networks without explicit authorization.</div>
+<noscript><div class="warnbox">JavaScript is required for this local interactive simulation. No network test has been run.</div></noscript>
+<div class="wifi-toolbar"><p id="wifiStatus" role="status" aria-live="polite" aria-atomic="true">Begin by discovering the two preset classroom access points.</p><button id="wifiReset" type="button" class="btn alt">Reset entire lab</button></div>
+<section class="wifi-step" aria-labelledby="wifiDiscoverTitle">
+<div class="wifi-step-heading"><span class="wifi-step-number">1</span><h2 id="wifiDiscoverTitle">Discover authorized virtual access points</h2></div>
+<p>No radio scan takes place. The two classroom fixtures appear in sequence; choose one to inspect its evidence.</p>
+<div class="actions"><button id="wifiDiscover" type="button" class="btn">Discover virtual APs</button><button id="wifiCancelDiscovery" type="button" class="btn alt" disabled>Cancel discovery</button></div>
+<div id="wifiAps" class="wifi-ap-grid" aria-label="Discovered virtual access points"></div>
+</section>
+<section class="wifi-step" aria-labelledby="wifiFixtureTitle">
+<div class="wifi-step-heading"><span class="wifi-step-number">2</span><h2 id="wifiFixtureTitle">Inspect and load supplied evidence</h2></div>
+<p id="wifiTargetSummary">Choose a discovered access point to unlock this step.</p>
+<div class="actions"><button id="wifiInspect" type="button" class="btn alt" disabled>Inspect synthetic fixture</button><button id="wifiLoad" type="button" class="btn" disabled>Load supplied fixture</button></div>
+<div id="wifiFixturePanel" class="wifi-fixture" hidden>
+<dl><div><dt>Fixture type</dt><dd>Synthetic handshake-style teaching record · not a real capture</dd></div><div><dt>Authorized scope</dt><dd>Only the fixed classroom example shown here</dd></div><div><dt>Virtual SSID</dt><dd id="wifiFixtureSsid"></dd></div><div><dt>Public challenge</dt><dd id="wifiFixtureNonce" class="mono"></dd></div><div><dt>Expected verifier</dt><dd id="wifiFixtureDigest" class="mono"></dd></div></dl>
+<details><summary>What does this fixture verify?</summary><p>The browser computes SHA-256 of <code>WIFI-TEACHING-V1|SSID|challenge|candidate</code> for each supplied candidate, then compares the full result with the stored verifier. Only an exact match recovers the classroom password. The public challenge changes the hash input; it is not a secret.</p><p>This format is intentionally not WPA2/WPA3, a packet capture, a real handshake, or a model of real attack speeds. Real Wi-Fi authentication uses different protocols and protections. The principle illustrated here is candidate verification against supplied evidence.</p></details>
+</div>
+</section>
+<section class="wifi-step" aria-labelledby="wifiAuditTitle">
+<div class="wifi-step-heading"><span class="wifi-step-number">3</span><h2 id="wifiAuditTitle">Run a local candidate audit</h2></div>
+<div class="wifi-controls"><div><label for="wifiWordlist">Built-in candidate list</label><select id="wifiWordlist" disabled><option value="short">Classroom basics · 12 candidates</option><option value="extended">Extended classroom list · 24 candidates</option></select></div><div><label for="wifiSpeed">Visual playback speed</label><select id="wifiSpeed" disabled><option value="normal">Normal · 0.7 seconds per candidate</option><option value="fast">Fast · 0.25 seconds per candidate</option><option value="slow">Slow · 1.4 seconds per candidate</option></select></div></div>
+<p class="wifi-note">All entries are invented teaching examples. The delay makes evidence visible; it is not a cracking-speed benchmark. No real password should be entered anywhere in this lab.</p>
+<details id="wifiListDetails" hidden><summary>View supplied candidate list</summary><ol id="wifiCandidateList" class="wifi-wordlist"></ol></details>
+<div class="actions wifi-run-actions"><button id="wifiStart" type="button" class="btn" disabled>Start local audit</button><button id="wifiPause" type="button" class="btn alt" disabled>Pause</button><button id="wifiStep" type="button" class="btn alt" disabled>Check one candidate</button><button id="wifiCancel" type="button" class="btn alt" disabled>Cancel audit</button></div>
+<div class="wifi-evidence-grid"><div class="wifi-verifier"><span class="wifi-eyebrow">CURRENT LOCAL CHECK</span><strong id="wifiCurrentCandidate" class="mono">Waiting for a loaded fixture</strong><div class="wifi-flow" aria-hidden="true"><span>Candidate</span><span>→ SHA-256 →</span><span>Compare</span></div><span id="wifiCurrentDigest" class="mono">No candidate evaluated</span><strong id="wifiCurrentVerdict">Not started</strong></div><div class="wifi-meter"><label for="wifiProgress">Candidates evaluated</label><div class="wifi-count"><b id="wifiCount">0</b><span id="wifiTotal">/ 12</span></div><progress id="wifiProgress" max="12" value="0"></progress><p id="wifiRunSummary">Load a fixture to begin. A result appears only after a candidate is evaluated.</p></div></div>
+<div id="wifiResult" class="wifi-result" hidden></div>
+<div class="wifi-table-wrap" tabindex="0" role="region" aria-label="Candidate evidence table; scroll horizontally on narrow screens"><table><caption>Actual local comparisons for this run · digest prefixes shown, full digests compared</caption><thead><tr><th scope="col">Check</th><th scope="col">Supplied candidate</th><th scope="col">Computed SHA-256 prefix</th><th scope="col">Evidence</th></tr></thead><tbody id="wifiRows"><tr><td colspan="4">No candidates evaluated yet.</td></tr></tbody></table></div>
+</section>
+<section class="wifi-step" aria-labelledby="wifiCompareTitle">
+<div class="wifi-step-heading"><span class="wifi-step-number">4</span><h2 id="wifiCompareTitle">Compare weak and strong fixtures</h2></div>
+<p>Finish both baseline fixtures with the same candidate list. Use the button below to select the other access point, then inspect, load, and run it. Your completed evidence remains below.</p>
+<button id="wifiCompare" type="button" class="btn alt" disabled>Select the other baseline AP</button>
+<ul id="wifiEvidence" class="wifi-evidence-list"><li>No completed baseline audits yet.</li></ul>
+<div id="wifiComparison" class="resultbox" hidden></div>
+</section>
+<section class="wifi-step" aria-labelledby="wifiDefenseTitle">
+<div class="wifi-step-heading"><span class="wifi-step-number">5</span><h2 id="wifiDefenseTitle">Apply defenses and retest</h2></div>
+<p id="wifiDefenseHint">Complete a weak-password match and a strong-fixture “not found” result using the same list to unlock the simulated router.</p>
+<fieldset id="wifiDefenses" disabled><legend>Fictional classroom AP settings</legend><label class="wifi-checkbox"><input id="wifiRotate" type="checkbox"><span><b>Rotate to a supplied long, unique passphrase</b><small>Changes the fresh teaching verifier; no password input is needed.</small></span></label><label class="wifi-checkbox"><input id="wifiWps" type="checkbox"><span><b>Disable WPS</b><small>Records a simulated configuration improvement; WPS is not tested by this verifier.</small></span></label><label class="wifi-checkbox"><input id="wifiFirmware" type="checkbox"><span><b>Apply the simulated firmware update</b><small>Records a maintenance action; firmware vulnerabilities are outside this exercise.</small></span></label><button id="wifiApply" type="button" class="btn good">Apply simulated settings &amp; prepare retest</button></fieldset>
+<p id="wifiConfig" class="wifi-config">Baseline: weak classroom passphrase · WPS on · firmware update pending</p>
+<div id="wifiRetest" class="wifi-result" hidden></div>
+</section>
+<div id="labReportMount"></div>
+<div class="wifi-debrief"><h2>What the evidence can tell you</h2><ul><li>A matching candidate demonstrates that the fixed example password is in that tested list.</li><li>“Not found” means this list did not recover that fixture’s password. It does not prove a network is secure or a password is uncrackable.</li><li>Changing a passphrase requires fresh evidence for the new password. Old evidence still corresponds to the old password; rotation does not rewrite an old capture.</li><li>Use long, unique Wi-Fi passphrases, current router firmware, and supported modern Wi-Fi security. This simplified exercise does not assess real WPA2 or WPA3 protection.</li></ul></div>
+</section>
+<nav class="lab-return" aria-label="Return navigation"><a class="btn" href="/">← Back to Home</a><a class="btn alt" href="/labs.html">View all labs</a></nav>
+</main>
+<footer class="site-footer">Powered by : <span>Dr. Ramesh Palanisamy, Professor, UTAS-Ibra</span></footer>
+</body>
+</html>

@@ -1,21 +1,10 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Browser Permission Lab | Practical Security Learning Hub</title>
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#244f91">
-<link rel="icon" href="/icons/security-lab.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/icons/security-lab-180.png">
-<link rel="stylesheet" href="/labs.css">
-<script src="/awareness-labs.js" defer></script>
-</head>
-<body>
-<div class="top">PRACTICAL CYBERSECURITY — AUTHORIZED EDUCATIONAL SIMULATIONS ONLY</div>
-<main class="wrap">
-<header class="site-brand"><span class="brand-mark" aria-hidden="true"></span><div><a href="/">Practical Security Learning Hub</a><small>UTAS-Ibra · Learn. Practice. Stay Safe.</small></div></header>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Browser Permission Lab | UTAS-Ibra CyberLab</title><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#102b46"><link rel="icon" href="/icons/security-lab.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icons/security-lab-180.png"><link rel="stylesheet" href="/labs.css"><link rel="stylesheet" href="/simulation-labs.css"><link rel="stylesheet" href="/lab-report.css"><script src="/lab-report.js" defer></script><script src="/awareness-labs.js" defer></script></head>
+<body><div class="top">PRACTICAL CYBERSECURITY — AUTHORIZED EDUCATIONAL SIMULATIONS ONLY</div><main class="wrap">
+<header class="site-brand"><span class="brand-mark" aria-hidden="true"></span><div><a href="/">UTAS-Ibra CyberLab</a><small>Explore. Practise. Defend.</small></div></header>
 <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/labs.html">All labs</a><span aria-hidden="true">/</span><span aria-current="page">Browser Permission Lab</span></nav>
-<div class="intro"><b>Safe classroom mode:</b> All scenarios are fictional and defensive. Use invented/demo information only. No real credentials, OTPs, downloads, or scan traffic.</div>
+<div class="intro"><b>Interactive classroom simulation:</b> Every device, account, permission, alert and update below is fictional. All actions stay in this browser tab. No real sign-in, device access, download or software execution occurs.</div>
 <details class="lab-switcher"><summary>Switch lab</summary><nav class="lab-links" aria-label="Security labs"><a href="/phishing.html">Phishing Attack Lab</a>
 <a href="/qr-phishing.html">QR Phishing Lab</a>
 <a href="/mfa-fatigue.html">MFA Fatigue Lab</a>
@@ -23,18 +12,20 @@
 <a href="/browser-permissions.html" aria-current="page">Browser Permission Lab</a>
 <a href="/suspicious-url.html">Suspicious URL Lab</a>
 <a href="/port-scanning.html">Port Scanning Lab</a>
-<a href="/password-strength.html">Password Strength Lab</a></nav></details>
-<section class="module" id="browser">
-<span class="tag">REAL-TIME LAB 4</span><h1>Browser Permission Scam</h1>
-<p>Decide whether each fictional browser permission should be allowed or denied.</p>
-<div class="lab">
-<div class="scenario" id="permScenario"></div>
-<div class="actions"><button class="btn good" data-answer="allow">Allow</button><button class="btn bad" data-answer="deny">Deny</button><button class="btn alt" data-next>Next Prompt</button></div>
-<div id="permFeedback" class="feedback" role="status" aria-live="polite"></div><div id="permScore" class="score">Score: 0 / 0</div>
-</div>
-</section>
+<a href="/password-strength.html">Password Strength Lab</a>
+<a href="/wifi-auditing.html">Wi-Fi Password Auditing Lab</a>
+<a href="/dos-ddos.html">DoS / DDoS Simulation</a>
+<a href="/sql-injection.html">SQL Injection Lab</a>
+<a href="/xss.html">XSS Lab</a></nav></details>
+<section class="module" data-simulation="browser-permissions"><span class="tag">HANDS-ON SIMULATION</span><h1>Browser Permission Lab</h1><p>See the consequences of a deceptive permission grant, repair the settings, and complete a legitimate task with minimal access.</p>
+<div class="sim-mission"><b>Your mission</b><p>Leave the news site blocked, clear its alerts, complete a microphone-only demo call, and clean up its permission afterward.</p></div>
+<div id="simStatus" class="sim-status" role="status" aria-live="polite">Ready to begin.</div>
+<div class="sim-workbench"><div class="sim-main"><section class="sim-panel"><h2>1. Read a fictional news page</h2><div class="sim-browserbar">daily-campus.example · simulated browser</div><p>The page claims “Allow notifications to prove you are not a robot.”</p><button id="permVisit" type="button" class="btn ">Open news page</button><div id="permPrompt" class="sim-permission" hidden><b>daily-campus.example wants to send notifications</b><p>This is an in-page mock prompt, not a browser permission request.</p><div class="actions"><button id="permAllow" type="button" class="btn bad">Allow simulated notifications</button><button id="permDeny" type="button" class="btn good">Block simulated notifications</button></div></div><div id="permAlerts" class="sim-alerts" aria-label="Simulated notification tray"></div><div class="actions"><button id="permNext" type="button" class="btn alt" disabled>Show next simulated alert</button><button id="permClear" type="button" class="btn alt" disabled>Clear simulated alerts</button></div></section>
+<section class="sim-panel"><h2>2. Review the permissions you granted</h2><button id="permSettings" type="button" class="btn alt" disabled>Open simulated site settings</button><div id="permLedger" class="sim-output" hidden><div class="sim-permission-row"><span>News site · Notifications <strong id="permNotificationState">Ask</strong></span><button id="permRevokeNotifications" type="button" class="btn alt" disabled>Block / revoke notifications</button></div><div class="sim-permission-row"><span>Meeting site · Microphone <strong id="permMicrophoneState">Ask</strong></span><button id="permRevokeMic" type="button" class="btn alt" disabled>Revoke microphone access</button></div><p class="sim-small">Camera and location remain blocked throughout this exercise. These are fictional settings and cannot change your browser.</p></div></section>
+<section class="sim-panel"><h2>3. Join an intentional voice meeting</h2><div class="sim-browserbar">meet.training-university.example · known classroom meeting</div><p id="permCallState">No meeting started.</p><button id="permJoin" type="button" class="btn " disabled>Join the demo voice meeting</button><div id="permMicPrompt" class="sim-permission" hidden><b>The meeting you opened needs microphone access.</b><p>Allow only this task’s microphone in the simulation. No real device is accessed.</p><div class="actions"><button id="permAllowMic" type="button" class="btn good">Allow demo microphone</button><button id="permDenyMic" type="button" class="btn alt">Keep demo microphone blocked</button></div></div><div class="actions"><button id="permTest" type="button" class="btn " disabled>Test fictional microphone</button><button id="permEnd" type="button" class="btn alt" disabled>End the demo meeting</button></div><div id="permMeter" class="sim-audio" hidden aria-label="Fictional microphone test pattern">▂ ▄ ▆ █ ▆ ▄ ▂ · demo signal only</div><p class="sim-small">Finish the call, then revoke its microphone grant in the simulated site settings.</p></section></div><aside class="sim-panel"><h2>Your practical evidence</h2><ul class="sim-evidence"><li id="e-perm-settings">Inspect the site-permission ledger</li><li id="e-perm-news">Block unwanted notifications and clear any demo alerts</li><li id="e-perm-call">Allow only the microphone needed for your intentional call and test it</li><li id="e-perm-cleanup">End the call and revoke its microphone access</li></ul><h3>Action timeline</h3><ol id="simLog" class="sim-log" aria-label="Action timeline"></ol></aside></div>
+<section id="simDebrief" class="sim-debrief" hidden><h2>Practical task complete</h2><p>You matched access to the task you initiated, inspected existing grants, and revoked access when it was no longer needed. A permission grant can outlast the page that asked for it. This exercise did not request, receive or change any real browser permissions.</p><p>Your evidence and timeline show what you did. Reset to try a different path; this session is not submitted or centrally collected.</p></section>
+<div id="labReportMount"></div>
+<div class="actions sim-reset"><button id="simReset" type="button" class="btn alt">Reset this lab</button></div>
+<noscript><div class="warnbox">JavaScript is required for this interactive simulation.</div></noscript></section>
 <nav class="lab-return" aria-label="Return navigation"><a class="btn" href="/">← Back to Home</a><a class="btn alt" href="/labs.html">View all labs</a></nav>
-</main>
-<footer class="site-footer">Powered by : <span>Dr. Ramesh Palanisamy, Professor, UTAS-Ibra</span></footer>
-</body>
-</html>
+</main><footer class="site-footer">Powered by : <span>Dr. Ramesh Palanisamy, Professor, UTAS-Ibra</span></footer></body></html>

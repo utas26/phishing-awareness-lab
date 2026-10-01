@@ -1,18 +1,33 @@
 {
   "id": "/",
-  "name": "Practical Security Learning Hub",
-  "short_name": "Security Lab",
-  "description": "UTAS-Ibra cybersecurity awareness and safe, instructor-led learning labs. Internet connection required.",
+  "name": "UTAS-Ibra CyberLab",
+  "short_name": "CyberLab",
+  "description": "Explore. Practise. Defend. Safe UTAS-Ibra cybersecurity classroom simulations and learning reports. Internet connection required.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "lang": "en",
-  "background_color": "#eef3f8",
-  "theme_color": "#244f91",
+  "background_color": "#f3f7fa",
+  "theme_color": "#102b46",
   "prefer_related_applications": false,
   "icons": [
-    {"src": "/icons/security-lab-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
-    {"src": "/icons/security-lab-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
-    {"src": "/icons/security-lab-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+    {
+      "src": "/icons/security-lab-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/security-lab-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/security-lab-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }

@@ -1,21 +1,10 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Fake Software Update Lab | Practical Security Learning Hub</title>
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#244f91">
-<link rel="icon" href="/icons/security-lab.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/icons/security-lab-180.png">
-<link rel="stylesheet" href="/labs.css">
-<script src="/awareness-labs.js" defer></script>
-</head>
-<body>
-<div class="top">PRACTICAL CYBERSECURITY — AUTHORIZED EDUCATIONAL SIMULATIONS ONLY</div>
-<main class="wrap">
-<header class="site-brand"><span class="brand-mark" aria-hidden="true"></span><div><a href="/">Practical Security Learning Hub</a><small>UTAS-Ibra · Learn. Practice. Stay Safe.</small></div></header>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fake Software Update Lab | UTAS-Ibra CyberLab</title><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#102b46"><link rel="icon" href="/icons/security-lab.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icons/security-lab-180.png"><link rel="stylesheet" href="/labs.css"><link rel="stylesheet" href="/simulation-labs.css"><link rel="stylesheet" href="/lab-report.css"><script src="/lab-report.js" defer></script><script src="/awareness-labs.js" defer></script></head>
+<body><div class="top">PRACTICAL CYBERSECURITY — AUTHORIZED EDUCATIONAL SIMULATIONS ONLY</div><main class="wrap">
+<header class="site-brand"><span class="brand-mark" aria-hidden="true"></span><div><a href="/">UTAS-Ibra CyberLab</a><small>Explore. Practise. Defend.</small></div></header>
 <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/labs.html">All labs</a><span aria-hidden="true">/</span><span aria-current="page">Fake Software Update Lab</span></nav>
-<div class="intro"><b>Safe classroom mode:</b> All scenarios are fictional and defensive. Use invented/demo information only. No real credentials, OTPs, downloads, or scan traffic.</div>
+<div class="intro"><b>Interactive classroom simulation:</b> Every device, account, permission, alert and update below is fictional. All actions stay in this browser tab. No real sign-in, device access, download or software execution occurs.</div>
 <details class="lab-switcher"><summary>Switch lab</summary><nav class="lab-links" aria-label="Security labs"><a href="/phishing.html">Phishing Attack Lab</a>
 <a href="/qr-phishing.html">QR Phishing Lab</a>
 <a href="/mfa-fatigue.html">MFA Fatigue Lab</a>
@@ -23,22 +12,20 @@
 <a href="/browser-permissions.html">Browser Permission Lab</a>
 <a href="/suspicious-url.html">Suspicious URL Lab</a>
 <a href="/port-scanning.html">Port Scanning Lab</a>
-<a href="/password-strength.html">Password Strength Lab</a></nav></details>
-<section class="module" id="update">
-<span class="tag">REAL-TIME LAB 3</span><h1>Fake Software Update</h1>
-<p>Choose which fictional update prompt is safer.</p>
-<div class="lab">
-<div class="cardgrid">
-<button class="choice" type="button" data-answer="0"><b>Prompt A</b><br><br>Browser popup: “CRITICAL UPDATE! Download <span class="mono">Flash_Update_2026.exe</span> now.”</button>
-<button class="choice" type="button" data-answer="1"><b>Prompt B</b><br><br>Operating system Settings → Update page shows a normal signed system update.</button>
-<button class="choice" type="button" data-answer="2"><b>Prompt C</b><br><br>Email attachment named <span class="mono">SecurityPatch.zip</span> from an unknown sender.</button>
-</div>
-<div class="actions"><button class="btn alt" type="button" data-retry>Try again</button></div>
-<div id="updateFeedback" class="feedback" role="status" aria-live="polite"></div><div id="updateScore" class="score">Score: 0 / 0</div>
-</div>
-</section>
+<a href="/password-strength.html">Password Strength Lab</a>
+<a href="/wifi-auditing.html">Wi-Fi Password Auditing Lab</a>
+<a href="/dos-ddos.html">DoS / DDoS Simulation</a>
+<a href="/sql-injection.html">SQL Injection Lab</a>
+<a href="/xss.html">XSS Lab</a></nav></details>
+<section class="module" data-simulation="fake-update"><span class="tag">HANDS-ON SIMULATION</span><h1>Fake Software Update Lab</h1><p>Work through a deceptive web prompt, a mock download shelf, and a functioning in-app update workflow.</p>
+<div class="sim-mission"><b>Your mission</b><p>Investigate the prompt, handle any simulated exposure, report it, then update through the application’s trusted channel.</p></div>
+<div id="simStatus" class="sim-status" role="status" aria-live="polite">Ready to begin.</div>
+<div class="sim-workbench"><div class="sim-main"><section class="sim-panel"><h2>1. Browse the classroom video page</h2><div class="sim-browserbar">media-campus.example / study-video · simulated browser</div><div class="sim-stage"><p>Campus study skills video</p><button id="updateVisit" type="button" class="btn ">Play classroom video</button><div id="updateOverlay" class="sim-alert" hidden><h3>“Player update required”</h3><p>This page claims that an urgent security update is needed to continue.</p><div class="actions"><button id="updateDownload" type="button" class="btn bad">Try the fake download</button><button id="updateClose" type="button" class="btn alt">Close the web prompt</button></div></div></div><button id="updateInspect" type="button" class="btn alt">Inspect source and file details</button><div id="updateDetails" class="sim-output" hidden><b>Source:</b> player-fix.example<br><b>Offered file:</b> CampusPlayer_Update.exe (fictional)<br><b>Publisher:</b> unverified in this scenario<br><b>Expected update source:</b> the application’s own Settings → Updates<br><p>A logo, urgency or a familiar filename does not verify an update.</p></div></section>
+<section id="updateShelf" class="sim-panel" hidden><h2>2. Simulated download shelf</h2><p id="updateFileState"></p><div class="actions"><button id="updateRun" type="button" class="btn bad">Open simulated installer</button><button id="updateDelete" type="button" class="btn alt">Remove suspicious demo file</button><button id="updateContain" type="button" class="btn bad" disabled>Contain the simulated incident</button></div><p class="sim-small">These controls only change this lab’s state. Nothing is downloaded or executed. Removing a file would not undo a real compromise.</p></section>
+<section class="sim-panel"><h2>3. Report and use the trusted updater</h2><div class="actions"><button id="updateReport" type="button" class="btn alt" disabled>Report suspicious update</button><button id="updateSettings" type="button" class="btn alt" disabled>Open application Settings → Updates</button></div><div id="updateUpdater" class="sim-updater" hidden><div class="sim-browserbar">Classroom application · built-in updater</div><p id="updateRelease">Current demo version: 1.0 · No update check performed.</p><div class="actions"><button id="updateCheck" type="button" class="btn ">Check for an official demo update</button><button id="updateInstall" type="button" class="btn good" disabled>Install verified demo update</button><button id="updatePause" type="button" class="btn alt" disabled>Pause playback</button><button id="updateStep" type="button" class="btn alt" disabled>Next update step</button><button id="updateCancel" type="button" class="btn alt" disabled>Cancel operation</button></div><label class="sim-progress-label" for="updateProgress">Simulated updater progress</label><progress id="updateProgress" value="0" max="4"></progress><p id="updateProgressText">0 / 4 steps</p></div></section></div><aside class="sim-panel"><h2>Your practical evidence</h2><ul class="sim-evidence"><li id="e-update-inspect">Inspect the source and dismiss the deceptive prompt</li><li id="e-update-clean">Avoid the file or remove it and contain any simulated incident</li><li id="e-update-report">Report the suspicious update</li><li id="e-update-install">Verify and finish an update through the built-in updater</li></ul><h3>Action timeline</h3><ol id="simLog" class="sim-log" aria-label="Action timeline"></ol></aside></div>
+<section id="simDebrief" class="sim-debrief" hidden><h2>Practical task complete</h2><p>You used an independently opened updater and compared its source and release information with the deceptive web offer. This lab’s verification is predefined training metadata, not a real signature check. If a suspicious installer ran on a real device, seek incident-response help rather than assuming deleting it repairs the device.</p><p>Your evidence and timeline show what you did. Reset to try a different path; this session is not submitted or centrally collected.</p></section>
+<div id="labReportMount"></div>
+<div class="actions sim-reset"><button id="simReset" type="button" class="btn alt">Reset this lab</button></div>
+<noscript><div class="warnbox">JavaScript is required for this interactive simulation.</div></noscript></section>
 <nav class="lab-return" aria-label="Return navigation"><a class="btn" href="/">← Back to Home</a><a class="btn alt" href="/labs.html">View all labs</a></nav>
-</main>
-<footer class="site-footer">Powered by : <span>Dr. Ramesh Palanisamy, Professor, UTAS-Ibra</span></footer>
-</body>
-</html>
+</main><footer class="site-footer">Powered by : <span>Dr. Ramesh Palanisamy, Professor, UTAS-Ibra</span></footer></body></html>

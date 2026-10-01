@@ -1,21 +1,10 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MFA Fatigue Lab | Practical Security Learning Hub</title>
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#244f91">
-<link rel="icon" href="/icons/security-lab.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/icons/security-lab-180.png">
-<link rel="stylesheet" href="/labs.css">
-<script src="/awareness-labs.js" defer></script>
-</head>
-<body>
-<div class="top">PRACTICAL CYBERSECURITY — AUTHORIZED EDUCATIONAL SIMULATIONS ONLY</div>
-<main class="wrap">
-<header class="site-brand"><span class="brand-mark" aria-hidden="true"></span><div><a href="/">Practical Security Learning Hub</a><small>UTAS-Ibra · Learn. Practice. Stay Safe.</small></div></header>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MFA Fatigue Lab | UTAS-Ibra CyberLab</title><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#102b46"><link rel="icon" href="/icons/security-lab.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icons/security-lab-180.png"><link rel="stylesheet" href="/labs.css"><link rel="stylesheet" href="/simulation-labs.css"><link rel="stylesheet" href="/lab-report.css"><script src="/lab-report.js" defer></script><script src="/awareness-labs.js" defer></script></head>
+<body><div class="top">PRACTICAL CYBERSECURITY — AUTHORIZED EDUCATIONAL SIMULATIONS ONLY</div><main class="wrap">
+<header class="site-brand"><span class="brand-mark" aria-hidden="true"></span><div><a href="/">UTAS-Ibra CyberLab</a><small>Explore. Practise. Defend.</small></div></header>
 <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/labs.html">All labs</a><span aria-hidden="true">/</span><span aria-current="page">MFA Fatigue Lab</span></nav>
-<div class="intro"><b>Safe classroom mode:</b> All scenarios are fictional and defensive. Use invented/demo information only. No real credentials, OTPs, downloads, or scan traffic.</div>
+<div class="intro"><b>Interactive classroom simulation:</b> Every device, account, permission, alert and update below is fictional. All actions stay in this browser tab. No real sign-in, device access, download or software execution occurs.</div>
 <details class="lab-switcher"><summary>Switch lab</summary><nav class="lab-links" aria-label="Security labs"><a href="/phishing.html">Phishing Attack Lab</a>
 <a href="/qr-phishing.html">QR Phishing Lab</a>
 <a href="/mfa-fatigue.html" aria-current="page">MFA Fatigue Lab</a>
@@ -23,18 +12,21 @@
 <a href="/browser-permissions.html">Browser Permission Lab</a>
 <a href="/suspicious-url.html">Suspicious URL Lab</a>
 <a href="/port-scanning.html">Port Scanning Lab</a>
-<a href="/password-strength.html">Password Strength Lab</a></nav></details>
-<section class="module" id="mfa">
-<span class="tag">REAL-TIME LAB 2</span><h1>MFA Fatigue</h1>
-<p>Respond to unexpected fictional MFA prompts as they appear.</p>
-<div class="lab">
-<div class="scenario" id="mfaScenario"></div>
-<div class="actions"><button class="btn good" data-answer="approve">Approve</button><button class="btn bad" data-answer="deny">Deny</button><button class="btn alt" data-answer="report">Deny &amp; Report</button><button class="btn alt" type="button" data-next>Next Prompt</button></div>
-<div id="mfaFeedback" class="feedback" role="status" aria-live="polite"></div><div id="mfaScore" class="score">Score: 0 / 0</div>
-</div>
-</section>
+<a href="/password-strength.html">Password Strength Lab</a>
+<a href="/wifi-auditing.html">Wi-Fi Password Auditing Lab</a>
+<a href="/dos-ddos.html">DoS / DDoS Simulation</a>
+<a href="/sql-injection.html">SQL Injection Lab</a>
+<a href="/xss.html">XSS Lab</a></nav></details>
+<section class="module" data-simulation="mfa-fatigue"><span class="tag">HANDS-ON SIMULATION</span><h1>MFA Fatigue Lab</h1><p>Handle a live sequence of simulated requests, inspect account activity, and recover from an accidental approval.</p>
+<div class="sim-mission"><b>Your mission</b><p>Stop the unwanted requests, leave no unauthorized session active, then complete your own number-matched sign-in.</p></div>
+<div id="simStatus" class="sim-status" role="status" aria-live="polite">Ready to begin.</div>
+<div class="sim-workbench"><div class="sim-main"><section class="sim-panel"><h2>1. Your fictional workstation</h2><div class="sim-browserbar">portal.training-university.example · classroom desktop</div><p>You are reading a document. You have not started a sign-in.</p><div class="actions"><button id="mfaStart" type="button" class="btn ">Start incoming requests</button><button id="mfaPause" type="button" class="btn alt" disabled>Pause playback</button><button id="mfaStep" type="button" class="btn alt" disabled>Next request (step mode)</button></div><p class="sim-small">Playback sends up to six fictional requests. Step mode lets you work without a timer.</p><div class="sim-metrics"><span>Requests received <strong id="mfaCount">0</strong></span><span>Requests denied <strong id="mfaDenied">0</strong></span><span>Unauthorized sessions <strong id="mfaSessions">0</strong></span></div></section>
+<section class="sim-panel sim-phone"><div class="sim-device-label">SIMULATED PHONE · NO PUSH NOTIFICATIONS</div><h2>2. Authentication requests</h2><p id="mfaPhone">No request yet.</p><div id="mfaRequest" hidden><p id="mfaDetails" class="sim-detail"></p><label id="mfaNumberLabel" for="mfaNumber" hidden>Match the number on your fictional workstation</label><select id="mfaNumber" hidden><option value="">Choose a demo number</option value="31">31</option><option value="42">42</option><option value="67">67</option></select><div class="actions"><button id="mfaDeny" type="button" class="btn bad">Deny request</button><button id="mfaApprove" type="button" class="btn good">Approve request</button></div></div><div class="actions"><button id="mfaReport" type="button" class="btn alt" disabled>Report unexpected sign-in & stop requests</button></div></section>
+<section class="sim-panel"><h2>3. Review and recover</h2><div class="actions"><button id="mfaReview" type="button" class="btn alt" disabled>Review account activity</button><button id="mfaRevoke" type="button" class="btn bad" disabled>Revoke unauthorized session</button></div><div id="mfaActivity" class="sim-output" hidden></div><p class="sim-small">In a real incident, contact your security team through a known channel and follow its account-recovery instructions.</p></section>
+<section class="sim-panel"><h2>4. Make your own sign-in</h2><p id="mfaLoginHint">Handle the unexpected activity first, then start a sign-in yourself.</p><button id="mfaLogin" type="button" class="btn " disabled>Start my legitimate demo sign-in</button></section></div><aside class="sim-panel"><h2>Your practical evidence</h2><ul class="sim-evidence"><li id="e-mfa-report">Handle and report the unexpected activity</li><li id="e-mfa-review">Review account activity and remove unwanted sessions</li><li id="e-mfa-login">Complete a sign-in you initiated with the matching number</li></ul><h3>Action timeline</h3><ol id="simLog" class="sim-log" aria-label="Action timeline"></ol></aside></div>
+<section id="simDebrief" class="sim-debrief" hidden><h2>Practical task complete</h2><p>You stopped a request-flooding attempt and tied approval to a sign-in you initiated. Denying an unexpected request is protective; reporting and reviewing activity complete the response. Number matching helps link a request to your action, but does not make every authentication method phishing-resistant.</p><p>Your evidence and timeline show what you did. Reset to try a different path; this session is not submitted or centrally collected.</p></section>
+<div id="labReportMount"></div>
+<div class="actions sim-reset"><button id="simReset" type="button" class="btn alt">Reset this lab</button></div>
+<noscript><div class="warnbox">JavaScript is required for this interactive simulation.</div></noscript></section>
 <nav class="lab-return" aria-label="Return navigation"><a class="btn" href="/">← Back to Home</a><a class="btn alt" href="/labs.html">View all labs</a></nav>
-</main>
-<footer class="site-footer">Powered by : <span>Dr. Ramesh Palanisamy, Professor, UTAS-Ibra</span></footer>
-</body>
-</html>
+</main><footer class="site-footer">Powered by : <span>Dr. Ramesh Palanisamy, Professor, UTAS-Ibra</span></footer></body></html>

@@ -2,20 +2,23 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>QR Phishing Lab | Practical Security Learning Hub</title>
+<title>QR Phishing Lab | UTAS-Ibra CyberLab</title>
 <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#244f91">
+<meta name="theme-color" content="#102b46">
 <link rel="icon" href="/icons/security-lab.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/icons/security-lab-180.png">
 <link rel="stylesheet" href="/labs.css">
-<script src="/awareness-labs.js" defer></script>
+<link rel="stylesheet" href="/inspection-labs.css">
+<link rel="stylesheet" href="/lab-report.css">
+<script src="/lab-report.js" defer></script>
+<script src="/inspection-labs.js" defer></script>
 </head>
-<body>
+<body class="inspection-page">
 <div class="top">PRACTICAL CYBERSECURITY — AUTHORIZED EDUCATIONAL SIMULATIONS ONLY</div>
 <main class="wrap">
-<header class="site-brand"><span class="brand-mark" aria-hidden="true"></span><div><a href="/">Practical Security Learning Hub</a><small>UTAS-Ibra · Learn. Practice. Stay Safe.</small></div></header>
+<header class="site-brand"><span class="brand-mark" aria-hidden="true"></span><div><a href="/">UTAS-Ibra CyberLab</a><small>Explore. Practise. Defend.</small></div></header>
 <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/labs.html">All labs</a><span aria-hidden="true">/</span><span aria-current="page">QR Phishing Lab</span></nav>
-<div class="intro"><b>Safe classroom mode:</b> All scenarios are fictional and defensive. Use invented/demo information only. No real credentials, OTPs, downloads, or scan traffic.</div>
+<div class="intro"><b>Safe classroom mode:</b> This lab is a local simulation with reserved .example domains. No external navigation, camera, credentials, account access, or real security reports. Nothing is saved or sent.</div>
 <details class="lab-switcher"><summary>Switch lab</summary><nav class="lab-links" aria-label="Security labs"><a href="/phishing.html">Phishing Attack Lab</a>
 <a href="/qr-phishing.html" aria-current="page">QR Phishing Lab</a>
 <a href="/mfa-fatigue.html">MFA Fatigue Lab</a>
@@ -23,19 +26,18 @@
 <a href="/browser-permissions.html">Browser Permission Lab</a>
 <a href="/suspicious-url.html">Suspicious URL Lab</a>
 <a href="/port-scanning.html">Port Scanning Lab</a>
-<a href="/password-strength.html">Password Strength Lab</a></nav></details>
-<section class="module" id="qr">
-<span class="tag">REAL-TIME LAB 1</span><h1>QR Phishing (Quishing)</h1>
-<p>Inspect the fictional QR destination shown below and decide whether it is safe or suspicious.</p>
-<div class="lab">
-<div class="scenario">
-<b>Scenario:</b> A poster says: “Scan to confirm your university account immediately.”<br><br>
-<b>QR destination:</b> <span class="mono" id="qrUrl">https://utas-login-check.example/verify</span>
-</div>
-<div class="actions"><button class="btn good" data-answer="false">Safe</button><button class="btn bad" data-answer="true">Suspicious</button><button class="btn alt" data-next>Next Scenario</button></div>
-<div id="qrFeedback" class="feedback" role="status" aria-live="polite"></div><div id="qrScore" class="score">Score: 0 / 0</div>
-</div>
+<a href="/password-strength.html">Password Strength Lab</a>
+<a href="/wifi-auditing.html">Wi-Fi Password Auditing Lab</a>
+<a href="/dos-ddos.html">DoS / DDoS Resilience Lab</a>
+<a href="/sql-injection.html">SQL Injection Defense Lab</a>
+<a href="/xss.html">XSS Defense Lab</a></nav></details>
+<section class="module inspection-module">
+<div class="inspection-heading"><div><span class="tag">HANDS-ON · CONTAINED SIMULATION</span><h1>QR Phishing Lab</h1><p>Decode a supplied poster, follow its simulated redirects, collect evidence, and recover through a trusted portal.</p></div><span class="local-badge"><span aria-hidden="true">●</span> Local scenario</span></div>
+<div id="inspectionApp" data-inspection-lab="qr"><p>Loading the inspection workbench…</p></div>
+<div id="labReportMount"></div>
+<noscript><div class="warnbox">This hands-on simulation needs JavaScript. Enable it and reload. No external sites are opened by the lab.</div></noscript>
 </section>
+<template id="qrArtwork"><svg class="poster-qr" viewBox="0 0 37 37" role="img" aria-label="Fictional poster QR code. Use the in-page decode button; no phone or camera needed."><rect width="100%" height="100%" fill="white"/><path d="M4 4h1v1h-1z M5 4h1v1h-1z M6 4h1v1h-1z M7 4h1v1h-1z M8 4h1v1h-1z M9 4h1v1h-1z M10 4h1v1h-1z M13 4h1v1h-1z M19 4h1v1h-1z M20 4h1v1h-1z M23 4h1v1h-1z M24 4h1v1h-1z M26 4h1v1h-1z M27 4h1v1h-1z M28 4h1v1h-1z M29 4h1v1h-1z M30 4h1v1h-1z M31 4h1v1h-1z M32 4h1v1h-1z M4 5h1v1h-1z M10 5h1v1h-1z M12 5h1v1h-1z M13 5h1v1h-1z M15 5h1v1h-1z M16 5h1v1h-1z M22 5h1v1h-1z M24 5h1v1h-1z M26 5h1v1h-1z M32 5h1v1h-1z M4 6h1v1h-1z M6 6h1v1h-1z M7 6h1v1h-1z M8 6h1v1h-1z M10 6h1v1h-1z M13 6h1v1h-1z M14 6h1v1h-1z M15 6h1v1h-1z M18 6h1v1h-1z M20 6h1v1h-1z M22 6h1v1h-1z M24 6h1v1h-1z M26 6h1v1h-1z M28 6h1v1h-1z M29 6h1v1h-1z M30 6h1v1h-1z M32 6h1v1h-1z M4 7h1v1h-1z M6 7h1v1h-1z M7 7h1v1h-1z M8 7h1v1h-1z M10 7h1v1h-1z M12 7h1v1h-1z M13 7h1v1h-1z M15 7h1v1h-1z M20 7h1v1h-1z M21 7h1v1h-1z M23 7h1v1h-1z M26 7h1v1h-1z M28 7h1v1h-1z M29 7h1v1h-1z M30 7h1v1h-1z M32 7h1v1h-1z M4 8h1v1h-1z M6 8h1v1h-1z M7 8h1v1h-1z M8 8h1v1h-1z M10 8h1v1h-1z M14 8h1v1h-1z M16 8h1v1h-1z M17 8h1v1h-1z M18 8h1v1h-1z M19 8h1v1h-1z M21 8h1v1h-1z M22 8h1v1h-1z M23 8h1v1h-1z M24 8h1v1h-1z M26 8h1v1h-1z M28 8h1v1h-1z M29 8h1v1h-1z M30 8h1v1h-1z M32 8h1v1h-1z M4 9h1v1h-1z M10 9h1v1h-1z M12 9h1v1h-1z M14 9h1v1h-1z M17 9h1v1h-1z M18 9h1v1h-1z M19 9h1v1h-1z M20 9h1v1h-1z M24 9h1v1h-1z M26 9h1v1h-1z M32 9h1v1h-1z M4 10h1v1h-1z M5 10h1v1h-1z M6 10h1v1h-1z M7 10h1v1h-1z M8 10h1v1h-1z M9 10h1v1h-1z M10 10h1v1h-1z M12 10h1v1h-1z M14 10h1v1h-1z M16 10h1v1h-1z M18 10h1v1h-1z M20 10h1v1h-1z M22 10h1v1h-1z M24 10h1v1h-1z M26 10h1v1h-1z M27 10h1v1h-1z M28 10h1v1h-1z M29 10h1v1h-1z M30 10h1v1h-1z M31 10h1v1h-1z M32 10h1v1h-1z M16 11h1v1h-1z M17 11h1v1h-1z M19 11h1v1h-1z M22 11h1v1h-1z M4 12h1v1h-1z M5 12h1v1h-1z M6 12h1v1h-1z M7 12h1v1h-1z M8 12h1v1h-1z M10 12h1v1h-1z M11 12h1v1h-1z M12 12h1v1h-1z M13 12h1v1h-1z M14 12h1v1h-1z M16 12h1v1h-1z M18 12h1v1h-1z M19 12h1v1h-1z M21 12h1v1h-1z M25 12h1v1h-1z M27 12h1v1h-1z M29 12h1v1h-1z M31 12h1v1h-1z M4 13h1v1h-1z M6 13h1v1h-1z M7 13h1v1h-1z M8 13h1v1h-1z M13 13h1v1h-1z M19 13h1v1h-1z M20 13h1v1h-1z M22 13h1v1h-1z M23 13h1v1h-1z M24 13h1v1h-1z M26 13h1v1h-1z M27 13h1v1h-1z M28 13h1v1h-1z M32 13h1v1h-1z M4 14h1v1h-1z M5 14h1v1h-1z M6 14h1v1h-1z M8 14h1v1h-1z M10 14h1v1h-1z M13 14h1v1h-1z M15 14h1v1h-1z M16 14h1v1h-1z M28 14h1v1h-1z M4 15h1v1h-1z M5 15h1v1h-1z M7 15h1v1h-1z M9 15h1v1h-1z M11 15h1v1h-1z M13 15h1v1h-1z M14 15h1v1h-1z M15 15h1v1h-1z M18 15h1v1h-1z M20 15h1v1h-1z M28 15h1v1h-1z M29 15h1v1h-1z M31 15h1v1h-1z M4 16h1v1h-1z M5 16h1v1h-1z M10 16h1v1h-1z M12 16h1v1h-1z M13 16h1v1h-1z M15 16h1v1h-1z M21 16h1v1h-1z M22 16h1v1h-1z M23 16h1v1h-1z M24 16h1v1h-1z M27 16h1v1h-1z M29 16h1v1h-1z M30 16h1v1h-1z M4 17h1v1h-1z M5 17h1v1h-1z M7 17h1v1h-1z M8 17h1v1h-1z M9 17h1v1h-1z M13 17h1v1h-1z M14 17h1v1h-1z M16 17h1v1h-1z M17 17h1v1h-1z M18 17h1v1h-1z M19 17h1v1h-1z M21 17h1v1h-1z M22 17h1v1h-1z M23 17h1v1h-1z M24 17h1v1h-1z M26 17h1v1h-1z M27 17h1v1h-1z M28 17h1v1h-1z M32 17h1v1h-1z M5 18h1v1h-1z M7 18h1v1h-1z M9 18h1v1h-1z M10 18h1v1h-1z M12 18h1v1h-1z M14 18h1v1h-1z M17 18h1v1h-1z M18 18h1v1h-1z M19 18h1v1h-1z M20 18h1v1h-1z M21 18h1v1h-1z M24 18h1v1h-1z M25 18h1v1h-1z M27 18h1v1h-1z M28 18h1v1h-1z M29 18h1v1h-1z M30 18h1v1h-1z M4 19h1v1h-1z M5 19h1v1h-1z M7 19h1v1h-1z M11 19h1v1h-1z M12 19h1v1h-1z M13 19h1v1h-1z M16 19h1v1h-1z M17 19h1v1h-1z M19 19h1v1h-1z M20 19h1v1h-1z M24 19h1v1h-1z M26 19h1v1h-1z M27 19h1v1h-1z M31 19h1v1h-1z M4 20h1v1h-1z M7 20h1v1h-1z M8 20h1v1h-1z M10 20h1v1h-1z M11 20h1v1h-1z M16 20h1v1h-1z M18 20h1v1h-1z M21 20h1v1h-1z M25 20h1v1h-1z M29 20h1v1h-1z M30 20h1v1h-1z M4 21h1v1h-1z M6 21h1v1h-1z M11 21h1v1h-1z M12 21h1v1h-1z M13 21h1v1h-1z M20 21h1v1h-1z M22 21h1v1h-1z M23 21h1v1h-1z M24 21h1v1h-1z M25 21h1v1h-1z M26 21h1v1h-1z M27 21h1v1h-1z M28 21h1v1h-1z M30 21h1v1h-1z M32 21h1v1h-1z M4 22h1v1h-1z M6 22h1v1h-1z M7 22h1v1h-1z M10 22h1v1h-1z M13 22h1v1h-1z M15 22h1v1h-1z M16 22h1v1h-1z M19 22h1v1h-1z M21 22h1v1h-1z M22 22h1v1h-1z M26 22h1v1h-1z M27 22h1v1h-1z M28 22h1v1h-1z M30 22h1v1h-1z M4 23h1v1h-1z M7 23h1v1h-1z M9 23h1v1h-1z M12 23h1v1h-1z M14 23h1v1h-1z M15 23h1v1h-1z M18 23h1v1h-1z M23 23h1v1h-1z M24 23h1v1h-1z M28 23h1v1h-1z M31 23h1v1h-1z M4 24h1v1h-1z M7 24h1v1h-1z M10 24h1v1h-1z M11 24h1v1h-1z M12 24h1v1h-1z M13 24h1v1h-1z M15 24h1v1h-1z M19 24h1v1h-1z M20 24h1v1h-1z M21 24h1v1h-1z M23 24h1v1h-1z M24 24h1v1h-1z M25 24h1v1h-1z M26 24h1v1h-1z M27 24h1v1h-1z M28 24h1v1h-1z M30 24h1v1h-1z M31 24h1v1h-1z M32 24h1v1h-1z M12 25h1v1h-1z M14 25h1v1h-1z M16 25h1v1h-1z M17 25h1v1h-1z M18 25h1v1h-1z M20 25h1v1h-1z M21 25h1v1h-1z M22 25h1v1h-1z M24 25h1v1h-1z M28 25h1v1h-1z M29 25h1v1h-1z M30 25h1v1h-1z M31 25h1v1h-1z M32 25h1v1h-1z M4 26h1v1h-1z M5 26h1v1h-1z M6 26h1v1h-1z M7 26h1v1h-1z M8 26h1v1h-1z M9 26h1v1h-1z M10 26h1v1h-1z M12 26h1v1h-1z M17 26h1v1h-1z M18 26h1v1h-1z M19 26h1v1h-1z M20 26h1v1h-1z M21 26h1v1h-1z M23 26h1v1h-1z M24 26h1v1h-1z M26 26h1v1h-1z M28 26h1v1h-1z M29 26h1v1h-1z M30 26h1v1h-1z M4 27h1v1h-1z M10 27h1v1h-1z M16 27h1v1h-1z M17 27h1v1h-1z M19 27h1v1h-1z M24 27h1v1h-1z M28 27h1v1h-1z M4 28h1v1h-1z M6 28h1v1h-1z M7 28h1v1h-1z M8 28h1v1h-1z M10 28h1v1h-1z M12 28h1v1h-1z M14 28h1v1h-1z M16 28h1v1h-1z M18 28h1v1h-1z M21 28h1v1h-1z M24 28h1v1h-1z M25 28h1v1h-1z M26 28h1v1h-1z M27 28h1v1h-1z M28 28h1v1h-1z M30 28h1v1h-1z M31 28h1v1h-1z M4 29h1v1h-1z M6 29h1v1h-1z M7 29h1v1h-1z M8 29h1v1h-1z M10 29h1v1h-1z M12 29h1v1h-1z M13 29h1v1h-1z M14 29h1v1h-1z M20 29h1v1h-1z M21 29h1v1h-1z M22 29h1v1h-1z M24 29h1v1h-1z M29 29h1v1h-1z M30 29h1v1h-1z M31 29h1v1h-1z M32 29h1v1h-1z M4 30h1v1h-1z M6 30h1v1h-1z M7 30h1v1h-1z M8 30h1v1h-1z M10 30h1v1h-1z M12 30h1v1h-1z M13 30h1v1h-1z M15 30h1v1h-1z M16 30h1v1h-1z M19 30h1v1h-1z M21 30h1v1h-1z M26 30h1v1h-1z M27 30h1v1h-1z M28 30h1v1h-1z M29 30h1v1h-1z M30 30h1v1h-1z M31 30h1v1h-1z M4 31h1v1h-1z M10 31h1v1h-1z M12 31h1v1h-1z M13 31h1v1h-1z M14 31h1v1h-1z M15 31h1v1h-1z M18 31h1v1h-1z M20 31h1v1h-1z M22 31h1v1h-1z M23 31h1v1h-1z M24 31h1v1h-1z M25 31h1v1h-1z M27 31h1v1h-1z M29 31h1v1h-1z M31 31h1v1h-1z M4 32h1v1h-1z M5 32h1v1h-1z M6 32h1v1h-1z M7 32h1v1h-1z M8 32h1v1h-1z M9 32h1v1h-1z M10 32h1v1h-1z M12 32h1v1h-1z M13 32h1v1h-1z M14 32h1v1h-1z M15 32h1v1h-1z M19 32h1v1h-1z M21 32h1v1h-1z M23 32h1v1h-1z M28 32h1v1h-1z M30 32h1v1h-1z" fill="#17283c"/></svg></template>
 <nav class="lab-return" aria-label="Return navigation"><a class="btn" href="/">← Back to Home</a><a class="btn alt" href="/labs.html">View all labs</a></nav>
 </main>
 <footer class="site-footer">Powered by : <span>Dr. Ramesh Palanisamy, Professor, UTAS-Ibra</span></footer>

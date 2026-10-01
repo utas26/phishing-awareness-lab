@@ -1,95 +1,32 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Practical Security Learning Hub</title>
-<style>
-:root{--blue:#315fa8;--blue2:#244f91;--orange:#f4b332;--line:#d8e1eb;--ink:#26364f;--bg:#eef3f8}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
-.top{background:#8b1e1e;color:#fff;text-align:center;padding:9px 14px;font-weight:800}
-.app{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 38px)}
-.side{background:#244f91;color:#fff;padding:24px 16px;position:sticky;top:0;height:100vh;overflow:auto}
-.side h2{margin:0 0 8px}.side p{font-size:12px;color:#dce7f4;line-height:1.5}
-.nav{display:grid;gap:7px;margin-top:20px}.nav a{color:#fff;text-decoration:none;padding:10px 12px;border-radius:7px;background:rgba(255,255,255,.07);font-weight:700}.nav a:hover{background:rgba(255,255,255,.15)}
-.main{padding:28px}.hero{background:#fff;border:1px solid var(--line);border-radius:12px;padding:0;box-shadow:0 12px 34px rgba(30,55,85,.08);overflow:hidden}.hero-grid{display:grid;grid-template-columns:1.05fr 1fr;align-items:stretch}.hero-art{background:#d7f4f8;display:flex;align-items:center;min-width:0}.hero-art img{width:100%;height:auto;object-fit:contain;display:block}.hero-copy{padding:28px;display:flex;flex-direction:column;justify-content:center}.hero-copy h1{font-size:38px;line-height:1.08}.hero-copy .lead{font-size:17px;line-height:1.6;color:#5f6f86;margin-top:14px}.hero-copy .cta{margin-top:18px}.hero-copy .cta a{display:inline-block;background:var(--blue);color:#fff;text-decoration:none;padding:12px 18px;border-radius:7px;font-weight:800}
-.brand{display:flex;align-items:center;gap:14px}.mark{width:64px;height:64px;border-radius:15px 31px 15px 31px;background:linear-gradient(145deg,#f5a21b 0 48%,#3156a6 48% 100%)}
-h1{margin:0;color:var(--blue)}.sub{color:#6b7890;margin-top:5px}
-.notice{margin-top:18px;background:#fff6df;border:1px solid #efd184;padding:13px;border-radius:7px;line-height:1.5}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:20px}.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px}.card h3{margin:0 0 8px;color:var(--blue)}.card p{color:#5f6f86;line-height:1.5;min-height:66px}.btn{display:inline-block;text-decoration:none;background:var(--blue);color:#fff;padding:10px 13px;border-radius:6px;font-weight:800}.btn.alt{background:#edf2f7;color:#24435f;border:1px solid #cfd9e5}
-.section{margin-top:26px}.section h2{color:var(--blue)}
-.quick{display:flex;gap:10px;flex-wrap:wrap}
-.site-footer{background:#183b6f;color:#fff;padding:16px 24px;text-align:center;font-weight:700;margin-top:26px}.site-footer span{color:#f4b332}@media(max-width:900px){.app{grid-template-columns:1fr}.side{height:auto;position:static}.grid{grid-template-columns:1fr 1fr}.hero-grid{grid-template-columns:1fr}.hero-art{min-height:0}}
-@media(max-width:600px){.grid{grid-template-columns:1fr}.main{padding:16px}}
-</style>
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#244f91">
-<link rel="icon" href="/icons/security-lab.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/icons/security-lab-180.png">
-<link rel="stylesheet" href="/install.css">
-<script src="/install.js" defer></script>
-</head>
-<body>
-<div class="top">PRACTICAL CYBERSECURITY — AUTHORIZED EDUCATIONAL SIMULATIONS ONLY</div>
-<div class="app">
-<aside class="side">
-<h2>Practical Security</h2>
-<p>Safe, instructor-led cybersecurity awareness and defensive learning activities.</p>
-<nav class="nav">
-<a href="/">Home</a>
-<a href="/labs.html">All Labs</a>
-<a href="/phishing.html">Phishing Attack</a>
-<a href="/qr-phishing.html">QR Phishing Lab</a>
-<a href="/mfa-fatigue.html">MFA Fatigue Lab</a>
-<a href="/fake-update.html">Fake Update Lab</a>
-<a href="/browser-permissions.html">Browser Permission Lab</a>
-<a href="/suspicious-url.html">Suspicious URL Lab</a>
-<a href="/port-scanning.html">Port Scanning Lab</a>
-<a href="/password-strength.html">Password Strength</a>
-<a href="/resources.html">Learning & Feedback</a>
-<a href="/admin.html">Instructor Dashboard</a>
-</nav>
-</aside>
-
-<main class="main">
-<section class="hero">
-<div class="hero-grid">
-  <div class="hero-art"><img src="/homepage-awareness.png" width="1059" height="642" alt="UTAS Ibra cybersecurity awareness: Your security is in your hands. A student holds a key beside a lock and computer, with reminders about phishing, fake logins, data theft, social engineering, and malware."></div>
-  <div class="hero-copy">
-    <div class="brand"><div class="mark"></div><div><h1>Practical Security Learning Hub</h1><div class="sub">UTAS-Ibra</div></div></div>
-    <div class="lead">Learn. Practice. Stay Safe. Hands-on cybersecurity awareness activities to help students recognize real-world threats and protect themselves in the digital world.</div>
-    <div class="notice"><b>Teaching rule:</b> All activities are awareness simulations. Use invented/demo information only.</div>
-    <div class="cta"><a href="/phishing.html">Start Learning →</a></div>
-  </div>
-</div>
-</section>
-
-<section class="section">
-<h2>Practical Attack Awareness Labs</h2>
-<div class="grid">
-<div class="card"><h3>Phishing Attack</h3><p>Suspicious email → deceptive link → fake login → instructor debrief.</p><a class="btn" href="/phishing.html">Open Real-Time Lab</a></div>
-<div class="card"><h3>QR Phishing Lab</h3><p>Inspect fictional QR destinations and decide whether each one is safe or suspicious.</p><a class="btn alt" href="/qr-phishing.html">Open Real-Time Lab</a></div>
-<div class="card"><h3>MFA Fatigue Lab</h3><p>Respond to repeated fictional authentication prompts and practice the correct action.</p><a class="btn alt" href="/mfa-fatigue.html">Open Real-Time Lab</a></div>
-<div class="card"><h3>Fake Software Update Lab</h3><p>Compare update prompts and identify which one should be trusted or rejected.</p><a class="btn alt" href="/fake-update.html">Open Real-Time Lab</a></div>
-<div class="card"><h3>Browser Permission Lab</h3><p>Practice deciding when camera, microphone, notification, and download permissions are appropriate.</p><a class="btn alt" href="/browser-permissions.html">Open Real-Time Lab</a></div>
-<div class="card"><h3>Suspicious URL Lab</h3><p>Classify fictional URLs and learn to identify the real domain, typos, and misleading subdomains.</p><a class="btn alt" href="/suspicious-url.html">Open Real-Time Lab</a></div>
-<div class="card"><h3>Port Scanning Lab</h3><p>Watch a simulated scan reveal open, closed, and filtered ports, then interpret the results.</p><a class="btn alt" href="/port-scanning.html">Open Port Scanning Lab</a></div>
-<div class="card"><h3>Password Strength</h3><p>Test invented passwords locally with live strength, entropy, comparison, and advice.</p><a class="btn alt" href="/password-strength.html">Open Password Checker</a></div>
-</div>
-</section>
-
-<section class="install-card" aria-labelledby="install-heading">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>UTAS-Ibra CyberLab | Explore. Practise. Defend.</title><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#102b46"><link rel="icon" href="/icons/security-lab.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icons/security-lab-180.png"><link rel="stylesheet" href="/labs.css"><link rel="stylesheet" href="/home.css"><link rel="stylesheet" href="/install.css"><script src="/install.js" defer></script><script src="/catalog.js" defer></script></head>
+<body class="cyber-home"><a class="skip-link" href="#main">Skip to content</a><div class="cyber-safety">FICTIONAL CLASSROOM SIMULATIONS · AUTHORISED LEARNING ONLY</div><header class="cyber-header"><a class="cyber-brand" href="/"><span class="cyber-brand-symbol" aria-hidden="true">C</span><span>UTAS-Ibra CyberLab<small>Practical Security Learning Hub</small></span></a><nav aria-label="Main navigation"><a href="#practice">Explore labs</a><a href="/feedback.html">Knowledge & feedback</a><a href="#install">Install app</a></nav></header>
+<main id="main"><section class="cyber-hero"><div class="cyber-hero-copy"><span class="cyber-eyebrow">EXPLORE. PRACTISE. DEFEND.</span><h1>Learn the attack.<br><span>Practise the defence.</span></h1><p>Build cybersecurity skills by doing. Investigate a threat, try a response, see the outcome and take your learning into a report.</p><div class="cyber-hero-actions"><a class="cyber-primary" href="#practice">Start practising <span aria-hidden="true">→</span></a><a class="cyber-secondary" href="/labs.html">Browse all labs</a></div><div class="cyber-hero-chips"><span>12 learning labs</span><span>Safe simulated targets</span><span>Downloadable reports</span></div></div><div class="cyber-hero-art"><img src="/homepage-awareness.png" width="1059" height="642" alt="UTAS Ibra cybersecurity awareness: Your security is in your hands. A student holds a key beside a lock and computer, with reminders about phishing, fake logins, data theft, social engineering, and malware."><div class="cyber-art-caption"><span class="cyber-live-dot" aria-hidden="true"></span>Real learning. Fictional systems.</div></div></section>
+<section class="cyber-journey" aria-label="How to use the learning hub"><article><span>01</span><div><h2>Explore</h2><p>Choose a scenario and inspect the evidence.</p></div></article><article><span>02</span><div><h2>Practise</h2><p>Take action, observe the result, try a defence.</p></div></article><article><span>03</span><div><h2>Download your report</h2><p>Record actual results and add your observations.</p></div></article></section>
+<section class="cyber-library" id="practice"><div class="cyber-section-heading"><div><span class="cyber-eyebrow">YOUR PRACTICE SPACE</span><h2>Choose your next challenge</h2></div><p>Start with a guided lab or explore a technical model.<br>Difficulty and durations are learning estimates.</p></div><div class="cyber-filters" role="group" aria-label="Filter labs"><button type="button" data-filter="all" aria-pressed="true">All 12 labs</button><button type="button" data-filter="human" aria-pressed="false">Human factors</button><button type="button" data-filter="network" aria-pressed="false">Networks</button><button type="button" data-filter="web" aria-pressed="false">Web security</button><button type="button" data-filter="passwords" aria-pressed="false">Passwords</button></div><p class="cyber-filter-status" id="catalogStatus" role="status" aria-live="polite">Showing all 12 labs</p><div class="cyber-grid"><article class="cyber-card" data-category="human"><div class="cyber-card-top"><span class="cyber-icon" aria-hidden="true">PH</span><span class="cyber-category">Human factors</span></div><span class="cyber-kind">AWARENESS WALKTHROUGH</span><h3>Phishing Attack</h3><p>Follow a suspicious email into a fictional login, then review what happened.</p><div class="cyber-meta"><span>Guided</span><span>5–8 min · estimate</span></div><a class="cyber-card-link" href="/phishing.html">Open lab <span aria-hidden="true">↗</span></a><a class="lab-report-link" href="/phishing-report.html">Write / download the classroom report →</a></article>
+<article class="cyber-card" data-category="human"><div class="cyber-card-top"><span class="cyber-icon" aria-hidden="true">QR</span><span class="cyber-category">Human factors</span></div><span class="cyber-kind">HANDS-ON SIMULATION</span><h3>QR Phishing</h3><p>Decode a classroom QR, follow its redirect trail, pin evidence and recover safely.</p><div class="cyber-meta"><span>Guided</span><span>6–10 min · estimate</span></div><a class="cyber-card-link" href="/qr-phishing.html">Open lab <span aria-hidden="true">↗</span></a></article>
+<article class="cyber-card" data-category="human"><div class="cyber-card-top"><span class="cyber-icon" aria-hidden="true">MFA</span><span class="cyber-category">Human factors</span></div><span class="cyber-kind">HANDS-ON SIMULATION</span><h3>MFA Fatigue</h3><p>Handle incoming requests, revoke an unwanted session and verify your own sign-in.</p><div class="cyber-meta"><span>Guided</span><span>5–8 min · estimate</span></div><a class="cyber-card-link" href="/mfa-fatigue.html">Open lab <span aria-hidden="true">↗</span></a></article>
+<article class="cyber-card" data-category="human"><div class="cyber-card-top"><span class="cyber-icon" aria-hidden="true">UPD</span><span class="cyber-category">Human factors</span></div><span class="cyber-kind">HANDS-ON SIMULATION</span><h3>Fake Software Update</h3><p>Inspect a deceptive download, contain its simulated effects and use a trusted updater.</p><div class="cyber-meta"><span>Guided</span><span>6–10 min · estimate</span></div><a class="cyber-card-link" href="/fake-update.html">Open lab <span aria-hidden="true">↗</span></a></article>
+<article class="cyber-card" data-category="human"><div class="cyber-card-top"><span class="cyber-icon" aria-hidden="true">WEB</span><span class="cyber-category">Human factors</span></div><span class="cyber-kind">HANDS-ON SIMULATION</span><h3>Browser Permissions</h3><p>Repair an unwanted permission grant and complete a task with only the access it needs.</p><div class="cyber-meta"><span>Guided</span><span>5–8 min · estimate</span></div><a class="cyber-card-link" href="/browser-permissions.html">Open lab <span aria-hidden="true">↗</span></a></article>
+<article class="cyber-card" data-category="human"><div class="cyber-card-top"><span class="cyber-icon" aria-hidden="true">URL</span><span class="cyber-category">Human factors</span></div><span class="cyber-kind">HANDS-ON SIMULATION</span><h3>Suspicious URLs</h3><p>Inspect link destinations in a fictional inbox, collect evidence and choose a trusted route.</p><div class="cyber-meta"><span>Guided</span><span>6–10 min · estimate</span></div><a class="cyber-card-link" href="/suspicious-url.html">Open lab <span aria-hidden="true">↗</span></a></article>
+<article class="cyber-card" data-category="network"><div class="cyber-card-top"><span class="cyber-icon" aria-hidden="true">TCP</span><span class="cyber-category">Networks</span></div><span class="cyber-kind">VIRTUAL NETWORK</span><h3>Port Scanning</h3><p>Find your virtual network, discover preset hosts and inspect simulated port responses.</p><div class="cyber-meta"><span>Intermediate</span><span>7–12 min · estimate</span></div><a class="cyber-card-link" href="/port-scanning.html">Open lab <span aria-hidden="true">↗</span></a></article>
+<article class="cyber-card" data-category="network"><div class="cyber-card-top"><span class="cyber-icon" aria-hidden="true">WI-FI</span><span class="cyber-category">Networks</span></div><span class="cyber-kind">LOCAL TEACHING MODEL</span><h3>Wi-Fi Password Auditing</h3><p>Test supplied candidates against a fictional verifier, then compare and strengthen the lab network.</p><div class="cyber-meta"><span>Intermediate</span><span>8–12 min · estimate</span></div><a class="cyber-card-link" href="/wifi-auditing.html">Open lab <span aria-hidden="true">↗</span></a></article>
+<article class="cyber-card" data-category="network"><div class="cyber-card-top"><span class="cyber-icon" aria-hidden="true">LOAD</span><span class="cyber-category">Networks</span></div><span class="cyber-kind">VIRTUAL TRAFFIC MODEL</span><h3>DoS & DDoS</h3><p>Explore a virtual traffic queue and compare rate limiting, blocking and capacity defences.</p><div class="cyber-meta"><span>Intermediate</span><span>8–12 min · estimate</span></div><a class="cyber-card-link" href="/dos-ddos.html">Open lab <span aria-hidden="true">↗</span></a></article>
+<article class="cyber-card" data-category="web"><div class="cyber-card-top"><span class="cyber-icon" aria-hidden="true">SQL</span><span class="cyber-category">Web security</span></div><span class="cyber-kind">LOCAL TEACHING MODEL</span><h3>SQL Injection</h3><p>Use a small fictional query model to compare vulnerable behaviour with parameterised input.</p><div class="cyber-meta"><span>Intermediate</span><span>6–10 min · estimate</span></div><a class="cyber-card-link" href="/sql-injection.html">Open lab <span aria-hidden="true">↗</span></a></article>
+<article class="cyber-card" data-category="web"><div class="cyber-card-top"><span class="cyber-icon" aria-hidden="true">XSS</span><span class="cyber-category">Web security</span></div><span class="cyber-kind">CONTAINED SIMULATION</span><h3>Cross-Site Scripting</h3><p>Explore unsafe rendering in an isolated exercise, then compare safe output handling.</p><div class="cyber-meta"><span>Intermediate</span><span>6–10 min · estimate</span></div><a class="cyber-card-link" href="/xss.html">Open lab <span aria-hidden="true">↗</span></a></article>
+<article class="cyber-card" data-category="passwords"><div class="cyber-card-top"><span class="cyber-icon" aria-hidden="true">KEY</span><span class="cyber-category">Passwords</span></div><span class="cyber-kind">LOCAL PASSWORD CHECKER</span><h3>Password Strength</h3><p>Compare invented passwords with live local feedback, demo generators and strength advice.</p><div class="cyber-meta"><span>Guided</span><span>4–7 min · estimate</span></div><a class="cyber-card-link" href="/password-strength.html">Open lab <span aria-hidden="true">↗</span></a></article></div><div class="cyber-scope"><strong>Learn safely, understand the limits.</strong><p>These activities use fictional scenarios, supplied examples and local teaching models. They do not attack nearby networks, scan real devices or establish that a real system is vulnerable. Use invented information only. Reports distinguish completed actions from unfinished work; the phishing report uses your own observations.</p></div></section>
+<section class="cyber-bottom"><section class="install-card" id="install" aria-labelledby="install-heading">
   <img class="install-icon" src="/icons/security-lab-192.png" width="68" height="68" alt="">
   <div class="install-copy">
     <h2 id="install-heading">Keep your learning hub one click away</h2>
-    <p>Add Security Lab to your computer or phone with its own app icon. Internet connection required.</p>
+    <p>Add UTAS-Ibra CyberLab to your computer or phone with its own app icon. Internet connection required.</p>
     <p id="install-status" class="install-status" role="status" aria-live="polite">Install with your browser, or view the steps for your device.</p>
   </div>
   <button id="install-app" class="install-action" type="button" aria-describedby="install-status">Install App</button>
   <noscript><p>Use your browser’s menu to install this page as an app.</p></noscript>
 </section>
 <dialog id="install-help" class="install-dialog" aria-labelledby="install-help-heading">
-  <h2 id="install-help-heading">Add Security Lab to your device</h2>
+  <h2 id="install-help-heading">Add CyberLab to your device</h2>
   <p>Your browser manages installation and asks you to confirm. If an install prompt is available, close this guide and choose <strong>Install App</strong> again.</p>
   <ul>
     <li><strong>Chrome on a computer:</strong> Open the ⋮ menu, then <strong>Cast, save, and share → Install page as app</strong>. You may also see an install icon beside the address bar.</li>
@@ -97,21 +34,9 @@ h1{margin:0;color:var(--blue)}.sub{color:#6b7890;margin-top:5px}
     <li><strong>Safari on Mac:</strong> On macOS Sonoma 14 or later, choose <strong>File → Add to Dock</strong>.</li>
     <li><strong>Phone or tablet:</strong> Look for <strong>Install app</strong> or <strong>Add to Home Screen</strong> in your browser’s menu or Share menu.</li>
   </ul>
-  <p class="install-note">Menu names and icon placement vary by browser and device. If installation is unavailable, bookmark this page or open it in Chrome or Edge. If already installed, look for Security Lab in your device’s apps.</p>
+  <p class="install-note">Menu names and icon placement vary by browser and device. If installation is unavailable, bookmark this page or open it in Chrome or Edge. If already installed, look for CyberLab in your device’s apps.</p>
   <p>All labs still need an internet connection. Installing does not download student records or add special device permissions.</p>
   <button id="install-help-close" class="install-close" type="button" autofocus>Got it</button>
 </dialog>
 
-<section class="section">
-<h2>Quick Access</h2>
-<div class="quick">
-<a class="btn" href="/feedback.html">Before &amp; After Knowledge + Feedback</a>
-<a class="btn alt" href="/resources.html">Learning Resources</a>
-<a class="btn alt" href="/admin.html">Instructor Dashboard</a>
-</div>
-</section>
-</main>
-</div>
-<footer class="site-footer">Powered by : <span>Dr. Ramesh Palanisamy, Professor, UTAS-Ibra</span></footer>
-</body>
-</html>
+<div class="cyber-feedback"><div><span class="cyber-eyebrow">REFLECT ON YOUR LEARNING</span><h2>Before & after knowledge + feedback</h2><p>Use the separate draft assessment to reflect on what you know and how the learning activities worked for you.</p></div><a class="cyber-primary" href="/feedback.html">Open feedback →</a></div><nav class="cyber-resources" aria-label="Extra resources"><a href="/resources.html">Learning resources</a><a href="/admin.html">Instructor dashboard</a><a href="/phishing-report.html">Phishing classroom report</a></nav></section></main><footer class="site-footer"><strong>UTAS-Ibra CyberLab</strong> · Explore. Practise. Defend.<br>Powered by : <span>Dr. Ramesh Palanisamy, Professor, UTAS-Ibra</span></footer></body></html>

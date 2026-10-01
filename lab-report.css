@@ -1,0 +1,13 @@
+.lab-report{margin:24px 0;padding:22px;border:1px solid #cad8e8;border-left:4px solid #315fa8;border-radius:10px;background:#f7faff;color:#26364f}
+.lab-report h2{margin:0 0 10px;font-size:22px;color:#244f91}
+.lab-report p{line-height:1.6;margin:10px 0}
+.lab-report label{display:block;margin:18px 0 8px;font-weight:700}
+.lab-report textarea{display:block;width:100%;max-width:100%;resize:vertical;border:1px solid #bccbdf;border-radius:7px;padding:11px 12px;font:inherit;line-height:1.5;color:#26364f;background:#fff}
+.lab-report textarea:focus-visible{outline:3px solid #e5a322;outline-offset:3px}
+.lab-report .lab-report-note{font-size:13px;color:#53677f}
+.lab-report-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.lab-report .lab-report-status{font-size:14px;margin-bottom:0;font-weight:700;color:#285786;overflow-wrap:anywhere}
+.lab-report .lab-report-status:empty{display:none}
+.lab-report-print-frame{position:fixed;width:1px;height:1px;left:-10000px;top:0;border:0;pointer-events:none}
+@media(max-width:520px){.lab-report{padding:17px}.lab-report-actions .btn{width:100%;text-align:center}.lab-report h2{font-size:20px}}
+@media print{.lab-report{display:none}}

@@ -16,7 +16,7 @@
     installed = true;
     deferredPrompt = null;
     button.hidden = true;
-    status.textContent = 'Security Lab is installed. Open it from your device’s apps or shortcuts.';
+    status.textContent = 'CyberLab is installed. Open it from your device’s apps or shortcuts.';
     if (help.open) help.close();
   }
 
@@ -57,7 +57,7 @@
       const choice = result || await prompt.userChoice;
       if (!installed) {
         status.textContent = choice && choice.outcome === 'accepted'
-          ? 'Install request accepted. Finish any browser steps, then open Security Lab from your apps.'
+          ? 'Install request accepted. Finish any browser steps, then open CyberLab from your apps.'
           : 'Installation canceled. You can try again from your browser’s install menu.';
       }
     } catch (error) {

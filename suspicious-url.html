@@ -2,20 +2,23 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Suspicious URL Lab | Practical Security Learning Hub</title>
+<title>Suspicious URL Lab | UTAS-Ibra CyberLab</title>
 <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#244f91">
+<meta name="theme-color" content="#102b46">
 <link rel="icon" href="/icons/security-lab.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/icons/security-lab-180.png">
 <link rel="stylesheet" href="/labs.css">
-<script src="/awareness-labs.js" defer></script>
+<link rel="stylesheet" href="/inspection-labs.css">
+<link rel="stylesheet" href="/lab-report.css">
+<script src="/lab-report.js" defer></script>
+<script src="/inspection-labs.js" defer></script>
 </head>
-<body>
+<body class="inspection-page">
 <div class="top">PRACTICAL CYBERSECURITY — AUTHORIZED EDUCATIONAL SIMULATIONS ONLY</div>
 <main class="wrap">
-<header class="site-brand"><span class="brand-mark" aria-hidden="true"></span><div><a href="/">Practical Security Learning Hub</a><small>UTAS-Ibra · Learn. Practice. Stay Safe.</small></div></header>
+<header class="site-brand"><span class="brand-mark" aria-hidden="true"></span><div><a href="/">UTAS-Ibra CyberLab</a><small>Explore. Practise. Defend.</small></div></header>
 <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/labs.html">All labs</a><span aria-hidden="true">/</span><span aria-current="page">Suspicious URL Lab</span></nav>
-<div class="intro"><b>Safe classroom mode:</b> All scenarios are fictional and defensive. Use invented/demo information only. No real credentials, OTPs, downloads, or scan traffic.</div>
+<div class="intro"><b>Safe classroom mode:</b> This lab is a local simulation with reserved .example domains. No external navigation, camera, credentials, account access, or real security reports. Nothing is saved or sent.</div>
 <details class="lab-switcher"><summary>Switch lab</summary><nav class="lab-links" aria-label="Security labs"><a href="/phishing.html">Phishing Attack Lab</a>
 <a href="/qr-phishing.html">QR Phishing Lab</a>
 <a href="/mfa-fatigue.html">MFA Fatigue Lab</a>
@@ -23,15 +26,16 @@
 <a href="/browser-permissions.html">Browser Permission Lab</a>
 <a href="/suspicious-url.html" aria-current="page">Suspicious URL Lab</a>
 <a href="/port-scanning.html">Port Scanning Lab</a>
-<a href="/password-strength.html">Password Strength Lab</a></nav></details>
-<section class="module" id="url">
-<span class="tag">REAL-TIME LAB 5</span><h1>Suspicious URL / Domain Inspection</h1>
-<p>Classify each fictional URL and focus on the real domain, not the page appearance.</p>
-<div class="lab">
-<div class="scenario"><b>URL:</b> <span class="mono" id="urlText"></span><br><br><b>Question:</b> Would you trust this link for a university login?</div>
-<div class="actions"><button class="btn good" data-answer="true">Trust</button><button class="btn bad" data-answer="false">Do Not Trust</button><button class="btn alt" data-next>Next URL</button></div>
-<div id="urlFeedback" class="feedback" role="status" aria-live="polite"></div><div id="urlScore" class="score">Score: 0 / 0</div>
-</div>
+<a href="/password-strength.html">Password Strength Lab</a>
+<a href="/wifi-auditing.html">Wi-Fi Password Auditing Lab</a>
+<a href="/dos-ddos.html">DoS / DDoS Resilience Lab</a>
+<a href="/sql-injection.html">SQL Injection Defense Lab</a>
+<a href="/xss.html">XSS Defense Lab</a></nav></details>
+<section class="module inspection-module">
+<div class="inspection-heading"><div><span class="tag">HANDS-ON · CONTAINED SIMULATION</span><h1>Suspicious URL Lab</h1><p>Work an inbox investigation: preview destinations, inspect actual hostnames, trace redirects, and verify a legitimate link.</p></div><span class="local-badge"><span aria-hidden="true">●</span> Local scenario</span></div>
+<div id="inspectionApp" data-inspection-lab="url"><p>Loading the inspection workbench…</p></div>
+<div id="labReportMount"></div>
+<noscript><div class="warnbox">This hands-on simulation needs JavaScript. Enable it and reload. No external sites are opened by the lab.</div></noscript>
 </section>
 <nav class="lab-return" aria-label="Return navigation"><a class="btn" href="/">← Back to Home</a><a class="btn alt" href="/labs.html">View all labs</a></nav>
 </main>
