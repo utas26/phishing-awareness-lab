@@ -3,6 +3,26 @@
 .port-module .port-lead{max-width:760px;color:#52627a;font-size:17px}
 .port-module .port-workbench{border:1px solid #d8e1eb;border-radius:10px;padding:22px;background:#f8fafc}
 .port-module .port-controls{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:14px}
+.port-module .port-discovery{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.port-module .port-step{padding:18px;border:1px solid #d8e1eb;border-radius:8px;background:#fff;min-width:0}
+.port-module .port-step-number{font-size:10px;font-weight:800;letter-spacing:1px;color:#315fa8}
+.port-module .port-step h3,.port-module .port-scan-step h3{margin:5px 0 8px;font-size:19px}
+.port-module .port-step p{font-size:13px;color:#52627a;margin:0 0 14px}
+.port-module .port-address-box{margin-top:16px;padding:13px;border-radius:7px;background:#edf4fc;border:1px solid #cbdced}
+.port-module .port-address-box>span,.port-module .port-address-box>strong,.port-module .port-address-box>small{display:block}
+.port-module .port-address-box>span{font-size:10px;font-weight:800;letter-spacing:.7px;color:#52627a}
+.port-module .port-address-box>strong{font:700 22px/1.6 Consolas,monospace;color:#244f91}
+.port-module .port-address-box>small{font-size:12px;color:#52627a}
+.port-module details{margin-top:12px;font-size:12px}
+.port-module summary{cursor:pointer;font-weight:700;color:#244f91}
+.port-module details p{margin-top:10px;overflow-wrap:anywhere}
+.port-module .port-network-status{font-size:13px;padding:12px 14px;border-left:3px solid #315fa8;background:#eaf0f8}
+.port-module .port-discovered-hosts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.port-module .port-host{padding:14px;background:#fff;border:1px solid #d8e1eb;border-radius:7px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.port-module .port-host strong,.port-module .port-host small{display:block;font-size:13px}
+.port-module .port-host small{color:#52627a;font:12px/1.8 Consolas,monospace}
+.port-module .port-host .btn{font-size:12px;white-space:nowrap}
+.port-module .port-scan-step{margin-top:22px;padding-top:20px;border-top:1px solid #d8e1eb}
 .port-module label{display:block;font-weight:700;font-size:14px;margin-bottom:6px}
 .port-module select{width:100%;min-width:0;min-height:44px;border:1px solid #b8c8d9;border-radius:6px;padding:9px 10px;background:#fff;color:#26364f;font:inherit;font-size:14px}
 .port-module :is(button,select,a):focus-visible{outline:3px solid #f4b332;outline-offset:3px}
@@ -55,6 +75,6 @@
 .port-module .feedback{font-size:14px}
 .port-module .feedback ul{margin:8px 0;padding-left:20px}
 .port-module .resultbox{font-size:14px}
-@media(max-width:800px){.port-module .port-controls{grid-template-columns:1fr}.port-module .port-output-grid{grid-template-columns:1fr}.port-module .port-legend{grid-template-columns:1fr}.port-module .port-terminal pre{height:235px}}
+@media(max-width:800px){.port-module .port-controls,.port-module .port-discovery,.port-module .port-discovered-hosts{grid-template-columns:1fr}.port-module .port-output-grid{grid-template-columns:1fr}.port-module .port-legend{grid-template-columns:1fr}.port-module .port-terminal pre{height:235px}}
 @media(max-width:600px){.port-module .port-workbench,.port-module .port-challenge{padding:14px}.port-module .port-counters div{padding:8px;gap:4px;flex-direction:column}.port-module .port-connection{gap:8px;font-size:8px}.port-module .port-progress-label{flex-wrap:wrap}.port-module th,.port-module td{padding:8px}.port-module .port-actions .btn{width:100%}body:has(.port-module) .wrap{padding:20px 16px;margin:16px 8px}}
 @media(prefers-reduced-motion:reduce){.port-module .is-scanning .port-wire i{animation:none;width:100%}}

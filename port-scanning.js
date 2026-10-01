@@ -28,6 +28,72 @@
   const questions = byId('portQuestions'), feedback = byId('portFeedback');
   let timer = null, run = 0, running = false, completed = false, checked = 0;
   let scanPorts = [], currentTarget = targets.web, counts = { open: 0, closed: 0, filtered: 0 };
+  const network = { ipFound: false, ready: false, discovering: false, timer: null, run: 0 };
+  const hostButtons = [];
+
+  function resetNetwork() {
+    clearTimeout(network.timer); network.run += 1;
+    network.ipFound = network.ready = network.discovering = false;
+    network.timer = null;
+    byId('portFindIp').disabled = false;
+    byId('portFindNetwork').disabled = true;
+    byId('portCancelNetwork').hidden = true;
+    byId('portIpOutput').hidden = byId('portNetworkOutput').hidden = true;
+    byId('portDiscoveredHosts').replaceChildren(); hostButtons.length = 0;
+    byId('portNetworkStatus').textContent = 'Start with Find my IP to reveal your virtual lab address.';
+    byId('portScanHint').textContent = 'Complete the two discovery steps to unlock the scan controls.';
+  }
+  function findIp() {
+    if (network.ipFound) return;
+    network.ipFound = true;
+    byId('portIpOutput').hidden = false;
+    byId('portFindIp').disabled = true;
+    byId('portFindNetwork').disabled = false;
+    byId('portNetworkStatus').textContent = 'Virtual learner IP: 192.0.2.50, subnet mask 255.255.255.0. Next, find your network IP.';
+  }
+  function findNetwork() {
+    if (!network.ipFound || network.discovering || network.ready || running) return;
+    network.discovering = true; network.run += 1;
+    const token = network.run;
+    byId('portFindNetwork').disabled = true;
+    byId('portCancelNetwork').hidden = false;
+    byId('portNetworkOutput').hidden = false;
+    byId('portDiscoveredHosts').replaceChildren(); hostButtons.length = 0;
+    byId('portNetworkStatus').textContent = 'Network calculated: 192.0.2.0/24. Simulating host discovery… 0 / 2 hosts.';
+    function discover(index) {
+      network.timer = setTimeout(() => {
+        if (!network.discovering || token !== network.run) return;
+        const key = ['web', 'workstation'][index], host = targets[key];
+        const card = document.createElement('div'), info = document.createElement('div');
+        card.className = 'port-host';
+        const name = document.createElement('strong'), address = document.createElement('small');
+        name.textContent = host.name; address.textContent = host.address + ' · virtual host';
+        info.appendChild(name); info.appendChild(address); card.appendChild(info);
+        const button = document.createElement('button');
+        button.type = 'button'; button.className = 'btn alt'; button.textContent = 'Use this host';
+        button.setAttribute('aria-label', 'Use ' + host.name); button.disabled = true;
+        button.addEventListener('click', () => { if (!network.ready || running) return; target.value = key; prepare(); byId('portScanHint').textContent = host.name + ' selected. Choose ports and start the simulated scan.'; });
+        hostButtons.push(button); card.appendChild(button); byId('portDiscoveredHosts').appendChild(card);
+        byId('portNetworkStatus').textContent = 'Simulated discovery: ' + (index + 1) + ' / 2 hosts found on 192.0.2.0/24.';
+        if (index === 0) discover(1);
+        else {
+          network.discovering = false; network.ready = true; network.timer = null;
+          byId('portCancelNetwork').hidden = true;
+          byId('portNetworkStatus').textContent = 'Discovery complete: 2 fictional hosts found on 192.0.2.0/24. Your learner computer is 192.0.2.50; no real network was contacted.';
+          byId('portScanHint').textContent = 'Choose either discovered host below, then start the simulated scan.';
+          lockControls(false); setStatus('Ready to scan');
+        }
+      }, 650);
+    }
+    discover(0);
+  }
+  function cancelDiscovery() {
+    if (!network.discovering) return;
+    clearTimeout(network.timer); network.timer = null; network.run += 1; network.discovering = false;
+    byId('portFindNetwork').disabled = false; byId('portCancelNetwork').hidden = true;
+    byId('portNetworkStatus').textContent = 'Discovery cancelled. Click Find my network IP again to finish discovering the virtual hosts.';
+  }
+  function resetLab() { resetNetwork(); prepare(); }
 
   function setStatus(message) { status.textContent = message; }
   function appendLog(message) { log.textContent += '\n' + message; log.scrollTop = log.scrollHeight; }
@@ -39,7 +105,8 @@
     }
   }
   function lockControls(locked) {
-    target.disabled = profile.disabled = speed.disabled = start.disabled = locked;
+    target.disabled = profile.disabled = speed.disabled = start.disabled = locked || !network.ready;
+    hostButtons.forEach(button => { button.disabled = locked || !network.ready; });
     cancel.disabled = !locked;
     byId('portConnection').classList.toggle('is-scanning', locked);
   }
@@ -78,7 +145,7 @@
     progress.max = scanPorts.length;
     updateProgress();
     log.textContent = 'Ready. Choose a target, then start the simulated scan.';
-    setStatus('Ready to scan');
+    setStatus(network.ready ? 'Ready to scan' : 'Waiting for virtual network discovery');
     start.textContent = 'Start simulated scan';
     questions.disabled = true;
     for (const id of ['portAnswerCount', 'portAnswerFiltered', 'portAnswerRisk']) byId(id).value = '';
@@ -117,7 +184,7 @@
     }, delay);
   }
   function startScan() {
-    if (running) return;
+    if (running || !network.ready) return;
     prepare();
     running = true;
     lockControls(true);
@@ -158,11 +225,14 @@
   }
   start.addEventListener('click', startScan);
   cancel.addEventListener('click', cancelScan);
-  reset.addEventListener('click', prepare);
+  reset.addEventListener('click', resetLab);
+  byId('portFindIp').addEventListener('click', findIp);
+  byId('portFindNetwork').addEventListener('click', findNetwork);
+  byId('portCancelNetwork').addEventListener('click', cancelDiscovery);
   target.addEventListener('change', prepare);
   profile.addEventListener('change', prepare);
   byId('portCheck').addEventListener('click', checkFindings);
-  window.addEventListener('pagehide', cancelScan);
-  window.addEventListener('hashchange', () => { if (location.hash !== '#ports') cancelScan(); });
-  prepare();
+  window.addEventListener('pagehide', () => { cancelScan(); cancelDiscovery(); });
+  window.addEventListener('hashchange', () => { if (location.hash !== '#ports') { cancelScan(); cancelDiscovery(); } });
+  resetLab();
 })();
