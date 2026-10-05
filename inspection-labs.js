@@ -7,6 +7,19 @@
   const mode = app.dataset.inspectionLab;
   if (!['qr', 'url'].includes(mode)) return;
   const isQr = mode === 'qr';
+  const reducedMotion = () => !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const guide = window.BeginnerGuide?.mount({
+    mountTo: '#beginnerGuideMount',
+    title: isQr ? 'Read the address behind the QR code' : 'Check where the link really goes',
+    intro: 'A familiar label is like a name on an envelope. The hostname is the address it actually goes to. Use the tools below to check the supplied example.',
+    steps: [
+      { title: 'Reveal', text: isQr ? 'Decode the supplied QR to see its hidden destination.' : 'Preview the urgent message’s stored link without visiting a website.' },
+      { title: 'Inspect', text: 'Read the hostname: the website address. Compare it with the supplied trusted portal.' },
+      { title: 'Collect proof', text: 'Follow each redirect, then attach the hostname and mismatch evidence.' },
+      { title: 'Stop & report', text: 'Close the suspect destination, recover any fictional session, and file the local report.' },
+      { title: 'Verify', text: isQr ? 'Open the trusted bookmark independently to check the fictional account.' : 'Open the trusted bookmark, then inspect and compare the timetable message.' }
+    ]
+  });
   const trustedUrl = 'https://portal.campus.example/dashboard';
   const trustedHost = new URL(trustedUrl).hostname;
   // Owner domains are explicitly authored fixtures, never a last-two-label guess.
@@ -90,13 +103,66 @@
     return items;
   }
   function button(action, text, blocked = false, style = 'alt') {
-    return `<button type="button" class="btn ${style}" data-action="${action}"${disabled(blocked)}>${text}</button>`;
+    return `<button type="button" id="inspection-${action}" class="btn ${style}" data-action="${action}"${disabled(blocked)}>${text}</button>`;
   }
   function pin(id, visible) {
     if (!visible) return '';
     const selected = state.pins.has(id);
     const labels = { host: 'Destination hostname', redirect: 'Redirect destination', label: 'Link-text mismatch', urgency: 'Urgent poster claim' };
-    return `<button type="button" class="evidence-pin" data-action="pin" data-pin="${id}" aria-pressed="${selected}"${disabled(state.reported)}>${selected ? '✓ Attached: ' : '+ Attach: '}${labels[id]}</button>`;
+    return `<button type="button" id="inspection-pin-${id}" class="evidence-pin" data-action="pin" data-pin="${id}" aria-pressed="${selected}"${disabled(state.reported)}>${selected ? '✓ Attached: ' : '+ Attach: '}${labels[id]}</button>`;
+  }
+  function updateGuide() {
+    if (!guide) return;
+    const done = [state.previewed.threat, state.inspected.threat, state.traced.threat && enoughEvidence(), state.reported && recoveredIfNeeded(), state.trusted && recoveredIfNeeded() && (isQr || state.compared)];
+    let step = Math.max(0, done.findIndex(value => !value));
+    let action = null;
+    let caption = '';
+    const next = (id, label, text, index = step) => { action = { id: `inspection-${id}`, label }; caption = text; step = index; };
+    if (state.compromised && !state.recovered) {
+      next('recover', 'Find demo-session recovery', 'The fictional sign-in exposed the demo account. Close the preview and revoke its demo session before continuing.', 3);
+    } else if (playback) {
+      step = playback.kind === 'decode' ? 0 : (state.selected === 'legitimate' ? 4 : 2);
+      next(playback.running ? 'pause' : 'step', playback.running ? 'Find Pause playback' : 'Find One step', `${playback.kind === 'decode' ? 'QR decode' : 'Redirect trace'} ${playback.running ? 'is playing' : 'is paused'} at step ${playback.index} of ${playback.kind === 'decode' ? 3 : currentFixture().trace.length}. Each step reveals one supplied observation.`, step);
+    } else if (completed()) {
+      step = 4; caption = 'Investigation complete. You checked the address, saved evidence, reported locally, and verified through the trusted route. The report below explains your actions.';
+    } else if (!isQr && state.selected === 'legitimate' && (!done[0] || !done[1] || !done[2])) {
+      next('select-threat', 'Find the urgent message', 'You selected the timetable comparison. Return to the urgent message to finish its destination evidence first.');
+    } else if (!state.previewed.threat) {
+      next(isQr ? 'decode' : 'preview', isQr ? 'Find Decode supplied QR' : 'Find Preview link destination', isQr ? 'Start with the in-page Decode button. You do not need a phone or camera.' : 'Preview the urgent message’s actual destination. Clicking this lab control stays on this page.', 0);
+    } else if (!state.inspected.threat) {
+      next('inspect', 'Find Inspect hostname', 'The destination is visible. Inspect its hostname and compare the full address with portal.campus.example.', 1);
+    } else if (!state.traced.threat) {
+      next('trace', 'Find Trace redirect chain', 'The hostname differs from the trusted portal. Trace the supplied redirects to see the final destination.', 2);
+    } else if (!state.pins.has('host')) {
+      next('pin-host', 'Find Attach destination hostname', 'Save the hostname mismatch as evidence. Attaching it adds an observation to your local report.', 2);
+    } else if (!state.pins.has(isQr ? 'redirect' : 'label')) {
+      next(isQr ? 'pin-redirect' : 'pin-label', isQr ? 'Find Attach redirect destination' : 'Find Attach link-text mismatch', isQr ? 'Attach the final redirect destination as your second observation.' : 'Attach the link-text mismatch. In this example, the hostname comes after @.', 2);
+    } else if (!state.contained) {
+      next('contain', 'Find Stop untrusted destination', 'Your evidence is ready. Stop the untrusted destination before filing the local report.', 3);
+    } else if (!state.reported) {
+      next('report', 'Find File local security report', 'The destination is stopped and the required evidence is attached. File the report inside this exercise.', 3);
+    } else if (!state.trusted) {
+      next('trusted', 'Find Open trusted bookmark', 'Now check the fictional account using the independent bookmark, rather than the suspicious message.', 4);
+    } else if (!isQr && state.selected !== 'legitimate') {
+      next('select-legitimate', 'Find the timetable message', 'Select “Your timetable is ready” to practise the same checks on a legitimate example.', 4);
+    } else if (!isQr && !state.previewed.legitimate) {
+      next('preview', 'Find Preview link destination', 'Preview the timetable’s stored destination before opening the contained timetable.', 4);
+    } else if (!isQr && !state.inspected.legitimate) {
+      next('inspect', 'Find Inspect hostname', 'Inspect the timetable hostname. Compare it with the same trusted portal address.', 4);
+    } else if (!isQr && !state.legitOpened) {
+      next('open-preview', 'Find Open contained timetable', 'The timetable hostname matches the trusted reference. Open its contained local preview.', 4);
+    } else if (!isQr) {
+      next('compare', 'Find Compare inspected timetable', 'Both trusted addresses are available. Compare them to finish the investigation.', 4);
+    }
+    guide.update({ step, completed: done.flatMap((value, i) => value ? [i] : []),
+      status: completed() ? 'Investigation complete' : state.compromised && !state.recovered ? 'Recovery needed' : playback ? (playback.running ? 'Playing local steps' : 'Paused · your pace') : 'Your next action', caption,
+      nodes: [
+        { label: isQr ? 'Supplied QR' : 'Selected message', value: isQr ? (state.scanDone ? 'Destination revealed' : `${state.scanCount} of 3 decode steps`) : state.selected === 'threat' ? 'Urgent account message' : 'Timetable comparison', tone: state.previewed[state.selected] ? 'good' : 'neutral' },
+        { label: 'Actual hostname', value: state.inspected[state.selected] ? new URL(selectedTarget()).hostname : 'Inspect to reveal', tone: state.inspected[state.selected] ? (state.selected === 'threat' ? 'warn' : 'good') : 'neutral' },
+        { label: 'Redirect evidence', value: `${state.traceCount[state.selected]} of ${currentFixture().trace.length} hops checked`, tone: state.traced[state.selected] ? 'good' : playback?.kind === 'trace' ? 'active' : 'neutral' },
+        { label: 'Response', value: state.compromised && !state.recovered ? 'Demo recovery pending' : state.reported ? 'Local report filed' : state.contained ? 'Destination stopped' : `${state.pins.size} observations attached`, tone: state.compromised && !state.recovered ? 'warn' : state.reported || state.contained ? 'good' : 'neutral' }
+      ], action, eventKey: [state.events.length, state.selected, state.browser, playback?.kind, playback?.index, playback?.running].join(':'), animate: state.events.length > 1
+    });
   }
   function source() {
     if (isQr) {
@@ -110,7 +176,7 @@
     }
     const legitimate = state.selected === 'legitimate';
     return `<div class="sim-panel-head"><h2>01 · Inspect the inbox</h2><small>2 sample messages</small></div><div class="sim-panel-body">
-      <div class="mail-list" aria-label="Fictional inbox"><button type="button" class="mail-item${!legitimate ? ' active' : ''}" data-action="select-threat" aria-pressed="${!legitimate}"><strong>${state.reported ? '✓ Reported · ' : ''}Account access expires today</strong><small>Campus Service Desk · 09:12 · training message</small></button><button type="button" class="mail-item${legitimate ? ' active' : ''}" data-action="select-legitimate" aria-pressed="${legitimate}"><strong>Your timetable is ready</strong><small>Campus Services · 08:45 · comparison message</small></button></div>
+      <div class="mail-list" aria-label="Fictional inbox"><button type="button" id="inspection-select-threat" class="mail-item${!legitimate ? ' active' : ''}" data-action="select-threat" aria-pressed="${!legitimate}"><strong>${state.reported ? '✓ Reported · ' : ''}Account access expires today</strong><small>Campus Service Desk · 09:12 · training message</small></button><button type="button" id="inspection-select-legitimate" class="mail-item${legitimate ? ' active' : ''}" data-action="select-legitimate" aria-pressed="${legitimate}"><strong>Your timetable is ready</strong><small>Campus Services · 08:45 · comparison message</small></button></div>
       <div class="mail-header"><span class="mail-demo">LOCAL MOCK EMAIL</span><strong>${legitimate ? 'Your timetable is ready' : 'Account access expires today'}</strong><span>From: ${legitimate ? 'services@campus.example' : 'help@campus-notices.example'}<br>To: demo-learner@campus.example</span></div>
       <div class="mail-body">${legitimate ? '<p>Your new timetable is available in the campus portal. You can also reach it from your saved portal bookmark.</p>' : '<p>Your campus access will be suspended in 15 minutes. Use the portal link below to confirm your account immediately.</p>'}<p><button type="button" class="mail-link" data-action="preview"${disabled(!legitimate && state.reported)}>https://portal.campus.example/services/timetable</button></p><p class="sim-caption">Click the displayed link to preview its stored destination inside this lab. Sender names and link text are claims, not proof.</p></div>
       <div class="actions">${button('preview', state.previewed[state.selected] ? 'Show destination again' : 'Preview link destination', !legitimate && state.reported, '')}</div>
@@ -192,6 +258,7 @@
     const items = progress();
     const count = items.filter(item => item[1]).length;
     app.innerHTML = `<div class="sim-overview"><div><strong>${isQr ? 'Mission: investigate the account-verification poster' : 'Mission: resolve a suspicious inbox message'}</strong><p>Complete the investigation by using the tools. There is no answer quiz or score for guessing.</p></div><div class="sim-progress">${count}<span aria-hidden="true"> / </span>${items.length}<small>actions completed</small></div></div><ol class="sim-steps" aria-label="Investigation checklist">${items.map((item, i) => `<li class="${item[1] ? 'is-done' : ''}"><span class="step-dot" aria-hidden="true">${item[1] ? '✓' : i + 1}</span><span>${escape(item[0])}${item[1] ? '<span class="sim-visually-hidden"> completed</span>' : ''}</span></li>`).join('')}</ol><div class="sim-grid"><section class="sim-panel">${source()}</section><section class="sim-panel">${workbench()}</section></div><div class="sim-status" role="status" tabindex="-1" aria-live="polite" data-tone="${state.tone}">${escape(state.message)}</div><div class="case-bottom"><section class="sim-panel">${evidencePanel()}</section><section class="sim-panel"><div class="sim-panel-head"><h2>Session event log</h2><small>Local & temporary</small></div><div class="sim-panel-body"><ol class="event-list" aria-label="Investigation event log">${state.events.map((event, i) => `<li><span class="event-index">${String(i + 1).padStart(2, '0')}</span><span class="event-text"><strong>${escape(event.type)}</strong>${escape(event.text)}</span></li>`).join('')}</ol></div></section></div>${completed() ? `<div class="completion-banner" role="status"><h2>Investigation complete</h2><p>You inspected the real destination, traced the supplied redirects, preserved evidence, stopped and reported the imitation, and used an independent trusted route.${!isQr ? ' You also verified the legitimate comparison link.' : ''}${state.recovered ? ' You recovered the fictional demo session after exploring the unsafe branch.' : ' No demo sign-in was exposed.'}</p></div>` : ''}<div class="sim-instruction"><b>In a real incident:</b> do not enter credentials into an unverified page. Use a trusted bookmark or known official route and follow your organization’s reporting process. If credentials were entered, use the official recovery flow and contact the security team. This lab’s report and recovery affect only its fictional state.</div><div class="sim-reset-row"><p>No credentials, saved progress, or external requests. Reset clears this page’s evidence and event log. Playback stops when you leave.</p>${button('reset', 'Reset exercise')}</div>`;
+    updateGuide();
     if (focusAction) {
       let next = app.querySelector(`[data-action="${focusAction}"]${focusPin ? `[data-pin="${focusPin}"]` : ''}`);
       if (!next || next.disabled) next = app.querySelector(playback ? '[data-action="pause"]' : '[data-action="inspect"]');
@@ -220,9 +287,9 @@
     if (playback) return;
     const key = state.selected;
     const index = kind === 'decode' ? state.scanCount : state.traceCount[key];
-    playback = { kind, key, index, running: true };
+    playback = { kind, key, index, running: !reducedMotion() };
     log('playback', `${kind === 'decode' ? 'QR decode' : 'Redirect inspection'} started using local fixture data.`);
-    say('Local playback running. Pause, step, finish now, or stop at any time.');
+    say(playback.running ? 'Local playback running. Pause, step, finish now, or stop at any time.' : 'Playback starts paused for reduced motion. Use One step to reveal each observation, or Resume playback to play it.');
     schedule();
   }
   function advance() {

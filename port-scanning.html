@@ -8,8 +8,10 @@
 <link rel="icon" href="/icons/security-lab.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/icons/security-lab-180.png">
 <link rel="stylesheet" href="/labs.css">
+<link rel="stylesheet" href="/beginner-guide.css">
 <link rel="stylesheet" href="/lab-report.css">
 <link rel="stylesheet" href="/port-scanning.css">
+<script src="/beginner-guide.js" defer></script>
 <script src="/port-scanning.js" defer></script>
 <script src="/lab-report.js" defer></script>
 <script src="/lab-report-adapters.js" defer></script>
@@ -36,6 +38,7 @@
 <h1 id="portTitle">Port Scanning Simulation</h1>
 <p class="port-lead">Find my IP → Find my network IP → Scan. Discover your virtual lab network, choose a fictional host, and watch its simulated port replies arrive.</p>
 <div class="warnbox"><b>Safe by design:</b> This lab uses fictional targets and preset results entirely in your browser. Address lookup accepts only the two preset virtual hosts. Other addresses are never contacted or scanned. No scan traffic is sent and no commands are run. Scan real systems only with the owner’s explicit permission.</div>
+<div id="beginnerGuideMount"></div>
 <div class="port-workbench">
   <div class="port-discovery">
     <section class="port-step" aria-labelledby="portIpTitle">
@@ -47,7 +50,7 @@
     <section class="port-step" aria-labelledby="portNetworkTitle">
       <span class="port-step-number">STEP 2</span><h3 id="portNetworkTitle">Find my network IP</h3>
       <p>Calculate the network address, then discover the two preset hosts in this simulated subnet.</p>
-      <div class="actions"><button id="portFindNetwork" class="btn" type="button" disabled>Find my network IP</button><button id="portCancelNetwork" class="btn alt" type="button" hidden>Cancel discovery</button></div>
+      <div class="actions"><button id="portFindNetwork" class="btn" type="button" disabled>Find my network IP</button><button id="portPauseNetwork" class="btn alt" type="button" hidden>Pause discovery</button><button id="portStepNetwork" class="btn alt" type="button" hidden>Next host</button><button id="portCancelNetwork" class="btn alt" type="button" hidden>Cancel discovery</button></div>
       <div id="portNetworkOutput" class="port-address-box" hidden><span>VIRTUAL NETWORK ADDRESS</span><strong>192.0.2.0/24</strong><small>Host range: 192.0.2.1–192.0.2.254<br>Broadcast: 192.0.2.255</small><details><summary>How is the network IP calculated?</summary><p>IP address AND subnet mask = network address. With mask 255.255.255.0, the first three octets stay the same and the last becomes 0:<br><code>192.0.2.50 AND 255.255.255.0 = 192.0.2.0</code><br>/24 means the first 24 bits identify the network. Devices in this lab share those bits.</p></details></div>
     </section>
   </div>
@@ -66,8 +69,8 @@
     <div><label for="portSpeed">Playback speed</label><select id="portSpeed" disabled><option value="normal">Normal · about 1 second / port</option><option value="slow">Slow · about 2 seconds / port</option><option value="fast">Fast · about 0.4 seconds / port</option></select></div>
   </div>
   <p id="portTargetNote" class="port-note"></p>
-  <div class="port-command"><span>ILLUSTRATIVE COMMAND · NOT EXECUTED</span><code id="portCommand"></code></div>
-  <div class="actions port-actions"><button id="portStart" class="btn" type="button" disabled>Start simulated scan</button><button id="portCancel" class="btn alt" type="button" disabled>Cancel scan</button><button id="portReset" class="btn alt" type="button">Reset lab</button></div>
+  <details class="port-command"><summary>Optional: see the command this models</summary><span>ILLUSTRATIVE COMMAND · NOT EXECUTED</span><code id="portCommand"></code></details>
+  <div class="actions port-actions"><button id="portStart" class="btn" type="button" disabled>Start simulated scan</button><button id="portPause" class="btn alt" type="button" disabled>Pause scan</button><button id="portStep" class="btn alt" type="button" disabled>Next port</button><button id="portCancel" class="btn alt" type="button" disabled>Cancel scan</button><button id="portReset" class="btn alt" type="button">Reset lab</button></div>
   <div class="port-connection" id="portConnection" aria-hidden="true"><span>YOUR SIMULATED SCANNER</span><div class="port-wire"><i></i></div><span>FICTIONAL TARGET</span></div>
   <div class="port-progress-label"><strong id="portStatus" role="status" aria-live="polite">Ready to scan</strong><span id="portProgressText">0 / 8 ports</span></div>
   <progress id="portProgress" max="8" value="0" aria-label="Ports checked"></progress>

@@ -4,6 +4,19 @@
   'use strict';
   const el = id => document.getElementById(id);
   if (!el('wifiDiscover')) return;
+  const reducedMotion = () => !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const guide = window.BeginnerGuide?.mount({
+    mountTo: '#beginnerGuideMount',
+    title: 'Watch a supplied password candidate get checked',
+    intro: 'Think of the verifier as a fingerprint of a classroom example. The browser makes a fingerprint for each supplied candidate and checks for an exact match. This is a simplified local lesson, not a real Wi-Fi test.',
+    steps: [
+      { title: 'Choose a fixture', text: 'Reveal the fictional access points (APs), then choose the weak example first.' },
+      { title: 'Load evidence', text: 'Inspect the supplied record, then load it into the local verifier.' },
+      { title: 'Check candidates', text: 'Test the fixed list one candidate at a time or play the checks. Watch the count and result.' },
+      { title: 'Compare', text: 'Test the other fixture with the same list. A non-match only describes that list.' },
+      { title: 'Change & retest', text: 'Apply simulated settings, load fresh evidence, and repeat the same checks.' }
+    ]
+  });
   const lists = Object.freeze({
     short: Object.freeze(['password123', 'welcome2026', 'campuswifi', 'learning123', 'guestaccess', 'Classroom1!', 'securewifi', 'UTASdemo123', 'IbraClass2026!', 'routeradmin', 'summer2026', 'wireless123']),
     extended: Object.freeze(['letmein123', 'internet2026', 'studentwifi', 'classroom2025', 'blueclassroom', 'labaccess1', 'guest2026', 'learning2026', 'campus2025', 'welcomehome', 'routerdemo', 'education123', 'classroom2026', 'demo-network', 'samplepassword', 'schoolwifi', 'winter2026', 'teachandlearn', 'UTASdemo123', 'testwifi2026', 'IbraClass2026!', 'password123', 'welcome2026', 'wireless123'])
@@ -17,7 +30,7 @@
     rotated: Object.freeze({ nonce: 'CLASSROOM-A-ROTATED', expected: '528619ddbb30fe2b20a31dbd95815bf9979673a5f4208d2ed7e7efbb2d8792e2' }),
     unchanged: Object.freeze({ nonce: 'CLASSROOM-A-RETEST', expected: 'fde68f57d2bfbc00d88b514b633faedf91fb4f22d62eb998cd0e6899e68c89e0' })
   });
-  let discoveryTimer = null, discoveryToken = 0, discovery = 'idle';
+  let discoveryTimer = null, discoveryToken = 0, discovery = 'idle', discoveryPaused = false;
   let timer = null, token = 0, phase = 'idle', busy = false;
   let selected = null, fixture = null, inspected = false, loaded = false;
   let index = 0, found = null, runListKey = 'short', runCandidates = lists.short;
@@ -45,22 +58,61 @@
     const preferred = el('wifiWordlist').value;
     return [preferred, ...Object.keys(lists)].find(key => history[key]?.weak?.found && history[key]?.strong?.found === false) || null;
   }
+  function updateGuide() {
+    if (!guide) return;
+    const paired = comparisonList();
+    const baselineDone = Object.values(history).some(item => item.weak || item.strong);
+    const retestDone = retesting && phase === 'complete' && !!report.retest;
+    const done = [discovery === 'done' && !!selected, inspected && loaded, baselineDone, !!paired, retestDone];
+    let step = 0, action = null, caption = '';
+    const next = (position, id, label, text) => { step = position; action = id ? { id, label } : null; caption = text; };
+    if (discovery === 'idle') next(0, 'wifiDiscover', 'Find Discover virtual APs', 'Reveal the two supplied classroom examples. Nothing scans or connects to a wireless network.');
+    else if (discovery === 'running') next(0, discoveryPaused ? 'wifiDiscoveryStep' : 'wifiDiscoveryPlay', discoveryPaused ? 'Find Reveal one AP' : 'Find Pause discovery', `${apButtons.size} of 2 fictional APs revealed. ${discoveryPaused ? 'Discovery is paused. Reveal one example when you are ready.' : 'The local reveal is playing; you can pause or cancel it.'}`);
+    else if (!selected) next(0, 'wifi-ap-weak', 'Find the weak classroom AP', 'Choose UTAS-LAB-DEMO first. AP means access point: the device that provides Wi-Fi in a real network. These APs are fictional.');
+    else if (!inspected) next(1, 'wifiInspect', 'Find Inspect synthetic fixture', `${retesting ? 'Your changed settings have a fresh record.' : fixture.ssid + ' is selected.'} Inspect the record to see its public challenge and expected fingerprint (verifier).`);
+    else if (!loaded) next(1, 'wifiLoad', 'Find Load supplied fixture', 'You have inspected the record. Load it to enable the supplied candidate list and local checks.');
+    else if (busy) next(2, 'wifiCancel', 'Find Cancel audit', `Computing the fingerprint for candidate ${index + 1}. ${index} completed checks are recorded; this check is still in progress.`);
+    else if (phase === 'running') next(2, 'wifiPause', 'Find Pause', `${index} of ${runCandidates.length} candidates checked. The next supplied candidate will be checked locally. Pause to read each comparison.`);
+    else if (phase === 'paused' || phase === 'ready') next(retesting ? 4 : 2, 'wifiStep', 'Find Check one candidate', `${index ? index + ' checks are recorded.' : 'No candidates have been checked in this run.'} Check one candidate to see its fingerprint and comparison. ${retesting ? 'This uses fresh evidence and the same baseline list.' : 'You can also choose timed playback with the Start or Resume control.'}`);
+    else if (phase === 'cancelled' || phase === 'error') next(retesting ? 4 : 2, 'wifiStart', 'Find Start new audit', phase === 'error' ? 'The browser could not calculate a verifier. No result was invented. Start a new audit to retry; local verification needs Web Crypto on HTTPS or localhost.' : 'This run was cancelled. Partial checks are not a completed result. Start a new audit from candidate 1; completed baseline evidence is retained.');
+    else if (retestDone) next(4, report.retest.matched ? (el('wifiRotate').checked ? 'wifiApply' : 'wifiRotate') : null, el('wifiRotate').checked ? 'Find Apply simulated settings' : 'Find passphrase rotation', report.retest.matched ? 'The unchanged weak example still matched. WPS and firmware settings do not change this verifier. ' + (el('wifiRotate').checked ? 'Passphrase rotation is selected. Apply it, then load fresh evidence and retest.' : 'Select passphrase rotation, apply it, then load fresh evidence and retest.') : 'The rotated fixture was not found in the same list. Your comparison is complete. This is improvement against these supplied candidates only; review the report below.');
+    else if (paired) {
+      const chosen = el('wifiRotate').checked || el('wifiWps').checked || el('wifiFirmware').checked;
+      next(4, chosen ? 'wifiApply' : 'wifiRotate', chosen ? 'Find Apply simulated settings' : 'Find passphrase rotation', 'Both baseline results use ' + listLabels[paired] + '. Select simulated settings and apply them. Only passphrase rotation changes this teaching verifier.');
+    } else if (baselineDone) {
+      const other = selected === 'weak' ? 'strong' : 'weak';
+      next(3, 'wifiCompare', 'Find Select the other baseline AP', `This run ${found !== null ? 'matched a supplied candidate' : 'found no match'}. Select ${aps[other].ssid}, inspect and load it, then test the same ${listLabels[runListKey]} list.`);
+    }
+    const verdict = phase === 'complete' ? (found !== null ? 'Exact match found' : 'No match in this list') : phase === 'cancelled' ? 'Cancelled · no conclusion' : phase === 'error' ? 'Verification unavailable' : busy ? 'Computing a fingerprint' : index ? `${index} checks · run unfinished` : 'No completed check';
+    guide.update({ step, completed: done.flatMap((value, i) => value ? [i] : []), status: retestDone ? 'Retest complete' : discovery === 'running' && discoveryPaused || phase === 'paused' ? 'Paused · your pace' : phase === 'running' || busy ? 'Checking locally' : 'Your next action', caption,
+      nodes: [
+        { label: 'Fictional AP', value: fixture ? fixture.ssid : `${apButtons.size} of 2 revealed`, tone: fixture ? 'good' : discovery === 'running' ? 'active' : 'neutral' },
+        { label: 'Supplied evidence', value: loaded ? (retesting ? 'Fresh retest record loaded' : 'Baseline record loaded') : inspected ? 'Inspected · ready to load' : 'Not loaded', tone: loaded ? 'good' : 'neutral' },
+        { label: 'Local checks', value: `${index} of ${loaded && phase !== 'ready' ? runCandidates.length : lists[el('wifiWordlist').value].length} evaluated`, tone: busy || phase === 'running' ? 'active' : phase === 'complete' ? 'good' : 'neutral' },
+        { label: 'Current result', value: verdict, tone: found !== null || phase === 'error' || phase === 'cancelled' ? 'warn' : phase === 'complete' ? 'good' : 'neutral' }
+      ], action, eventKey: [report.actions.length, discovery, discoveryPaused, apButtons.size, phase, busy, index, selected, loaded, el('wifiWordlist').value, el('wifiRotate').checked, el('wifiWps').checked, el('wifiFirmware').checked].join(':'), animate: report.actions.length > 0
+    });
+  }
   function controls() {
     const locked = active();
     el('wifiDiscover').disabled = discovery !== 'idle';
     el('wifiCancelDiscovery').disabled = discovery !== 'running';
+    el('wifiDiscoveryStep').disabled = discovery !== 'running';
+    el('wifiDiscoveryPlay').disabled = discovery !== 'running';
+    el('wifiDiscoveryPlay').textContent = discoveryPaused ? 'Play discovery' : 'Pause discovery';
     apButtons.forEach(button => { button.disabled = discovery !== 'done' || locked; });
     el('wifiInspect').disabled = !fixture || inspected || locked;
     el('wifiLoad').disabled = !inspected || loaded || locked;
     el('wifiWordlist').disabled = !loaded || locked || retesting;
     el('wifiSpeed').disabled = !loaded || locked;
     el('wifiStart').disabled = !loaded || phase === 'running' || busy;
-    el('wifiStart').textContent = phase === 'paused' ? 'Resume audit' : (['complete', 'cancelled', 'error'].includes(phase) ? 'Start new audit' : 'Start local audit');
+    el('wifiStart').textContent = phase === 'paused' ? 'Resume audit' : (['complete', 'cancelled', 'error'].includes(phase) ? 'Start new audit' : reducedMotion() ? 'Prepare manual audit' : 'Start local audit');
     el('wifiPause').disabled = phase !== 'running';
     el('wifiStep').disabled = !loaded || busy || !['ready', 'paused'].includes(phase);
     el('wifiCancel').disabled = !locked;
     el('wifiCompare').disabled = discovery !== 'done' || locked || !Object.keys(history).length;
     el('wifiDefenses').disabled = !comparisonList() || locked;
+    updateGuide();
   }
   function append(parent, tag, text, className) {
     const node = document.createElement(tag);
@@ -123,36 +175,54 @@
   }
   function discover() {
     if (discovery !== 'idle') return;
-    discovery = 'running'; discoveryToken += 1;
+    discovery = 'running'; discoveryPaused = reducedMotion(); discoveryToken += 1;
     record('Virtual AP discovery started', 'Revealing two fixed classroom access points; no radio scan');
-    const current = discoveryToken;
     el('wifiAps').replaceChildren(); apButtons.clear();
-    say('Simulating AP discovery: 0 of 2 preset access points revealed. No wireless scan is running.');
+    say(discoveryPaused ? 'Discovery starts paused for reduced motion. Use Reveal one AP or Play discovery. No wireless scan is running.' : 'Simulating AP discovery: 0 of 2 preset access points revealed. No wireless scan is running.');
     controls();
-    const keys = Object.keys(aps);
-    function next(i) {
-      discoveryTimer = setTimeout(() => {
-        if (current !== discoveryToken || discovery !== 'running') return;
-        const ap = aps[keys[i]], card = append(el('wifiAps'), 'article', '', 'wifi-ap');
-        append(card, 'small', 'AUTHORIZED CLASSROOM FIXTURE · FICTIONAL AP');
-        append(card, 'h3', ap.ssid);
-        append(card, 'p', 'Simulated channel ' + ap.channel + ' · signal ' + ap.signal + '. ' + ap.description + '.');
-        const button = append(card, 'button', 'Choose this virtual AP', 'btn alt');
-        button.type = 'button'; button.disabled = true;
-        button.setAttribute('aria-label', 'Choose virtual AP ' + ap.ssid);
-        button.setAttribute('aria-pressed', 'false');
-        button.addEventListener('click', () => chooseAp(ap.key));
-        apButtons.set(ap.key, button);
-        if (i + 1 < keys.length) next(i + 1);
-        else {
-          discoveryTimer = null; discovery = 'done';
-          record('Virtual AP discovery completed', 'Two authorized fictional AP fixtures revealed');
-          say('Discovery complete: two fictional access points. Choose UTAS-LAB-DEMO to begin with the deliberately weak fixture.');
-          controls();
-        }
-      }, 550);
-    }
-    next(0);
+    scheduleDiscovery();
+  }
+  function scheduleDiscovery() {
+    if (discovery !== 'running' || discoveryPaused || discoveryTimer !== null) return;
+    const current = discoveryToken;
+    discoveryTimer = setTimeout(() => {
+      if (current !== discoveryToken || discovery !== 'running' || discoveryPaused) return;
+      discoveryTimer = null; revealAp(); scheduleDiscovery();
+    }, 550);
+  }
+  function revealAp() {
+    if (discovery !== 'running') return;
+    const ap = aps[Object.keys(aps)[apButtons.size]];
+    if (!ap) return;
+    const card = append(el('wifiAps'), 'article', '', 'wifi-ap');
+    append(card, 'small', 'AUTHORIZED CLASSROOM FIXTURE · FICTIONAL AP');
+    append(card, 'h3', ap.ssid);
+    append(card, 'p', 'Simulated channel ' + ap.channel + ' · signal ' + ap.signal + '. ' + ap.description + '.');
+    const button = append(card, 'button', 'Choose this virtual AP', 'btn alt');
+    button.id = 'wifi-ap-' + ap.key;
+    button.type = 'button'; button.disabled = true;
+    button.setAttribute('aria-label', 'Choose virtual AP ' + ap.ssid);
+    button.setAttribute('aria-pressed', 'false');
+    button.addEventListener('click', () => chooseAp(ap.key));
+    apButtons.set(ap.key, button);
+    if (apButtons.size === Object.keys(aps).length) {
+      discovery = 'done';
+      record('Virtual AP discovery completed', 'Two authorized fictional AP fixtures revealed');
+      say('Discovery complete: two fictional access points. Choose UTAS-LAB-DEMO to begin with the deliberately weak fixture.');
+    } else say('1 of 2 fictional APs revealed. ' + (discoveryPaused ? 'Reveal the next AP when ready.' : 'The second example is next.'));
+    controls();
+  }
+  function stepDiscovery() {
+    if (discovery !== 'running') return;
+    clearTimeout(discoveryTimer); discoveryTimer = null; discoveryToken += 1; discoveryPaused = true;
+    revealAp();
+  }
+  function toggleDiscovery() {
+    if (discovery !== 'running') return;
+    clearTimeout(discoveryTimer); discoveryTimer = null; discoveryToken += 1;
+    discoveryPaused = !discoveryPaused;
+    say(discoveryPaused ? 'Discovery paused. Reveal one AP, play the remaining steps, or cancel.' : 'Local discovery playback resumed.');
+    controls(); scheduleDiscovery();
   }
   function cancelDiscovery() {
     if (discovery !== 'running') return;
@@ -271,7 +341,15 @@
   }
   function start() {
     if (!loaded || phase === 'running' || busy) return;
-    if (phase !== 'paused') prepareRun();
+    if (phase !== 'paused') {
+      prepareRun();
+      if (reducedMotion()) {
+        phase = 'paused';
+        record('Manual audit prepared', fixture.ssid + ': fixed candidates ready; no background timer');
+        say('Audit starts paused for reduced motion. Check one candidate at a time, or choose Resume audit for timed playback.');
+        controls(); return;
+      }
+    }
     record(phase === 'paused' ? 'Audit resumed' : 'Audit started', fixture.ssid + ': ' + listLabels[runListKey] + '; ' + runCandidates.length + ' fixed candidates');
     phase = 'running';
     say('Checking ' + listLabels[runListKey] + ' locally. Pause to inspect evidence, or cancel to stop this run.');
@@ -318,7 +396,7 @@
   function reset() {
     if (reportController) reportController.reset();
     stopAsync(); clearTimeout(discoveryTimer); discoveryTimer = null; discoveryToken += 1;
-    discovery = 'idle'; phase = 'idle'; selected = fixture = null;
+    discovery = 'idle'; discoveryPaused = false; phase = 'idle'; selected = fixture = null;
     inspected = loaded = retesting = false; applied = null; history = Object.create(null);
     report = { actions: [], startedAt: null, completedAt: null, cancelled: false, retest: null };
     apButtons.clear(); el('wifiAps').replaceChildren();
@@ -335,6 +413,8 @@
   }
   el('wifiDiscover').addEventListener('click', discover);
   el('wifiCancelDiscovery').addEventListener('click', cancelDiscovery);
+  el('wifiDiscoveryStep').addEventListener('click', stepDiscovery);
+  el('wifiDiscoveryPlay').addEventListener('click', toggleDiscovery);
   el('wifiInspect').addEventListener('click', inspect);
   el('wifiLoad').addEventListener('click', loadFixture);
   el('wifiStart').addEventListener('click', start);
@@ -343,6 +423,7 @@
   el('wifiCancel').addEventListener('click', cancel);
   el('wifiReset').addEventListener('click', reset);
   el('wifiApply').addEventListener('click', applyDefenses);
+  ['wifiRotate', 'wifiWps', 'wifiFirmware'].forEach(id => el(id).addEventListener('change', controls));
   el('wifiCompare').addEventListener('click', () => {
     if (active() || !Object.keys(history).length) return;
     chooseAp(selected === 'strong' ? 'weak' : 'strong'); el('wifiInspect').focus();

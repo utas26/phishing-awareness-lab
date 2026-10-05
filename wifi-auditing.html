@@ -5,8 +5,8 @@
 <title>Wi-Fi Password Auditing Lab | UTAS-Ibra CyberLab</title>
 <link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#102b46">
 <link rel="icon" href="/icons/security-lab.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icons/security-lab-180.png">
-<link rel="stylesheet" href="/labs.css"><link rel="stylesheet" href="/wifi-auditing.css"><link rel="stylesheet" href="/lab-report.css">
-<script src="/lab-report.js" defer></script><script src="/wifi-auditing.js" defer></script>
+<link rel="stylesheet" href="/labs.css"><link rel="stylesheet" href="/wifi-auditing.css"><link rel="stylesheet" href="/beginner-guide.css"><link rel="stylesheet" href="/lab-report.css">
+<script src="/lab-report.js" defer></script><script src="/beginner-guide.js" defer></script><script src="/wifi-auditing.js" defer></script>
 </head>
 <body>
 <div class="top">PRACTICAL CYBERSECURITY — AUTHORIZED EDUCATIONAL SIMULATIONS ONLY</div>
@@ -18,14 +18,15 @@
 <section class="module wifi-module" aria-labelledby="wifiTitle">
 <span class="tag">HANDS-ON LOCAL VERIFICATION · SYNTHETIC FIXTURES</span>
 <h1 id="wifiTitle">Wi-Fi Password Auditing</h1>
-<p class="wifi-lead">Discover a virtual access point → inspect its supplied evidence → test fixed candidates → compare → harden and retest.</p>
+<p class="wifi-lead">See why a weak example is found in a short candidate list, then compare it with a stronger example and test a simulated change.</p>
 <div class="warnbox"><b>This is a synthetic teaching verifier, not a WPA capture or cracking tool.</b> Each candidate really is hashed and compared locally, using a deliberately simplified SHA-256 format. Discovery, timing, access points, and settings are simulated. The lab accepts no targets, files, or passwords from you, requests no device permissions, and saves no session data. Never test real wireless networks without explicit authorization.</div>
 <noscript><div class="warnbox">JavaScript is required for this local interactive simulation. No network test has been run.</div></noscript>
+<div id="beginnerGuideMount"></div>
 <div class="wifi-toolbar"><p id="wifiStatus" role="status" aria-live="polite" aria-atomic="true">Begin by discovering the two preset classroom access points.</p><button id="wifiReset" type="button" class="btn alt">Reset entire lab</button></div>
 <section class="wifi-step" aria-labelledby="wifiDiscoverTitle">
 <div class="wifi-step-heading"><span class="wifi-step-number">1</span><h2 id="wifiDiscoverTitle">Discover authorized virtual access points</h2></div>
 <p>No radio scan takes place. The two classroom fixtures appear in sequence; choose one to inspect its evidence.</p>
-<div class="actions"><button id="wifiDiscover" type="button" class="btn">Discover virtual APs</button><button id="wifiCancelDiscovery" type="button" class="btn alt" disabled>Cancel discovery</button></div>
+<div class="actions"><button id="wifiDiscover" type="button" class="btn">Discover virtual APs</button><button id="wifiDiscoveryStep" type="button" class="btn alt" disabled>Reveal one AP</button><button id="wifiDiscoveryPlay" type="button" class="btn alt" disabled>Pause discovery</button><button id="wifiCancelDiscovery" type="button" class="btn alt" disabled>Cancel discovery</button></div>
 <div id="wifiAps" class="wifi-ap-grid" aria-label="Discovered virtual access points"></div>
 </section>
 <section class="wifi-step" aria-labelledby="wifiFixtureTitle">
