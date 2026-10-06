@@ -41,8 +41,8 @@
     },
     password: {
       title: 'Password Strength Lab', attackType: 'Password guessing and credential-reuse risk awareness',
-      howItHappens: 'Short, common, or reused passwords can be guessed or reused after a breach. This exercise checks only invented examples against a simplified local heuristic; it does not crack passwords or test an account.',
-      recommendations: ['Use long, unique passwords managed by a reputable password manager.', 'Enable phishing-resistant MFA where supported.', 'Do not treat a composition score or estimated cracking time as a guarantee of security.']
+      howItHappens: 'Short, common, or reused passwords can be guessed or reused after a breach. This exercise shows the length of invented examples and checks a small set of classroom patterns. It does not screen a complete breach list, verify uniqueness, predict cracking time, or test an account.',
+      recommendations: ['Use long, unique passwords managed by a reputable password manager.', 'Enable phishing-resistant MFA where supported.', 'A length or pattern observation is not a security guarantee; this classroom check cannot establish uniqueness or breach status.']
     },
     wifi: {
       title: 'Wi-Fi Auditing Lab', attackType: 'Offline password-guessing concept simulation',

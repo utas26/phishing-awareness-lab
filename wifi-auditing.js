@@ -17,6 +17,28 @@
       { title: 'Change & retest', text: 'Apply simulated settings, load fresh evidence, and repeat the same checks.' }
     ]
   });
+  const mission = window.PracticeMission?.mount({
+    mountTo: '#practiceMissionMount', guideTo: '#beginnerGuideMount',
+    title: 'Change the evidence with a fresh retest',
+    goal: 'Compare weak and strong fixtures with one candidate list, then rotate the weak passphrase and show that a fresh verifier no longer matches that same list.',
+    checks: [
+      { id: 'weak', label: 'Record a completed weak-fixture match with the selected list' },
+      { id: 'strong', label: 'Exhaust that same list against the strong baseline without a match' },
+      { id: 'fresh', label: 'Apply passphrase rotation and inspect and load its fresh fixture' },
+      { id: 'retest', label: 'Finish a same-list retest of the rotated fixture with no match' }
+    ],
+    hints: [
+      { title: 'Build a baseline', text: 'Discover the supplied APs, select the weak example, inspect and load its fixture, and finish the local candidate checks.' },
+      { title: 'Keep the list constant', text: 'Select the other baseline AP and finish its audit using the identical candidate list. Results from two different lists cannot establish this comparison.' },
+      { title: 'Choose the change the model measures', text: 'Only passphrase rotation changes this teaching verifier. WPS and firmware settings are recorded, but their effects are not tested here.' },
+      { title: 'Retest fresh evidence', text: 'Apply rotation, inspect and load the fresh fixture, then finish all candidates in the same list. Editing settings or cancelling a run requires a new completed retest.' }
+    ],
+    debrief: {
+      takeaway: 'A completed match shows that a supplied candidate fits the baseline verifier. A non-match after rotation supports improvement against that same list and fresh fixture only.',
+      limitation: 'This SHA-256 teaching model does not test WPA2/WPA3, WPS, firmware vulnerabilities, or a real wireless network. A limited-list non-match is not proof of security.'
+    },
+    next: { href: '/dos-ddos.html', label: 'Next: explore service availability and defenses' }
+  });
   const lists = Object.freeze({
     short: Object.freeze(['password123', 'welcome2026', 'campuswifi', 'learning123', 'guestaccess', 'Classroom1!', 'securewifi', 'UTASdemo123', 'IbraClass2026!', 'routeradmin', 'summer2026', 'wireless123']),
     extended: Object.freeze(['letmein123', 'internet2026', 'studentwifi', 'classroom2025', 'blueclassroom', 'labaccess1', 'guest2026', 'learning2026', 'campus2025', 'welcomehome', 'routerdemo', 'education123', 'classroom2026', 'demo-network', 'samplepassword', 'schoolwifi', 'winter2026', 'teachandlearn', 'UTASdemo123', 'testwifi2026', 'IbraClass2026!', 'password123', 'welcome2026', 'wireless123'])
@@ -35,6 +57,8 @@
   let selected = null, fixture = null, inspected = false, loaded = false;
   let index = 0, found = null, runListKey = 'short', runCandidates = lists.short;
   let retesting = false, applied = null;
+  let currentResult = null, appliedListKey = null;
+  let settingsRevision = 0, appliedRevision = -1;
   let history = Object.create(null);
   let reportController = null;
   let report = { actions: [], startedAt: null, completedAt: null, cancelled: false, retest: null };
@@ -58,11 +82,44 @@
     const preferred = el('wifiWordlist').value;
     return [preferred, ...Object.keys(lists)].find(key => history[key]?.weak?.found && history[key]?.strong?.found === false) || null;
   }
+  function settingsCurrent() {
+    return !!applied && settingsRevision === appliedRevision && applied.rotate === el('wifiRotate').checked && applied.wps === el('wifiWps').checked && applied.firmware === el('wifiFirmware').checked;
+  }
+  function currentRetest() {
+    return retesting && phase === 'complete' && !busy && loaded && inspected && currentResult?.retesting && currentResult.listKey === el('wifiWordlist').value && currentResult.listKey === appliedListKey && currentResult.nonce === fixture?.nonce && currentResult.expected === fixture?.expected && currentResult.appliedRevision === appliedRevision && settingsCurrent();
+  }
+  function updateMission() {
+    if (!mission) return;
+    const key = el('wifiWordlist').value;
+    const total = lists[key]?.length || 0;
+    const baseline = history[key];
+    const fresh = !!(applied?.rotate && settingsCurrent() && appliedListKey === key && retesting && inspected && loaded && fixture?.nonce === postChange.rotated.nonce && fixture?.expected === postChange.rotated.expected);
+    const checks = {
+      weak: !!(baseline?.weak?.found && baseline.weak.count > 0),
+      strong: !!(baseline?.strong?.found === false && baseline.strong.count === total && total > 0),
+      fresh,
+      retest: !!(fresh && currentRetest() && currentResult.matched === false && currentResult.count === total && currentResult.total === total)
+    };
+    const complete = Object.values(checks).every(Boolean);
+    let feedback;
+    if (applied && !settingsCurrent()) feedback = 'The selected settings were edited after the last application. Earlier retest evidence remains in the history, but it does not verify these choices. Apply the settings, inspect and load the fresh fixture, and finish a new retest.';
+    else if (phase === 'running' || busy) feedback = 'The current audit is still in progress. Pending and unfinished candidate checks cannot establish a completed outcome. Pause to inspect the recorded evidence.';
+    else if (phase === 'cancelled' || phase === 'error') feedback = phase === 'cancelled' ? 'The current run was cancelled. Partial checks cannot establish its outcome. Previous completed baseline evidence is retained; start a new audit to finish the current test.' : 'The browser did not produce a completed verifier result. Retry the audit in a browser with Web Crypto; no result has been invented.';
+    else if (complete) feedback = `With ${listLabels[key]}, the weak baseline matched after ${baseline.weak.count} checks and the strong baseline did not match after all ${total}. After applied rotation, the fresh ${fixture.nonce} fixture also had no match after all ${currentResult.count} checks from that same list. This supports improvement against these candidates only. WPS and firmware effects were not tested.`;
+    else if (!checks.weak || !checks.strong) {
+      const otherEvidence = Object.keys(history).some(other => other !== key && (history[other].weak || history[other].strong));
+      feedback = `${listLabels[key] || 'The selected list'} needs both a completed weak-fixture match and an exhausted strong-fixture non-match. ${otherEvidence ? 'Results from another candidate list stay in the history but do not fill this comparison.' : checks.weak ? 'The weak match is recorded. Test the strong baseline with this identical list.' : checks.strong ? 'The strong non-match is recorded. Test the weak baseline with this identical list.' : 'Inspect, load, and finish both baseline audits.'}`;
+    } else if (currentRetest() && currentResult.matched) feedback = 'The fresh retest still matched the weak example. That is useful negative evidence: WPS or firmware settings alone do not change this verifier. Apply passphrase rotation and retest fresh evidence with the same list.';
+    else if (!fresh) feedback = applied?.rotate ? 'Passphrase rotation is applied, but the current evidence is not yet a loaded fresh rotated fixture for this baseline list. Apply it for this comparison if needed, then inspect and load the new record.' : 'Both baselines are complete with the same list. Select and apply passphrase rotation, then inspect and load its fresh fixture. Selecting a checkbox alone does not change the verifier.';
+    else feedback = `${index} of ${total} candidates have been checked against the fresh rotated fixture. Finish this same-list retest; an unfinished or restarted run cannot establish a non-match.`;
+    mission.update({ checks, feedback, complete, started: report.actions.length > 0 });
+  }
   function updateGuide() {
+    updateMission();
     if (!guide) return;
     const paired = comparisonList();
     const baselineDone = Object.values(history).some(item => item.weak || item.strong);
-    const retestDone = retesting && phase === 'complete' && !!report.retest;
+    const retestDone = !!currentRetest();
     const done = [discovery === 'done' && !!selected, inspected && loaded, baselineDone, !!paired, retestDone];
     let step = 0, action = null, caption = '';
     const next = (position, id, label, text) => { step = position; action = id ? { id, label } : null; caption = text; };
@@ -75,6 +132,7 @@
     else if (phase === 'running') next(2, 'wifiPause', 'Find Pause', `${index} of ${runCandidates.length} candidates checked. The next supplied candidate will be checked locally. Pause to read each comparison.`);
     else if (phase === 'paused' || phase === 'ready') next(retesting ? 4 : 2, 'wifiStep', 'Find Check one candidate', `${index ? index + ' checks are recorded.' : 'No candidates have been checked in this run.'} Check one candidate to see its fingerprint and comparison. ${retesting ? 'This uses fresh evidence and the same baseline list.' : 'You can also choose timed playback with the Start or Resume control.'}`);
     else if (phase === 'cancelled' || phase === 'error') next(retesting ? 4 : 2, 'wifiStart', 'Find Start new audit', phase === 'error' ? 'The browser could not calculate a verifier. No result was invented. Start a new audit to retry; local verification needs Web Crypto on HTTPS or localhost.' : 'This run was cancelled. Partial checks are not a completed result. Start a new audit from candidate 1; completed baseline evidence is retained.');
+    else if (applied && !settingsCurrent()) next(4, 'wifiApply', 'Find Apply simulated settings', 'Your selected settings changed after the earlier application. Apply the current choices, then inspect and load fresh evidence and complete a new retest. The earlier result remains historical evidence.');
     else if (retestDone) next(4, report.retest.matched ? (el('wifiRotate').checked ? 'wifiApply' : 'wifiRotate') : null, el('wifiRotate').checked ? 'Find Apply simulated settings' : 'Find passphrase rotation', report.retest.matched ? 'The unchanged weak example still matched. WPS and firmware settings do not change this verifier. ' + (el('wifiRotate').checked ? 'Passphrase rotation is selected. Apply it, then load fresh evidence and retest.' : 'Select passphrase rotation, apply it, then load fresh evidence and retest.') : 'The rotated fixture was not found in the same list. Your comparison is complete. This is improvement against these supplied candidates only; review the report below.');
     else if (paired) {
       const chosen = el('wifiRotate').checked || el('wifiWps').checked || el('wifiFirmware').checked;
@@ -138,6 +196,7 @@
   }
   function clearRun() {
     stopAsync();
+    currentResult = null;
     report.completedAt = null;
     index = 0; found = null;
     el('wifiRows').replaceChildren();
@@ -267,6 +326,7 @@
   function finish() {
     stopAsync(); phase = 'complete';
     const matched = found !== null;
+    currentResult = { retesting, listKey: runListKey, nonce: fixture.nonce, expected: fixture.expected, appliedRevision, matched, count: index, total: runCandidates.length };
     record(retesting ? 'Defensive retest completed' : 'Baseline audit completed', fixture.ssid + ': ' + (matched ? 'exact synthetic verifier match' : 'no match in selected list') + '; ' + index + '/' + runCandidates.length + ' evaluated using ' + listLabels[runListKey]);
     report.completedAt = retesting ? new Date().toISOString() : null;
     if (matched) {
@@ -386,6 +446,7 @@
     const choices = { rotate: el('wifiRotate').checked, wps: el('wifiWps').checked, firmware: el('wifiFirmware').checked };
     if (!choices.rotate && !choices.wps && !choices.firmware) { say('Choose at least one simulated setting before applying changes.'); return; }
     applied = choices;
+    appliedRevision = settingsRevision; appliedListKey = paired;
     record('Simulated settings applied', 'Passphrase rotated: ' + choices.rotate + '; WPS disabled: ' + choices.wps + '; firmware update applied: ' + choices.firmware + '. No real router changed.');
     el('wifiWordlist').value = paired;
     el('wifiRetest').hidden = true;
@@ -395,9 +456,11 @@
   }
   function reset() {
     if (reportController) reportController.reset();
+    mission?.reset();
     stopAsync(); clearTimeout(discoveryTimer); discoveryTimer = null; discoveryToken += 1;
     discovery = 'idle'; discoveryPaused = false; phase = 'idle'; selected = fixture = null;
     inspected = loaded = retesting = false; applied = null; history = Object.create(null);
+    currentResult = null; appliedListKey = null; settingsRevision = 0; appliedRevision = -1;
     report = { actions: [], startedAt: null, completedAt: null, cancelled: false, retest: null };
     apButtons.clear(); el('wifiAps').replaceChildren();
     el('wifiWordlist').value = 'short'; el('wifiSpeed').value = 'normal';
@@ -423,7 +486,7 @@
   el('wifiCancel').addEventListener('click', cancel);
   el('wifiReset').addEventListener('click', reset);
   el('wifiApply').addEventListener('click', applyDefenses);
-  ['wifiRotate', 'wifiWps', 'wifiFirmware'].forEach(id => el(id).addEventListener('change', controls));
+  ['wifiRotate', 'wifiWps', 'wifiFirmware'].forEach(id => el(id).addEventListener('change', () => { settingsRevision += 1; controls(); }));
   el('wifiCompare').addEventListener('click', () => {
     if (active() || !Object.keys(history).length) return;
     chooseAp(selected === 'strong' ? 'weak' : 'strong'); el('wifiInspect').focus();
@@ -454,6 +517,7 @@
       mountTo: '#labReportMount',
       getSnapshot: () => {
         const findings = [];
+        const missionSummary = mission?.getSummary();
         Object.keys(history).forEach(key => {
           ['weak', 'strong'].forEach(apKey => {
             const item = history[key][apKey];
@@ -468,17 +532,21 @@
         });
         if (report.retest) {
           const result = report.retest;
-          findings.push({ title: result.matched ? 'Retest: weak fixture still matched' : 'Retest: fresh fixture not found in the same list', evidence: result.count + '/' + result.total + ' checks using ' + result.list + '. Passphrase rotated: ' + result.rotate + '; WPS disabled: ' + result.wps + '; simulated firmware update: ' + result.firmware + '.', risk: 'Only passphrase rotation affects this teaching verifier. WPS and firmware attacks were not evaluated; no real router was changed.', recommendation: result.matched ? 'Rotate the passphrase and retest using fresh evidence.' : 'Keep the limited-list result in context; maintain current firmware and supported modern Wi-Fi security.' });
+          findings.push({ title: (currentRetest() ? 'Retest: ' : 'Earlier completed retest: ') + (result.matched ? 'weak fixture still matched' : 'fresh fixture not found in the same list'), evidence: result.count + '/' + result.total + ' checks using ' + result.list + '. Passphrase rotated: ' + result.rotate + '; WPS disabled: ' + result.wps + '; simulated firmware update: ' + result.firmware + '.', risk: 'Only passphrase rotation affects this teaching verifier. WPS and firmware attacks were not evaluated; no real router was changed.', recommendation: result.matched ? 'Rotate the passphrase and retest using fresh evidence.' : 'Keep the limited-list result in context; maintain current firmware and supported modern Wi-Fi security.' });
         }
         return {
-          status: phase === 'complete' && report.retest ? 'completed' : (phase === 'cancelled' || report.cancelled ? 'cancelled' : (report.actions.length ? 'in-progress' : 'not-performed')),
+          status: currentRetest() ? 'completed' : (phase === 'cancelled' || report.cancelled ? 'cancelled' : (report.actions.length ? 'in-progress' : 'not-performed')),
           startedAt: report.startedAt,
-          completedAt: report.completedAt,
-          summary: 'Synthetic classroom exercise. Current audit phase: ' + phase + '. ' + index + ' candidate checks in the current run. ' + (comparisonList() ? 'Same-list baseline comparison completed.' : 'Same-list baseline comparison not yet complete.'),
+          completedAt: currentRetest() ? report.completedAt : null,
+          summary: 'Synthetic classroom exercise. Current audit phase: ' + phase + '. ' + index + ' candidate checks in the current run. ' + (comparisonList() ? 'Same-list baseline comparison completed.' : 'Same-list baseline comparison not yet complete.') + (missionSummary ? ' Optional rotation mission evidence: ' + missionSummary.status + '.' : ''),
           actions: report.actions.slice(),
           findings,
-          metrics: [{ label: 'Current local checks', value: index }, { label: 'Current list size', value: lists[el('wifiWordlist').value].length }, { label: 'Selected synthetic AP', value: fixture?.ssid || 'None' }, { label: 'Same-list comparison', value: comparisonList() ? 'Complete' : 'Not complete' }, { label: 'Passphrase rotation applied', value: applied?.rotate ? 'Yes (simulated)' : 'No' }],
-          limitations: ['Not real WPA2/WPA3, packet capture, wireless discovery, or attack-speed measurement.', 'Only built-in candidates and supplied synthetic fixtures were tested. A non-match is not proof of security.', 'WPS and firmware changes are simulated configuration records, not tested defenses.', 'Candidate words and recovered classroom passwords are intentionally excluded from this report.', 'Partial and cancelled runs cannot establish a completed result.'],
+          metrics: [{ label: 'Current local checks', value: index }, { label: 'Current list size', value: lists[el('wifiWordlist').value].length }, { label: 'Selected synthetic AP', value: fixture?.ssid || 'None' }, { label: 'Same-list comparison', value: comparisonList() ? 'Complete' : 'Not complete' }, { label: 'Passphrase rotation applied', value: applied?.rotate ? 'Yes (simulated)' : 'No' }, ...(missionSummary ? [
+            { label: 'Practice mission', value: missionSummary.status },
+            { label: 'Mission evidence checks', value: `${missionSummary.completedChecks}/${missionSummary.totalChecks}` },
+            { label: 'Optional hints revealed', value: missionSummary.hintsRevealed }
+          ] : [])],
+          limitations: ['Not real WPA2/WPA3, packet capture, wireless discovery, or attack-speed measurement.', 'Only built-in candidates and supplied synthetic fixtures were tested. A non-match is not proof of security.', 'WPS and firmware changes are simulated configuration records, not tested defenses.', 'Candidate words and recovered classroom passwords are intentionally excluded from this report.', 'Partial and cancelled runs cannot establish a completed result.', 'Completed simulation means a current retest finished, including a retest that still matches. The optional rotation mission additionally requires a fresh same-list non-match; its evidence status is reported separately.'],
           recommendations: ['Use long, unique Wi-Fi passphrases, disable unused WPS, keep router firmware current, and use supported modern Wi-Fi security.', 'After passphrase rotation, assess fresh evidence; old captures still describe the old credential.', 'Obtain explicit authorization before any real-world wireless security test.']
         };
       }

@@ -1,0 +1,6 @@
+/* Inert navigation only. Normal flow keeps the link clear of page content. */
+.app-home-nav{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:0 0 18px}
+a.app-home-link,.welcome-header nav a.app-home-link{box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;min-width:72px;max-width:100%;padding:9px 14px;border:1px solid #7faab2;border-radius:8px;background:#fff;color:#164b59;font:700 14px/1.5 Arial,Helvetica,sans-serif;text-decoration:none;overflow-wrap:anywhere}
+a.app-home-link:hover,.welcome-header nav a.app-home-link:hover{background:#e4f3f1;color:#103e4b;text-decoration:underline}
+a.app-home-link:focus-visible,.welcome-header nav a.app-home-link:focus-visible{outline:3px solid #145bbb;outline-offset:3px}
+@media(max-width:420px){.app-home-nav{margin-bottom:14px}.welcome-header nav a.app-home-link{min-width:64px;padding:8px 11px;font-size:13px}}

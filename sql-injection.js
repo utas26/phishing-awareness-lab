@@ -4,13 +4,56 @@ let reportUI=null;
 const $=id=>document.getElementById(id); if(!$('sqlInput'))return;
 const records=[{id:'R01',title:'Account Safety Basics',category:'Security',published:true},{id:'R02',title:'Safe Data Handling',category:'Security',published:true},{id:'R03',title:'Solar System Guide',category:'Science',published:true},{id:'R04',title:'Color and Composition',category:'Art',published:true},{id:'R05',title:'Draft: Future Security Workshop',category:'Security',published:false},{id:'R06',title:'Draft: New Science Activity',category:'Science',published:false}];
 const examples={normal:'Security',tautology:"' OR 1=1 --",string:"' OR 'a'='a' --",unknown:'Unknown'};
-const limitations=['Only two explicitly supported OR-true/comment patterns and ordinary category literals are modeled. No SQL engine or backend is contacted.','Raw user input is excluded from this report. Output and records are fictional.'];
+const limitations=['Only two explicitly supported OR-true/comment patterns and ordinary category literals are modeled. No SQL engine or backend is contacted.','Raw user input is excluded from this report. Output and records are fictional.','Completed simulation means that a same-input comparison was performed. The optional injection-defense mission has separate evidence requirements and its current status is reported in the measures.'];
 let runs=[],actions=[],startedAt='',completedAt='',paired=false,currentRun=null,inputTouched=false,guideEvent=0;
+let missionVulnerable=null,missionBound=null;
 const now=()=>new Date().toISOString();
 const guide=window.BeginnerGuide?window.BeginnerGuide.mount({mountTo:'#beginnerGuideMount',title:'Follow the category through the query',intro:'Watch your demo text move from a category value to a modeled query result. Each change below comes from a run you start.',steps:[{title:'Choose demo text',text:'Start with Security, load an example, or type your own category.'},{title:'Run one mode',text:'Run the local model and inspect the query and matched records.'},{title:'Retest the same text',text:'Change only the query construction so the comparison is fair.'},{title:'Compare the evidence',text:'Read the record and draft counts for both modes. A comparison is not proof of a real vulnerability.'}] }):null;
+const mission=window.PracticeMission?.mount({
+ mountTo:'#practiceMissionMount',guideTo:'#beginnerGuideMount',title:'Keep the draft records private',
+ goal:'Use a supplied injected condition to expose drafts in the vulnerable model. Keep the input identical, bind it as data, and compare the measured results.',
+ checks:[{id:'observe',label:'Observe an injected condition returning draft records'},{id:'bind',label:'Retest that identical input with a bound parameter'},{id:'compare',label:'Compare exposed drafts with zero drafts in the defended result'}],
+ hints:[
+  {title:'Find the evidence',text:'Choose either supplied injected true-condition example. Use the vulnerable construction and look at the publication column after a run.'},
+  {title:'Change one thing',text:'Keep the category input exactly as it is. Use Bind input and retest to change only the query construction.'},
+  {title:'Explain the difference',text:'Compare the two draft counts. The joined query treats the supplied condition as instructions; the bound query treats the whole input as a category name, so it matches none of these records.'}
+ ],
+ debrief:{takeaway:'Binding keeps a value separate from query instructions. Compare the measured draft counts above to explain what changed.',limitation:'This local model recognizes two supplied patterns. It does not execute SQL or test a real database.'},
+ next:{href:'/xss.html',label:'Next: keep text from becoming markup in the XSS lab'}
+});
+function recordMissionRun(entry){
+ if(missionVulnerable&&missionVulnerable.source!==entry.source)missionVulnerable=null;
+ missionBound=null;
+ if(entry.mode==='concatenated')missionVulnerable=entry.supported&&entry.kind==='supported injected true condition'&&entry.drafts>0?entry:null;
+ else if(missionVulnerable&&entry.supported&&entry.drafts===0)missionBound=entry;
+}
+function updateMission(){
+ if(!mission)return;
+ const active=isCurrent()?currentRun:null,source=$('sqlInput').value.slice(0,120);
+ const observed=!!missionVulnerable&&missionVulnerable.source===source;
+ const bound=observed&&!!active&&active===missionBound&&active.mode==='bound'&&active.supported&&active.drafts===0&&active.source===missionVulnerable.source;
+ const compared=bound&&paired&&missionVulnerable.drafts>active.drafts&&missionVulnerable.count>active.count;
+ let feedback='Load a supplied injected true-condition example and run the vulnerable construction. Look for drafts that should have stayed private.';
+ if(!currentInput())feedback='Enter a demo input first. An empty input produces no evidence for this mission.';
+ else if(!['concatenated','bound'].includes($('sqlMode').value))feedback='Choose one of the two query constructions. An unrecognized mode cannot produce mission evidence.';
+ else if(active&&!active.supported)feedback='This syntax is outside the teaching model, so its empty result does not show a defense. Load a supplied injected true-condition example and run it with the vulnerable construction.';
+ else if(compared)feedback=`Before: concatenation returned ${missionVulnerable.count} records, including ${missionVulnerable.drafts} drafts. After: binding the identical input returned ${active.count} records and ${active.drafts} drafts. The supplied condition changed the joined query; as a bound category value it matched no records. This demonstrates the difference between query instructions and data in this model.`;
+ else if(active&&active.mode==='concatenated'&&observed)feedback=`The vulnerable result exposed ${active.drafts} drafts among ${active.count} records. Keep this exact input and use Bind input and retest; changing the input would make this an unfair comparison.`;
+ else if(active&&active.mode==='concatenated')feedback=`This run returned ${active.count} records and ${active.drafts} drafts. An ordinary or unknown category does not demonstrate injection. Run a supplied injected true-condition example in the vulnerable construction first.`;
+ else if(active&&active.mode==='bound')feedback=`This bound run returned ${active.drafts} drafts, but a defended result alone is not a before-and-after test. First run the same supplied injection in the vulnerable construction, then bind it again without editing the input.`;
+ else if(observed)feedback='The vulnerable evidence is recorded for this input, but the current settings have not been run. Keep the input identical and use Bind input and retest.';
+ else if(runs.length)feedback='The current input has no mission comparison. Earlier runs remain in Run evidence. Run a supplied injected condition in the vulnerable construction, then bind that exact input.';
+ mission.update({checks:{observe:observed,bind:bound,compare:compared},feedback,complete:compared,started:runs.length>0});
+}
+function missionMetrics(){
+ if(!mission)return[];
+ const summary=mission.getSummary();
+ return[{label:'Practice mission status',value:summary.status},{label:'Current mission evidence checks',value:`${summary.completedChecks} of ${summary.totalChecks}`},{label:'Practice hints revealed',value:summary.hintsRevealed}];
+}
 function currentInput(){return $('sqlInput').value.slice(0,120).trim();}
 function isCurrent(){return !!currentRun&&currentRun.input===currentInput()&&currentRun.mode===$('sqlMode').value;}
 function updateGuide(animate=false){
+ updateMission();
  if(!guide)return;
  const active=isCurrent()?currentRun:null,input=currentInput(),mode=$('sqlMode').value,validMode=['bound','concatenated'].includes(mode),complete=!!active&&paired;
  let step=0,completed=[],status='Ready to practise',caption='Start with Security, then run the local query model. A query is a request for records.',action={id:'sqlRun',label:'Find Run local query model'};
@@ -23,7 +66,7 @@ function updateGuide(animate=false){
  if(!active&&runs.length&&input&&validMode)status='Current settings not tested';
  guide.update({step,completed,status,caption,nodes:[{label:'Category input',value:!input?'Empty input':active?active.kind:'Demo text ready',tone:input?'active':'warn'},{label:'Query construction',value:mode==='bound'?'Bound value':validMode?'Joined to query text':'Choose a mode',tone:mode==='bound'?'good':validMode?'active':'warn'},{label:'Local result',value:active?(active.supported?`${active.count} records · ${active.drafts} drafts`:'Unsupported syntax'):'Not run for these settings',tone:active?(active.supported?(active.drafts?'warn':'good'):'warn'):'neutral'},{label:'Comparison',value:complete?'Same input, both modes':'Retest still needed',tone:complete?'good':'neutral'}],action,eventKey:'sql:'+guideEvent,animate});
 }
-function invalidate(message,animate=false){currentRun=null;paired=false;completedAt='';renderRows([]);$('sqlQuery').textContent='No query has been run for the current input and mode.';$('sqlStatus').textContent=message;$('sqlComparison').textContent='Current settings are not tested. Earlier runs remain in Run evidence; run again before comparing.';guideEvent++;updateGuide(animate);}
+function invalidate(message,animate=false,discardMission=false){currentRun=null;paired=false;completedAt='';missionBound=null;if(discardMission)missionVulnerable=null;renderRows([]);$('sqlQuery').textContent='No query has been run for the current input and mode.';$('sqlStatus').textContent=message;$('sqlComparison').textContent='Current settings are not tested. Earlier runs remain in Run evidence; run again before comparing.';guideEvent++;updateGuide(animate);}
 function record(label,result){actions.push({label,result,at:now()});if(actions.length>60)actions.shift();}
 function model(input,mode){
  if(mode==='bound')return{kind:'bound value',rows:records.filter(r=>r.published&&r.category.toLowerCase()===input.toLowerCase()),supported:true,detail:'The query structure stays fixed. The complete input is one category value; SQL-looking characters do not become operators.'};
@@ -44,16 +87,16 @@ function run(){const input=currentInput(),mode=$('sqlMode').value;if(!['bound','
  if(!startedAt)startedAt=now();const result=model(input,mode),drafts=result.rows.filter(r=>!r.published).length;
  $('sqlQuery').textContent=mode==='bound'?"SELECT id, title, category FROM catalog\nWHERE category = ? AND published = 1;\n\nBound value (data only): "+JSON.stringify(input):"SELECT id, title, category FROM catalog\nWHERE category = '"+input+"' AND published = 1;";
  renderRows(result.rows);$('sqlStatus').textContent=result.detail+` Result: ${result.rows.length} record(s), ${drafts} draft(s).`;
- const entry={input,mode,kind:result.kind,count:result.rows.length,drafts,supported:result.supported};currentRun=entry;inputTouched=true;runs.push(entry);if(runs.length>40)runs.shift();record(mode==='bound'?'Run bound-parameter model':'Run concatenation model',`${result.kind}; ${result.rows.length} fictional records; ${drafts} drafts; ${result.supported?'supported model input':'unsupported, no outcome inferred'}.`);compare(entry);
+ const entry={input,source:$('sqlInput').value.slice(0,120),mode,kind:result.kind,count:result.rows.length,drafts,supported:result.supported};currentRun=entry;inputTouched=true;runs.push(entry);if(runs.length>40)runs.shift();record(mode==='bound'?'Run bound-parameter model':'Run concatenation model',`${result.kind}; ${result.rows.length} fictional records; ${drafts} drafts; ${result.supported?'supported model input':'unsupported, no outcome inferred'}.`);compare(entry);recordMissionRun(entry);
  $('sqlHistory').textContent=runs.slice(-8).map((r,i)=>`${runs.length-Math.min(runs.length,8)+i+1}. ${r.mode} · ${r.kind} · ${r.count} records · ${r.drafts} drafts`).join('\n');
  guideEvent++;updateGuide(true);
 }
-function reset(){if(reportUI)reportUI.reset();runs=[];actions=[];startedAt='';completedAt='';paired=false;currentRun=null;inputTouched=false;$('sqlInput').value='Security';$('sqlExample').value='normal';$('sqlMode').value='concatenated';renderRows([]);$('sqlQuery').textContent='No query has been run.';$('sqlStatus').textContent='Reset complete. No query has been run in this session.';$('sqlComparison').textContent='Run the vulnerable and bound versions with identical input to compare them.';$('sqlHistory').textContent='No runs yet.';guideEvent++;updateGuide(false);}
+function reset(){if(reportUI)reportUI.reset();runs=[];actions=[];startedAt='';completedAt='';paired=false;currentRun=null;inputTouched=false;missionVulnerable=null;missionBound=null;if(mission)mission.reset();$('sqlInput').value='Security';$('sqlExample').value='normal';$('sqlMode').value='concatenated';renderRows([]);$('sqlQuery').textContent='No query has been run.';$('sqlStatus').textContent='Reset complete. No query has been run in this session.';$('sqlComparison').textContent='Run the vulnerable and bound versions with identical input to compare them.';$('sqlHistory').textContent='No runs yet.';guideEvent++;updateGuide(false);}
 $('sqlMode').addEventListener('change',()=>{invalidate('Query mode changed. Run again to produce evidence for this mode.',true);});
 $('sqlRun').addEventListener('click',run);$('sqlDefend').addEventListener('click',()=>{$('sqlMode').value='bound';run();});$('sqlReset').addEventListener('click',reset);
-$('sqlExample').addEventListener('change',()=>{const value=examples[$('sqlExample').value];if(value!==undefined){$('sqlInput').value=value;inputTouched=true;invalidate('Example loaded. Run the query model to produce new evidence.',true);}});
-$('sqlInput').addEventListener('input',()=>{inputTouched=true;$('sqlExample').value='custom';invalidate('Input changed. The current input has not been tested. Earlier runs remain in Run evidence.');});
+$('sqlExample').addEventListener('change',()=>{const value=examples[$('sqlExample').value];if(value!==undefined){$('sqlInput').value=value;inputTouched=true;invalidate('Example loaded. Run the query model to produce new evidence.',true,true);}});
+$('sqlInput').addEventListener('input',()=>{inputTouched=true;$('sqlExample').value='custom';invalidate('Input changed. The current input has not been tested. Earlier runs remain in Run evidence.',false,true);});
 $('sqlInput').addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();run();}});
-if(window.LabReport)reportUI=window.LabReport.mount({labId:'sql-injection',mountTo:'#labReportMount',title:'SQL Injection Defense Lab',scope:'Local fictional catalog with six records, including two drafts. Limited string-concatenation versus bound-value model.',getSnapshot:()=>{const last=runs[runs.length-1],active=isCurrent(),complete=active&&paired;return{status:!runs.length?'not-performed':complete?'completed':'in-progress',startedAt,completedAt:complete?completedAt:'',summary:last?`${active?'':'Current input or mode has not been run. '}Last recorded model run: ${last.mode}; ${last.count} fictional records returned. ${complete?'A same-input comparison was completed for the current input.':'A same-input comparison for the current settings is still pending.'}`:'',actions:actions.slice(),metrics:last?[{label:'Last recorded model result',value:last.count+' records'},{label:'Draft records in last recorded result',value:last.drafts}]:[],findings:runs.filter(r=>r.supported&&r.drafts>0).slice(-1).map(r=>({title:'Modeled publication filter bypass',evidence:`Supported injected condition returned ${r.count} fictional records, including ${r.drafts} drafts.`,risk:'Query structure can change when values are concatenated into SQL.',recommendation:'Bind values with parameterized queries; retain authorization and least-privilege controls.'})),limitations};}});
+if(window.LabReport)reportUI=window.LabReport.mount({labId:'sql-injection',mountTo:'#labReportMount',title:'SQL Injection Defense Lab',scope:'Local fictional catalog with six records, including two drafts. Limited string-concatenation versus bound-value model.',getSnapshot:()=>{const last=runs[runs.length-1],active=isCurrent(),complete=active&&paired;return{status:!runs.length?'not-performed':complete?'completed':'in-progress',startedAt,completedAt:complete?completedAt:'',summary:last?`${active?'':'Current input or mode has not been run. '}Last recorded model run: ${last.mode}; ${last.count} fictional records returned. ${complete?'A same-input comparison was completed for the current input.':'A same-input comparison for the current settings is still pending.'} ${mission?'Optional injection-defense mission evidence: '+mission.getSummary().status+'.':''}`:'',actions:actions.slice(),metrics:[...(last?[{label:'Last recorded model result',value:last.count+' records'},{label:'Draft records in last recorded result',value:last.drafts}]:[]),...missionMetrics()],findings:runs.filter(r=>r.supported&&r.drafts>0).slice(-1).map(r=>({title:'Modeled publication filter bypass',evidence:`Supported injected condition returned ${r.count} fictional records, including ${r.drafts} drafts.`,risk:'Query structure can change when values are concatenated into SQL.',recommendation:'Bind values with parameterized queries; retain authorization and least-privilege controls.'})),limitations};}});
 updateGuide(false);
 })();

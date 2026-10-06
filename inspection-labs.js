@@ -20,6 +20,31 @@
       { title: 'Verify', text: isQr ? 'Open the trusted bookmark independently to check the fictional account.' : 'Open the trusted bookmark, then inspect and compare the timetable message.' }
     ]
   });
+  // The shared inspection engine also powers QR; this optional mission is URL-only.
+  const mission = !isQr ? window.PracticeMission?.mount({
+    mountTo: '#practiceMissionMount', guideTo: '#beginnerGuideMount',
+    title: 'Resolve the suspicious message with evidence',
+    goal: 'Prove where the urgent link goes, stop and report it, then verify the trusted route and the legitimate timetable.',
+    checks: [
+      { id: 'hostname', label: 'Inspect the urgent link’s actual hostname' },
+      { id: 'redirects', label: 'Finish tracing its supplied redirects' },
+      { id: 'proof', label: 'Attach the hostname and link-text mismatch evidence' },
+      { id: 'response', label: 'Contain, recover if needed, and file the local report' },
+      { id: 'bookmark', label: 'Verify through the independent trusted bookmark' },
+      { id: 'comparison', label: 'Inspect and verify the legitimate timetable comparison' }
+    ],
+    hints: [
+      { title: 'Look past the familiar text', text: 'Preview the urgent message and inspect its hostname. Text before @ is userinfo; the destination hostname comes after it.' },
+      { title: 'Keep the observations', text: 'Complete the redirect trace, then attach the destination hostname and link-text mismatch. Detached evidence does not count.' },
+      { title: 'Respond to the observed risk', text: 'Stop the untrusted destination. If you tried the fictional sign-in, revoke its demo session. Then file the local report.' },
+      { title: 'Verify a separate route', text: 'Open the supplied trusted bookmark. Select the timetable message, preview and inspect its hostname, open its contained page, and compare it with that bookmark.' }
+    ],
+    debrief: {
+      takeaway: 'The URL parser’s hostname and the final redirect destination support the decision. The timetable comparison shows how an exact hostname match differs from familiar-looking link text.',
+      limitation: 'These are authored .example addresses and local playback. The report, account check, and recovery do not contact a website or change a real account.'
+    },
+    next: { href: '/qr-phishing.html', label: 'Next: reveal a QR code’s destination' }
+  }) : null;
   const trustedUrl = 'https://portal.campus.example/dashboard';
   const trustedHost = new URL(trustedUrl).hostname;
   // Owner domains are explicitly authored fixtures, never a last-two-label guess.
@@ -111,7 +136,30 @@
     const labels = { host: 'Destination hostname', redirect: 'Redirect destination', label: 'Link-text mismatch', urgency: 'Urgent poster claim' };
     return `<button type="button" id="inspection-pin-${id}" class="evidence-pin" data-action="pin" data-pin="${id}" aria-pressed="${selected}"${disabled(state.reported)}>${selected ? '✓ Attached: ' : '+ Attach: '}${labels[id]}</button>`;
   }
+  function updateMission() {
+    if (!mission) return;
+    const checks = {
+      hostname: state.previewed.threat && state.inspected.threat,
+      redirects: state.traced.threat,
+      proof: enoughEvidence(),
+      response: state.reported && reportReady(),
+      bookmark: state.trusted && recoveredIfNeeded(),
+      comparison: state.previewed.legitimate && state.inspected.legitimate && state.legitOpened && state.compared && state.trusted && recoveredIfNeeded()
+    };
+    const complete = completed() && Object.values(checks).every(Boolean);
+    let feedback;
+    if (complete) feedback = `You observed ${new URL(threat.entry).hostname}, then traced ${threat.trace.length} supplied hops ending at ${new URL(threat.final).hostname}. Both differ from ${trustedHost}. Your hostname and link-text proof supports the local report. ${state.recovered ? 'The fictional exposed session was revoked.' : 'The untrusted destination was stopped without a demo sign-in.'} The independent bookmark and inspected timetable share the exact trusted hostname.`;
+    else if (state.compromised && !state.recovered) feedback = 'The fictional sign-in exposed the demo session. Inspection evidence alone cannot contain that exposure: revoke the demo session before reporting or verifying the account.';
+    else if (!checks.hostname) feedback = state.selected === 'legitimate' ? 'The timetable is a useful comparison, but it does not establish where the urgent message goes. Preview and inspect the urgent link’s actual hostname.' : 'A familiar displayed URL does not establish the destination. Preview the urgent link and inspect the parsed hostname.';
+    else if (!checks.redirects) feedback = `The urgent link’s hostname is ${new URL(threat.entry).hostname}. ${state.traceCount.threat} of ${threat.trace.length} supplied redirect observations are recorded; the final destination is not yet fully traced.`;
+    else if (!checks.proof) feedback = 'The trace is complete, but the report needs attached proof. Keep both the destination hostname and link-text mismatch in the evidence tray.';
+    else if (!checks.response) feedback = state.contained ? 'The destination is contained and the required proof is attached. File the local report to record the response.' : 'The evidence identifies the mismatch. Stop the untrusted destination before filing the local report.';
+    else if (!checks.bookmark) feedback = 'The report is filed locally. Verify the fictional account through the independent trusted bookmark; the suspect message cannot provide that verification.';
+    else feedback = 'The suspicious-message response is recorded. Complete the timetable comparison by previewing and inspecting its hostname, opening its contained page, and comparing it with the trusted bookmark.';
+    mission.update({ checks, feedback, complete, started: state.events.length > 1 });
+  }
   function updateGuide() {
+    updateMission();
     if (!guide) return;
     const done = [state.previewed.threat, state.inspected.threat, state.traced.threat && enoughEvidence(), state.reported && recoveredIfNeeded(), state.trusted && recoveredIfNeeded() && (isQr || state.compared)];
     let step = Math.max(0, done.findIndex(value => !value));
@@ -318,7 +366,7 @@
     const kind = state.selected;
     switch (action) {
       case 'reset':
-        stopPlayback(false); clearTimer(); state = freshState(); if (report) report.reset(); break;
+        stopPlayback(false); clearTimer(); state = freshState(); if (report) report.reset(); mission?.reset(); break;
       case 'decode':
         if (!isQr || state.scanDone || playback) return;
         startPlayback('decode'); break;
@@ -453,13 +501,18 @@
         if (state.trusted) findings.push({ title: 'Independent trusted route used', evidence: `Supplied bookmark opened in mock browser: ${trustedUrl}. The fictional account status was active.`, risk: 'The observation applies only to this fixture, not a real account.', recommendation: 'Use an independently verified route for sensitive account actions.' });
         if (state.compared) findings.push({ title: 'Legitimate comparison verified', evidence: `${fixtures.legitimate.entry} and ${trustedUrl} have the same exact hostname: ${trustedHost}.`, risk: 'Informational comparison of the supplied fixtures only.', recommendation: 'Compare actual hostnames, while accounting for the verified service’s documented domains.' });
         const steps = progress();
+        const missionSummary = mission?.getSummary();
         return {
           status: completed() ? 'completed' : actions.length ? 'in progress' : 'not started',
           startedAt: actions.length ? state.events[0].at : '',
           completedAt: completed() ? state.completedAt : '',
           summary: `${steps.filter(item => item[1]).length} of ${steps.length} required investigation actions completed. Local report ${state.reported ? 'filed' : 'not filed'}. Trusted-route check ${state.trusted ? 'performed' : 'not performed'}.${state.compromised ? ` Fictional demo exposure ${state.recovered ? 'recovered' : 'not yet recovered'}.` : ' Fictional demo sign-in was not used.'}`,
           actions, findings,
-          metrics: steps.map(item => ({ label: item[0], value: item[1] ? 'Completed' : 'Not completed' }))
+          metrics: [...steps.map(item => ({ label: item[0], value: item[1] ? 'Completed' : 'Not completed' })), ...(missionSummary ? [
+            { label: 'Practice mission', value: missionSummary.status },
+            { label: 'Mission evidence checks', value: `${missionSummary.completedChecks}/${missionSummary.totalChecks}` },
+            { label: 'Optional hints revealed', value: missionSummary.hintsRevealed }
+          ] : [])]
         };
       },
       mountTo: document.getElementById('labReportMount')

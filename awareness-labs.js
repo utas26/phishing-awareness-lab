@@ -39,6 +39,29 @@
       { title: 'Check the account', text: 'Review activity. If an approval opened an unwanted session, revoke it.' },
       { title: 'Try your own sign-in', text: 'Start a sign-in yourself and match the number before approving.' }
     ] });
+    const mission = window.PracticeMission?.mount({ mountTo: '#practiceMissionMount', guideTo: '#beginnerGuideMount', title: 'Approve only your own sign-in', goal: 'Handle the unexpected requests, prove that no unwanted session remains, then finish a sign-in you started yourself.', checks: [
+      { id: 'observed', label: 'Observe an unexpected request while no sign-in is expected.' },
+      { id: 'reported', label: 'Report the unexpected activity and stop the burst.' },
+      { id: 'reviewed', label: 'Review the account and leave zero unwanted sessions.' },
+      { id: 'own', label: 'Finish your own sign-in with the matching workstation number.' }
+    ], hints: [
+      { title: 'Connect the two screens', text: 'Compare what the workstation is doing with the phone request. A request arriving does not prove you started it.' },
+      { title: 'Stopping requests is only part of recovery', text: 'Reporting stops this model’s burst. Review activity afterwards: an earlier approval may have left a session that must be revoked.' },
+      { title: 'Verify your own action', text: 'Once the account is clear, start your own demo sign-in. Read the workstation number and select that same number on the phone. A wrong match opens no session.' }
+    ], debrief: { takeaway: 'You connected an approval to a sign-in you initiated, and checked the account rather than assuming that stopping the requests removed every session.', limitation: 'The before/after state describes only this fictional account. Number matching can reduce accidental approvals; it is not equivalent to phishing-resistant authentication.' }, next: { href: '/fake-update.html', label: 'Next: inspect a fake software update →' } });
+    function updateMission() {
+      if (!mission) return;
+      let feedback = 'Start the supplied request burst and compare the two screens.';
+      if (s.compromised) feedback = 'An unexpected approval created one unwanted session. Stopping the burst does not remove that session; inspect account activity and recover it.';
+      else if (s.numberError) feedback = 'The selected number did not match, so the model opened no session. Compare the phone choice with the workstation number before retrying.';
+      else if (complete()) feedback = (actions.some(item => item.label === 'Approved unexpected request') ? 'Your earlier unexpected approval opened 1 unwanted session; the current reviewed count is 0 after recovery. ' : 'The current reviewed count is 0 unwanted sessions. ') + 'Your own number-matched sign-in is now complete. The action timeline records how you got here.';
+      else if (s.reported && !s.reviewed) feedback = 'Reporting stopped new requests. The account has not been reviewed yet, so there is still missing evidence about active sessions.';
+      else if (s.reviewed && !s.reported) feedback = 'The account review is recorded, but unexpected activity is not yet reported. A clean review alone does not stop the model’s requests.';
+      else if (s.reported && s.reviewed) feedback = s.pending === 'legitimate' ? 'This request came from your own action. Match the number shown by the workstation; the first option is not automatically correct.' : 'Unexpected activity is reported and the account review shows no unwanted session. Now demonstrate a sign-in you initiate.';
+      else if (s.denied) feedback = 'Denying stopped that individual request and opened no session. Further requests can still arrive until the activity is reported.';
+      else if (s.started) feedback = 'A phone request is visible even though the workstation did not ask to sign in. Treat that mismatch as evidence before responding.';
+      mission.update({ checks: { observed: s.started && s.count > 0, reported: s.reported, reviewed: s.reported && s.reviewed && !s.compromised, own: s.legitimate }, started: s.started, complete: complete(), feedback });
+    }
     function stop() { clearTimeout(timer); timer = null; generation += 1; }
     const complete = () => s.reported && s.reviewed && !s.compromised && s.legitimate;
     function coach() {
@@ -84,6 +107,7 @@
       done('mfa-report', s.reported); done('mfa-review', s.reviewed && !s.compromised && s.reported); done('mfa-login', s.legitimate);
       show('simDebrief', complete());
       coach();
+      updateMission();
     }
     function schedule() {
       stop();
@@ -100,7 +124,7 @@
     }
     function reset() {
       stop(); s = { started: false, attacking: false, paused: byId('mfaManual').checked, count: 0, denied: 0, pending: '', reported: false, reviewed: false, compromised: false, legitimate: false, numberError: false };
-      byId('mfaNumber').value = ''; clearHistory(); render(); status('Ready. Start the fictional request burst, or use step mode after starting.');
+      byId('mfaNumber').value = ''; if (mission) mission.reset(); clearHistory(); render(); status('Ready. Start the fictional request burst, or use step mode after starting.');
     }
     on('mfaStart', () => { if (s.started) return; s.started = s.attacking = true; s.paused = byId('mfaManual').checked; record('Started request-flood simulation'); deliver(); });
     on('mfaPause', () => { s.paused = !s.paused; stop(); if (!s.paused) schedule(); record(s.paused ? 'Paused incoming requests' : 'Resumed incoming requests'); status(s.paused ? 'Playback paused. The pending request can still be handled.' : 'Incoming-request playback resumed.'); render(); });
@@ -128,7 +152,7 @@
     on('simReset', reset);
     window.addEventListener('pagehide', () => { stop(); s.paused = true; render(); });
     reset();
-    mountReport({ labId: 'mfa-fatigue', title: 'MFA Fatigue Lab', attackType: 'MFA request flooding and accidental approval', howItHappens: 'Repeated unexpected approval requests can pressure a user into granting a session they did not initiate.', scope: 'Local fictional account, phone and sessions. No actual authentication requests or account changes.', recommendations: ['Deny unexpected requests and report through a trusted channel.', 'Review and revoke suspicious sessions with your security team.', 'Prefer phishing-resistant authentication where supported.'] }, () => ({ status: complete() ? 'completed' : s.started ? 'in progress' : 'not started', findings: s.started ? [{ title: 'Simulated authentication outcome', evidence: s.count + ' requests received; ' + s.denied + ' denied; report ' + (s.reported ? 'completed' : 'not completed') + '; unauthorized active sessions ' + (s.compromised ? '1' : '0') + '; own sign-in ' + (s.legitimate ? 'completed' : 'not completed'), risk: s.compromised ? 'An unintended approval left a fictional unauthorized session active.' : 'No unauthorized session currently active in the model; this does not assess a real account.', recommendation: 'Tie approvals to your own sign-in and review unexpected activity.' }] : [] }));
+    mountReport({ labId: 'mfa-fatigue', title: 'MFA Fatigue Lab', attackType: 'MFA request flooding and accidental approval', howItHappens: 'Repeated unexpected approval requests can pressure a user into granting a session they did not initiate.', scope: 'Local fictional account, phone and sessions. No actual authentication requests or account changes.', recommendations: ['Deny unexpected requests and report through a trusted channel.', 'Review and revoke suspicious sessions with your security team.', 'Prefer phishing-resistant authentication where supported.'] }, () => ({ status: complete() ? 'completed' : s.started ? 'in progress' : 'not started', metrics: mission ? [{ label: 'Practice mission evidence', value: mission.getSummary().status }, { label: 'Current mission checks', value: mission.getSummary().completedChecks + ' / ' + mission.getSummary().totalChecks }, { label: 'Optional hints revealed', value: mission.getSummary().hintsRevealed }] : [], findings: s.started ? [{ title: 'Simulated authentication outcome', evidence: s.count + ' requests received; ' + s.denied + ' denied; report ' + (s.reported ? 'completed' : 'not completed') + '; unauthorized active sessions ' + (s.compromised ? '1' : '0') + '; own sign-in ' + (s.legitimate ? 'completed' : 'not completed'), risk: s.compromised ? 'An unintended approval left a fictional unauthorized session active.' : 'No unauthorized session currently active in the model; this does not assess a real account.', recommendation: 'Tie approvals to your own sign-in and review unexpected activity.' }] : [] }));
   }
 
   if (byId('updateVisit')) {
@@ -253,7 +277,7 @@
       lock('permJoin', !s.visited || s.joined || s.ended); show('permMicPrompt', s.joined && !s.ended && s.microphone !== 'Allowed');
       lock('permAllowMic', !s.joined || s.ended || s.microphone === 'Allowed'); lock('permDenyMic', !s.joined || s.ended || s.microphone === 'Allowed');
       lock('permTest', !s.joined || s.ended || s.microphone !== 'Allowed' || s.tested); lock('permEnd', !s.joined || s.ended); show('permMeter', s.tested && !s.ended && s.microphone === 'Allowed');
-      byId('permCallState').textContent = s.ended ? 'Meeting ended. Revoke its microphone grant in the simulated settings.' : s.tested && s.microphone === 'Allowed' ? 'Fictional microphone test passed. End the meeting when finished.' : s.joined ? s.microphone === 'Allowed' ? 'Demo microphone allowed. Run the fictional microphone test.' : 'Meeting opened by you. Microphone is blocked until you intentionally allow it.' : 'No meeting started.';
+      byId('permCallState').textContent = s.ended ? (s.microphone === 'Blocked' ? 'Meeting ended and its microphone grant is revoked.' : 'Meeting ended. Revoke its microphone grant in the simulated settings.') : s.tested && s.microphone === 'Allowed' ? 'Fictional microphone test passed. End the meeting when finished.' : s.joined ? s.microphone === 'Allowed' ? 'Demo microphone allowed. Run the fictional microphone test.' : 'Meeting opened by you. Microphone is blocked until you intentionally allow it.' : 'No meeting started.';
       done('perm-settings', s.reviewed); done('perm-news', newsSafe()); done('perm-call', s.tested); done('perm-cleanup', s.ended && s.microphone === 'Blocked'); show('simDebrief', complete());
       if (complete()) status('Task complete: unwanted access blocked, alerts cleared, voice task completed, and microphone permission revoked.');
       coach();

@@ -20,12 +20,14 @@ table{width:100%;border-collapse:collapse;font-size:12px}th,td{border-bottom:1px
 .small{font-size:12px;color:#69788e;margin-top:12px}.back{text-decoration:none;color:#3156a6;font-weight:700}
 @media(max-width:650px){.admin{top:46px;right:10px}}
 </style>
+<link rel="stylesheet" href="/home-navigation.css">
 </head>
 <body>
 <div class="training">AUTHORIZED PHISHING AWARENESS SIMULATION — INSTRUCTOR DASHBOARD</div>
 <a class="admin" href="/admin.html" title="Instructor Dashboard" aria-label="Instructor Dashboard">⚙</a>
 
 <div class="wrap"><div class="card">
+<nav class="app-home-nav" aria-label="Home navigation"><a class="app-home-link" href="/"><span aria-hidden="true">←</span> Home</a></nav>
 <div class="brand"><div class="mark"></div><div><h1>UTAS-Ibra Learning Portal</h1><div>Moodle-style central monitoring</div></div></div>
 <div class="stage">STAGE 3 — INSTRUCTOR DASHBOARD</div>
 
@@ -39,7 +41,7 @@ table{width:100%;border-collapse:collapse;font-size:12px}th,td{border-bottom:1px
 </div>
 
 <div id="dash" class="hidden">
-<div class="actions"><button class="btn" onclick="loadData()">Refresh</button><button class="btn secondary" onclick="logout()">Logout</button><a class="back" href="/">← Stage 1</a><a class="back" href="/fake-login.html">Stage 2</a><a class="back" href="/local-capture.html">Instructor Capture — Local View</a></div>
+<div class="actions"><button class="btn" onclick="loadData()">Refresh</button><button class="btn secondary" onclick="logout()">Logout</button><a class="back" href="/">← Home</a><a class="back" href="/fake-login.html">Stage 2</a><a class="back" href="/local-capture.html">Instructor Capture — Local View</a></div>
 <div class="stats"><div class="stat">Stage 1 link clicks: <b id="clicks">0</b></div><div class="stat">Stage 2 completed: <b id="total">0</b></div></div>
 <div class="scroll">
 <table>

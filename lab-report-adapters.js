@@ -68,38 +68,62 @@
   }
   if (byId('pwInput')) {
     let startedAt = '', checkedAt = '', comparison = null, generationCount = 0, generationAt = '';
+    const flagLabels = {
+      common: 'matches a classroom common example',
+      repeated: 'three identical characters in a row',
+      sequence: 'contains a short classroom sequence'
+    };
     function recordStart() { startedAt = startedAt || now(); }
+    function observedLength(value) {
+      const length = /^\d+$/.test(value || '') ? Number(value) : 0;
+      return Number.isSafeInteger(length) && length > 0 ? length : 0;
+    }
+    function observedFlags(value) {
+      if (typeof value !== 'string') return null;
+      const flags = value ? value.split(',') : [];
+      if (flags.some(flag => !Object.prototype.hasOwnProperty.call(flagLabels, flag)) || new Set(flags).size !== flags.length) return null;
+      return flags.length ? flags.map(flag => flagLabels[flag]).join('; ') : 'none spotted by the tiny check (not proof of safety)';
+    }
     function snapshot() {
       const actions = [], metrics = [], findings = [];
-      // Read derived, allowlisted outputs only. Never inspect pwInput/cmpA/cmpB
-      // values or generatedOut text, even when the user asks to show a password.
-      const length = /^\d+$/.test(text('pwLength')) ? Number(text('pwLength')) : 0;
-      const rating = /^(Very Weak|Weak|Medium|Strong|Very Strong)$/.test(text('pwStrength')) ? text('pwStrength') : '';
-      const score = /^[0-5]\/5$/.test(text('pwScore')) ? text('pwScore') : '';
-      if (checkedAt && length > 0 && rating) {
-        actions.push({ label: 'Evaluated an invented password example locally', result: 'Length: ' + length + '. Simplified composition rating: ' + rating + ' (' + score + '). The password is omitted.', at: checkedAt });
-        metrics.push({ label: 'Example length', value: length }, { label: 'Simplified composition rating', value: rating + ' (' + score + ')' });
-        findings.push({ title: 'Local heuristic evaluation', evidence: 'An invented example was evaluated with rating ' + rating + ' (' + score + ').', risk: 'An educational heuristic only. It does not demonstrate resistance to guessing or a measured cracking time.', recommendation: 'Use long unique passwords, a password manager, and phishing-resistant MFA; do not rely on a score alone.' });
+      // Only derived lengths and allowlisted flag codes are read. Never inspect
+      // pwInput/cmpA/cmpB values or generatedOut text, including shown passwords.
+      const length = observedLength(text('pwLength'));
+      const observation = byId('pwObservations').dataset;
+      const flags = observedFlags(observation.flags);
+      if (checkedAt && observation.state === 'observed' && length && flags !== null) {
+        actions.push({ label: 'Observed an invented password example locally', result: 'Length: ' + length + ' Unicode code points. Classroom flags: ' + flags + '. Uniqueness and breach status are unknown. The password is omitted.', at: checkedAt });
+        metrics.push({ label: 'Example length (Unicode code points)', value: length }, { label: 'Tiny classroom pattern check', value: flags }, { label: 'Uniqueness and breach status', value: 'Unknown; not checked' });
+        findings.push({ title: 'Limited local password observations', evidence: 'The current invented example has ' + length + ' characters. Classroom flags: ' + flags + '.', risk: 'Length and these few pattern flags cannot establish security. A full common or compromised-password blocklist, account protections, and reuse were not checked.', recommendation: 'Use long, unique passwords, a password manager, and phishing-resistant MFA where supported. Reaching a length minimum is not a security guarantee.' });
       }
-      if (comparison) actions.push(comparison);
-      if (generationCount) actions.push({ label: 'Generated local teaching examples', result: generationCount + ' example-generation action(s). All generated strings are omitted. The demo generator is not a production password manager.', at: generationAt });
+      if (comparison && byId('compareOut').dataset.state === 'compared') actions.push(comparison);
+      if (generationCount) actions.push({ label: 'Generated local teaching examples', result: generationCount + ' example-generation action(s). All generated strings are omitted. The small demo generator is not suitable for real accounts.', at: generationAt });
       return {
-        status: actions.length ? 'in-progress' : 'not-performed', startedAt, actions, findings, metrics,
-        summary: 'Open-ended local password-awareness exercise. Only the latest evaluated example and latest completed comparison are summarized; there is no required completion test.',
-        limitations: ['No password values, generated strings, credential hashes, or real-account data are exported.', 'Displayed entropy and cracking-time estimates are intentionally excluded because the simplified composition heuristic is not a measured security guarantee.', 'Generation alone does not evaluate an example; a comparison is included only after the Compare action succeeds.']
+        status: actions.length ? 'in-progress' : 'not-performed', startedAt: actions.length ? startedAt : '', actions, findings, metrics,
+        summary: 'Open-ended local password-awareness exercise. Only current sample observations and the latest current comparison are summarized. There is no required completion test or security rating.',
+        limitations: ['No password values, generated strings, credential hashes, or real-account data are exported.', 'The tiny classroom checks do not perform a full common or compromised-password blocklist check. Uniqueness, reuse, and breach status are unknown.', 'There is no security score, entropy calculation, or cracking-time estimate. Character-type mixtures do not earn a rating.', 'Generation alone does not inspect an example. Comparison evidence is included only after Compare succeeds and is invalidated when either input changes.']
       };
     }
     const report = LabReport.mount({ labId: 'password', mountTo: mountPoint(), getSnapshot: snapshot });
-    byId('pwInput').addEventListener('input', () => { checkedAt = now(); recordStart(); });
+    byId('pwInput').addEventListener('input', () => {
+      checkedAt = byId('pwObservations').dataset.state === 'observed' ? now() : '';
+      if (checkedAt) recordStart();
+      else if (!comparison && !generationCount) startedAt = '';
+    });
     ['genPw', 'genPhrase'].forEach(id => byId(id).addEventListener('click', () => { generationCount += 1; generationAt = now(); recordStart(); }));
     byId('compareBtn').addEventListener('click', () => {
-      const output = text('compareOut');
-      const scores = output.match(/Password A:\s*([0-5]\/5)[\s\S]*Password B:\s*([0-5]\/5)/);
-      if (!scores) { comparison = null; return; }
-      comparison = { label: 'Compared two invented examples locally', result: 'Simplified composition score A: ' + scores[1] + '; score B: ' + scores[2] + '. Neither example value nor estimated cracking time is included.', at: now() };
+      const output = byId('compareOut').dataset;
+      const firstLength = observedLength(output.lengthA), secondLength = observedLength(output.lengthB);
+      const firstFlags = observedFlags(output.flagsA), secondFlags = observedFlags(output.flagsB);
+      if (output.state !== 'compared' || !firstLength || !secondLength || firstFlags === null || secondFlags === null) { comparison = null; return; }
+      comparison = { label: 'Compared two invented examples locally', result: 'Sample A: ' + firstLength + ' characters; classroom flags: ' + firstFlags + '. Sample B: ' + secondLength + ' characters; classroom flags: ' + secondFlags + '. No security ranking is inferred. Uniqueness and breach status are unknown. Both values are omitted.', at: now() };
       recordStart();
     });
-    ['cmpA', 'cmpB'].forEach(id => byId(id).addEventListener('input', () => { comparison = null; }));
+    ['cmpA', 'cmpB'].forEach(id => byId(id).addEventListener('input', () => {
+      comparison = null;
+      if (!checkedAt && !generationCount) startedAt = '';
+    }));
     byId('clearPw').addEventListener('click', () => { checkedAt = ''; generationCount = 0; generationAt = ''; if (!comparison) startedAt = ''; report.reset(); });
+    byId('pwResetLesson').addEventListener('click', () => { startedAt = checkedAt = generationAt = ''; comparison = null; generationCount = 0; report.reset(); });
   }
 })();
