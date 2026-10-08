@@ -2,9 +2,9 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>UTAS-Ibra CyberLab | Explore. Practise. Defend.</title><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#102b46"><link rel="icon" href="/icons/security-lab.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/icons/security-lab-180.png"><link rel="stylesheet" href="/labs.css"><link rel="stylesheet" href="/install.css"><link rel="stylesheet" href="/home-front.css"><script src="/install.js" defer></script><link rel="stylesheet" href="/home-navigation.css">
 </head>
 <body class="cyber-welcome"><a class="welcome-skip" href="#welcome">Skip to welcome image</a>
-<header class="welcome-header"><a class="welcome-brand" href="/" aria-label="UTAS-Ibra CyberLab home"><img class="welcome-logo" src="/icons/utas-primary.svg" width="153" height="76" alt="University of Technology and Applied Sciences logo"><span>UTAS-Ibra CyberLab<small>Explore. Practise. Defend.</small></span></a><nav aria-label="Quick access"><a class="app-home-link" href="/" aria-current="page">Home</a><a href="/feedback.html">Knowledge & feedback</a><button id="install-app" class="welcome-install" type="button" aria-describedby="install-status">Install app</button></nav></header>
+<header class="welcome-header"><a class="welcome-brand" href="/" aria-label="UTAS-Ibra CyberLab home"><img class="welcome-logo" src="/icons/utas-primary.svg" width="153" height="76" alt="University of Technology and Applied Sciences logo"><span>UTAS-Ibra CyberLab<small>Explore. Practise. Defend.</small></span></a><nav aria-label="Quick access"><a class="app-home-link" href="/" aria-current="page">Home</a><a href="/feedback.html">Knowledge & feedback</a><button id="copy-student-link" class="welcome-install" type="button">Copy student link</button><button id="install-app" class="welcome-install" type="button" aria-describedby="install-status">Install app</button></nav></header>
 <main id="welcome" class="welcome-main" aria-label="CyberLab welcome"><figure class="welcome-image"><img src="/homepage-awareness.png" width="1610" height="977" alt="UTAS Ibra cybersecurity awareness: Your security is in your hands. A student holds a key beside a lock and computer, with reminders about phishing, fake logins, data theft, social engineering, and malware."></figure></main>
-<footer class="welcome-footer"><a class="welcome-enter" href="/labs.html">Enter the labs <span aria-hidden="true">→</span></a><p class="welcome-credit">Safe classroom simulations · Powered by Dr. Ramesh Palanisamy, Professor, UTAS-Ibra</p></footer>
+<footer class="welcome-footer"><div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><a class="welcome-enter" href="/labs.html">Enter the labs <span aria-hidden="true">→</span></a><button id="copy-student-link-footer" class="welcome-install" type="button">🔗 Copy link for students</button></div><p class="welcome-credit">Safe classroom simulations · Powered by Dr. Ramesh Palanisamy, Professor, UTAS-Ibra</p></footer>
 <p id="install-status" class="welcome-status" role="status" aria-live="polite">Install with your browser, or view the steps for your device. Internet connection required.</p>
 <dialog id="install-help" class="install-dialog" aria-labelledby="install-help-heading">
   <h2 id="install-help-heading">Add CyberLab to your device</h2>
@@ -18,4 +18,33 @@
   <p class="install-note">Menu names and icon placement vary by browser and device. If installation is unavailable, bookmark this page or open it in Chrome or Edge. If already installed, look for CyberLab in your device’s apps.</p>
   <p>All labs still need an internet connection. Installing does not download student records or add special device permissions.</p>
   <button id="install-help-close" class="install-close" type="button" autofocus>Got it</button>
-</dialog></body></html>
+</dialog>
+<script>
+(function(){
+  const studentLink = window.location.origin + "/";
+  async function copyStudentLink(btn){
+    try{
+      await navigator.clipboard.writeText(studentLink);
+      const old=btn.textContent;
+      btn.textContent="✓ Link copied";
+      btn.setAttribute("aria-label","Student link copied");
+      setTimeout(()=>{btn.textContent=old;btn.removeAttribute("aria-label");},1800);
+    }catch(err){
+      const input=document.createElement("input");
+      input.value=studentLink;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand("copy");
+      input.remove();
+      const old=btn.textContent;
+      btn.textContent="✓ Link copied";
+      setTimeout(()=>btn.textContent=old,1800);
+    }
+  }
+  ["copy-student-link","copy-student-link-footer"].forEach(id=>{
+    const btn=document.getElementById(id);
+    if(btn) btn.addEventListener("click",()=>copyStudentLink(btn));
+  });
+})();
+</script>
+</body></html>
