@@ -19,10 +19,12 @@ body{margin:0;min-height:100vh;background:#2f61a6;font-family:Arial,Helvetica,sa
 .mailbody{padding:20px;line-height:1.58}
 .btn{display:inline-block;background:#245d99;color:#fff;border:0;border-radius:6px;padding:12px 18px;font-weight:700;cursor:pointer}
 .fakeurl{margin-top:14px;padding:12px;border:1px dashed #e4ad3e;background:#fff9ea;border-radius:6px;font-family:Consolas,monospace}
-.fakeurl a{color:#245d99}.note{margin-top:16px;color:#6c7888;font-size:13px}
+.fakeurl{overflow-wrap:anywhere}.fakeurl a{color:#245d99}.btn:disabled{opacity:.65;cursor:wait}.btn:focus-visible,a:focus-visible{outline:3px solid #ba7600;outline-offset:3px}.note{margin-top:16px;color:#6c7888;font-size:13px}
 .menu{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin:16px 0}.menu a{display:inline-block;text-decoration:none;font-weight:800;padding:9px 13px;border-radius:6px}.menu .feedback{background:#f4b332;color:#26364f}.menu .info{background:#315fa8;color:#fff}.menu .counter{background:#edf2f7;color:#24435f;border:1px solid #cfd9e5}.foot{text-align:center;color:#6c7888;font-size:12px;margin-top:22px}
 @media(max-width:650px){.shell{margin:0;border-radius:0;padding:22px 16px}.admin{top:46px;right:10px}}
 </style>
+<link rel="stylesheet" href="/lab-explanation.css">
+<script src="/lab-explanation.js" defer></script>
 </head>
 <body>
 <div class="training">AUTHORIZED PHISHING AWARENESS SIMULATION — NOT THE REAL UTAS MOODLE</div>
@@ -31,8 +33,10 @@ body{margin:0;min-height:100vh;background:#2f61a6;font-family:Arial,Helvetica,sa
 <main class="shell">
 <div class="brand"><div class="mark"></div><div><h1>Practical Security Learning Hub</h1><small>Phishing awareness simulation</small></div><div style="margin-left:auto"><a href="/" style="text-decoration:none;color:#315fa8;font-weight:800">Home</a></div></div>
 
-<div class="stage">STAGE 1 — SPOT THE SUSPICIOUS EMAIL</div><div class="menu"><a class="info" href="/resources.html">Learning & Feedback</a></div>
+<div class="stage">STAGE 1 — SPOT THE SUSPICIOUS EMAIL</div><div class="menu"><a class="counter" href="/labs.html">All labs</a><a class="info" href="/resources.html">Learning & Feedback</a></div>
 <h2>Account Verification Message</h2>
+<div id="labExplanationMount"></div>
+<p class="note"><b>Start here:</b> Watch the short explanation, then inspect the fictional email. The button below opens a demo-only login. Never enter a real password.</p>
 
 <div class="mail">
 <div class="mailhead">
@@ -42,9 +46,9 @@ Subject: Urgent: Your Moodle account will be suspended today
 <div class="mailbody">
 <p>Dear Student,</p>
 <p>We detected unusual activity on your learning account. To avoid suspension, verify your account immediately.</p>
-<button class="btn" id="verifyBtn">Verify Moodle Account</button>
+<button class="btn" id="verifyBtn" type="button">Open the fictional login</button>
 <div class="fakeurl"><a href="#" id="fakeUrl">https://secure-login.campus-check.example/verify</a></div>
-<p class="note">This fictional link stays inside the authorized classroom simulator and opens Stage 2.</p>
+<p class="note" id="phishingStatus" role="status" aria-live="polite">This fictional link stays inside the authorized classroom simulator and opens Stage 2.</p>
 </div>
 </div>
 
@@ -52,12 +56,28 @@ Subject: Urgent: Your Moodle account will be suspended today
 </main>
 
 <script>
+let openingStage=false, stageGeneration=0;
 async function nextStage(){
+ if(openingStage) return;
+ openingStage=true;
+ const generation=++stageGeneration;
+ const button=document.getElementById("verifyBtn");
+ button.disabled=true;
+ document.getElementById("phishingStatus").textContent="Opening the fixed classroom example. No real sign-in is needed.";
+ const controller=new AbortController();
+ const timeout=setTimeout(()=>controller.abort(),4000);
  try{
-  await fetch("/api/event",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({event:"clicked_phishing_link"})});
+  await fetch("/api/event",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({event:"clicked_phishing_link"}),signal:controller.signal});
  }catch(e){}
- location.href="/fake-login.html";
+ finally{clearTimeout(timeout);}
+ if(generation===stageGeneration) location.href="/fake-login.html";
 }
+window.addEventListener("pagehide",()=>{stageGeneration++;});
+window.addEventListener("pageshow",()=>{
+ openingStage=false;
+ document.getElementById("verifyBtn").disabled=false;
+ document.getElementById("phishingStatus").textContent="This fictional link stays inside the authorized classroom simulator and opens Stage 2.";
+});
 document.getElementById("verifyBtn").addEventListener("click",nextStage);
 document.getElementById("fakeUrl").addEventListener("click",e=>{e.preventDefault();nextStage();});
 </script>

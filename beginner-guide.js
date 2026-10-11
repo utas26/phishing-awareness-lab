@@ -23,7 +23,14 @@
     const status = el('strong', 'bg-status', 'Ready'), caption = el('p', 'bg-caption', 'Use the lab controls below to begin.'); feedback.appendChild(status); feedback.appendChild(caption); panel.appendChild(feedback);
     const action = el('button', 'bg-action'); action.type = 'button'; action.hidden = true; panel.appendChild(action);
     const note = el('p', 'bg-note', 'This guide explains the current simulation. Highlighted steps only change when the lab state changes.'); panel.appendChild(note); host.replaceChildren(panel);
-    function updateMotion() { panel.dataset.motion = motion && !query?.matches ? 'on' : 'off'; motionButton.textContent = panel.dataset.motion === 'on' ? 'Guide motion on' : 'Guide motion off'; motionButton.setAttribute('aria-pressed', String(panel.dataset.motion === 'on')); }
+    function updateMotion() {
+      const systemReduced = Boolean(query?.matches);
+      panel.dataset.motion = motion && !systemReduced ? 'on' : 'off';
+      motionButton.disabled = systemReduced;
+      motionButton.textContent = systemReduced ? 'Guide motion off · system preference' : panel.dataset.motion === 'on' ? 'Guide motion on' : 'Guide motion off';
+      motionButton.setAttribute('aria-label', systemReduced ? 'Guide motion is off because your system prefers reduced motion. Lab playback uses the lab controls.' : 'Toggle short visual effects. Lab playback uses the lab controls.');
+      motionButton.setAttribute('aria-pressed', String(panel.dataset.motion === 'on'));
+    }
     function findTarget() { const target = state.action?.id ? document.getElementById(state.action.id) : null; if (!target || target.disabled || target.hidden) return null; if (typeof target.closest === 'function' && target.closest('[hidden]')) return null; if (typeof target.matches === 'function' && target.matches(':disabled')) return null; if (typeof target.getClientRects === 'function' && target.getClientRects().length === 0) return null; return target; }
     action.addEventListener('click', () => { const target = findTarget(); if (!target) { action.hidden = true; return; } if (typeof target.scrollIntoView === 'function') target.scrollIntoView({ block: 'center', behavior: 'auto' }); if (typeof target.focus === 'function') target.focus({ preventScroll: true }); });
     motionButton.addEventListener('click', () => { motion = !motion; updateMotion(); });

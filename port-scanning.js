@@ -271,6 +271,18 @@
   lookupAddress.addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); findVirtualHost(); } });
   profile.addEventListener('change', prepare);
   byId('portCheck').addEventListener('click',()=>{checkFindings();updateGuide();});
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) return;
+    if (running && !paused) {
+      pauseScan();
+      setStatus('Scan paused because this tab was hidden. Completed replies are retained. Use Next port or Resume scan when ready.');
+    }
+    if (network.discovering && !network.paused) {
+      pauseDiscovery();
+      byId('portNetworkStatus').textContent = 'Discovery paused because this tab was hidden. ' + network.index + ' / 2 preset hosts retained. Use Next host or Resume discovery when ready.';
+      updateGuide();
+    }
+  });
   window.addEventListener('pagehide', () => { cancelScan(); cancelDiscovery(); });
   window.addEventListener('hashchange', () => { if (location.hash !== '#ports') { cancelScan(); cancelDiscovery(); } });
   if(motionQuery&&typeof motionQuery.addEventListener==='function')motionQuery.addEventListener('change',event=>{if(event.matches){if(running&&!paused)pauseScan();if(network.discovering&&!network.paused)pauseDiscovery();}});

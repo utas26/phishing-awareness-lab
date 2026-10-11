@@ -38,7 +38,11 @@
       label.appendChild(input);if (isScale && choice.value !== 'na') label.appendChild(el('strong',String(choice.value)));
       label.appendChild(el('span',choice.label));options.appendChild(label);
     });
-    field.appendChild(options);container.appendChild(field);
+    field.appendChild(options);
+    const clear=el('button','Clear answer','assessment-btn secondary');clear.type='button';
+    clear.setAttribute('aria-label','Clear answer: '+(item.prompt || item.text));
+    clear.addEventListener('click',()=>{options.querySelectorAll('input').forEach(input=>{input.checked=false;});field.dispatchEvent(new Event('input',{bubbles:true}));});
+    field.appendChild(clear);container.appendChild(field);
   }
   ['before','after'].forEach(phase => {
     bank.perceivedKnowledge.forEach(item => addChoices($(phase+'-perceived'),item,bank.perceivedScale,true));

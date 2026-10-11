@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Voluntary post-activity feedback for the UTAS CyberLab learning experience.">
+  <meta name="referrer" content="same-origin">
+  <title>Learning experience feedback · UTAS CyberLab</title>
+  <link rel="stylesheet" href="research-ui.css">
+  <script src="assessment-items.js" defer></script><script src="satisfaction.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to feedback</a>
+<header class="topbar"><div class="topbar-inner">
+  <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">U</span><span class="brand-name">UTAS CyberLab<span class="brand-subtitle">Learning through practice</span></span></a>
+  <nav class="topnav" aria-label="Main"><a href="labs.html">Back to activities</a><a class="desktop-nav" href="research-dashboard.html">Research report</a></nav>
+</div></header>
+<main class="shell narrow" id="main">
+  <div class="hero"><p class="eyebrow">Your learning experience</p><div class="hero-row"><div><h1>A little feedback.<br>A better learning experience.</h1><p class="lede">Tell us how the activity felt to use. There are no right or wrong answers, and you can skip any question.</p></div><span id="mode-badge" class="badge preview"><span class="badge-dot" aria-hidden="true"></span>LOCAL PREVIEW</span></div></div>
+  <div class="notice preview" id="mode-notice"><strong id="mode-title">Local preview only. Research collection is off.</strong><p id="mode-description">This is not research enrollment. Practice answers stay only in this page’s memory and are not submitted. Refreshing or closing the page clears them.</p></div>
+  <noscript><div class="notice error"><strong>JavaScript is needed to show the feedback form.</strong><p>Nothing has been collected or submitted. You can continue to the activities without completing feedback.</p></div></noscript>
+  <p id="loading" class="loading" role="status">Loading feedback form…</p>
+  <div id="fatal-error" class="notice error" role="alert" hidden></div>
+  <section id="success-panel" class="card success-panel" tabindex="-1" hidden><p class="eyebrow">Feedback received</p><h2>Thank you for sharing your experience.</h2><p>Your response was submitted. Keep this private reference if the study’s withdrawal process asks for it. Without the reference, the researcher may not be able to locate your response because no identifying details are requested.</p><p id="response-id" class="receipt"></p><p id="success-withdrawal" class="fine-print"></p><a class="button" href="labs.html">Return to activities</a></section>
+  <form id="feedback-form" autocomplete="off" hidden>
+    <section class="card" id="study-section" aria-labelledby="study-heading" hidden><p class="section-number">Before you decide</p><h2 id="study-heading">Study information</h2><p class="muted small">Read the approved information below. Taking part is voluntary, and the learning activities remain available if you choose not to participate.</p><dl id="study-details" class="study-details"></dl></section>
+    <section class="card" aria-labelledby="activity-heading"><div class="section-header"><div><p class="section-number">Activity context</p><h2 id="activity-heading">Which activity did you try?</h2><p>This helps place your feedback in context.</p></div></div><div class="form-field"><label for="lab">Learning activity <span class="optional">(optional)</span></label><select id="lab" name="labId"><option value="">Prefer not to specify</option></select></div></section>
+    <section class="card" aria-labelledby="questions-heading"><div class="section-header"><div><p class="section-number">01 / Your experience</p><h2 id="questions-heading">How much do you agree?</h2><p id="question-instructions">Thinking about the learning experience you just completed, how much do you agree with each statement?</p></div><span id="question-progress" class="question-progress" aria-live="polite" aria-atomic="true">0 of 10 answered</span></div><p class="privacy-note" id="scale-instructions">Choose 1 (Strongly disagree) to 5 (Strongly agree), or Not applicable. Every statement is optional. “Clear answer” returns a statement to unanswered.</p><div id="questions"></div></section>
+    <section class="card" aria-labelledby="comments-heading"><div class="section-header"><div><p class="section-number">02 / In your own words</p><h2 id="comments-heading">Anything you’d like to add?</h2><p>Both comments are optional.</p></div></div><p class="privacy-note" id="comment-privacy">Please do not include names, student IDs, email addresses, passwords, or identifying details about yourself or anyone else.</p><div id="comments" class="comments-grid"></div>
+      <div class="submit-area"><label class="consent-row" id="consent-row" hidden><input type="checkbox" id="consent" name="consent"><span id="consent-text"></span></label><p id="submission-note" class="fine-print">Preview only. This button does not submit or save your answers.</p><div class="button-row"><button class="button" id="submit-button" type="submit">Review local preview</button><button class="button secondary" id="clear-form" type="button">Clear all answers</button><a class="button subtle" href="labs.html">Return to activities</a></div><p id="form-status" class="status" role="status" aria-live="polite" aria-atomic="true"></p></div>
+    </section>
+  </form>
+  <footer class="site-footer"><p>UTAS CyberLab · Voluntary learning experience feedback</p><p class="instrument-version" id="instrument-version">Draft instrument · Not validated as a combined scale</p></footer>
+</main>
+</body></html>

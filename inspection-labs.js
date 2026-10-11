@@ -7,7 +7,8 @@
   const mode = app.dataset.inspectionLab;
   if (!['qr', 'url'].includes(mode)) return;
   const isQr = mode === 'qr';
-  const reducedMotion = () => !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const motionQuery = typeof window.matchMedia === 'function' ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+  const reducedMotion = () => Boolean(motionQuery?.matches);
   const guide = window.BeginnerGuide?.mount({
     mountTo: '#beginnerGuideMount',
     title: isQr ? 'Read the address behind the QR code' : 'Check where the link really goes',
@@ -308,13 +309,21 @@
     app.innerHTML = `<div class="sim-overview"><div><strong>${isQr ? 'Mission: investigate the account-verification poster' : 'Mission: resolve a suspicious inbox message'}</strong><p>Complete the investigation by using the tools. There is no answer quiz or score for guessing.</p></div><div class="sim-progress">${count}<span aria-hidden="true"> / </span>${items.length}<small>actions completed</small></div></div><ol class="sim-steps" aria-label="Investigation checklist">${items.map((item, i) => `<li class="${item[1] ? 'is-done' : ''}"><span class="step-dot" aria-hidden="true">${item[1] ? '✓' : i + 1}</span><span>${escape(item[0])}${item[1] ? '<span class="sim-visually-hidden"> completed</span>' : ''}</span></li>`).join('')}</ol><div class="sim-grid"><section class="sim-panel">${source()}</section><section class="sim-panel">${workbench()}</section></div><div class="sim-status" role="status" tabindex="-1" aria-live="polite" data-tone="${state.tone}">${escape(state.message)}</div><div class="case-bottom"><section class="sim-panel">${evidencePanel()}</section><section class="sim-panel"><div class="sim-panel-head"><h2>Session event log</h2><small>Local & temporary</small></div><div class="sim-panel-body"><ol class="event-list" aria-label="Investigation event log">${state.events.map((event, i) => `<li><span class="event-index">${String(i + 1).padStart(2, '0')}</span><span class="event-text"><strong>${escape(event.type)}</strong>${escape(event.text)}</span></li>`).join('')}</ol></div></section></div>${completed() ? `<div class="completion-banner" role="status"><h2>Investigation complete</h2><p>You inspected the real destination, traced the supplied redirects, preserved evidence, stopped and reported the imitation, and used an independent trusted route.${!isQr ? ' You also verified the legitimate comparison link.' : ''}${state.recovered ? ' You recovered the fictional demo session after exploring the unsafe branch.' : ' No demo sign-in was exposed.'}</p></div>` : ''}<div class="sim-instruction"><b>In a real incident:</b> do not enter credentials into an unverified page. Use a trusted bookmark or known official route and follow your organization’s reporting process. If credentials were entered, use the official recovery flow and contact the security team. This lab’s report and recovery affect only its fictional state.</div><div class="sim-reset-row"><p>No credentials, saved progress, or external requests. Reset clears this page’s evidence and event log. Playback stops when you leave.</p>${button('reset', 'Reset exercise')}</div>`;
     updateGuide();
     if (focusAction) {
-      let next = app.querySelector(`[data-action="${focusAction}"]${focusPin ? `[data-pin="${focusPin}"]` : ''}`);
-      if (!next || next.disabled) next = app.querySelector(playback ? '[data-action="pause"]' : '[data-action="inspect"]');
+      const action = playback && ['pause', 'resume'].includes(focusAction) ? (playback.running ? 'pause' : 'resume') : focusAction;
+      let next = app.querySelector(`[data-action="${action}"]${focusPin ? `[data-pin="${focusPin}"]` : ''}`);
+      if (!next || next.disabled) next = app.querySelector(playback ? `[data-action="${playback.running ? 'pause' : 'resume'}"]` : '[data-action="inspect"]');
       if (!next || next.disabled) next = app.querySelector('.sim-status');
       if (next) next.focus({ preventScroll: true });
     }
   }
   function clearTimer() { if (timer !== null) clearTimeout(timer); timer = null; generation++; }
+  function pauseForContext(reason) {
+    if (!playback?.running) return;
+    clearTimer(); playback.running = false;
+    log('paused', 'Local playback paused because ' + reason + '; completed observations retained.');
+    say('Playback paused because ' + reason + '. Use One step, Resume playback, or Finish now when ready.');
+    render();
+  }
   function stopPlayback(note = true) {
     if (!playback) return;
     clearTimer();
@@ -469,6 +478,8 @@
     if (!target || !app.contains(target) || target.disabled) return;
     handle(target.dataset.action, target);
   });
+  if (typeof motionQuery?.addEventListener === 'function') motionQuery.addEventListener('change', event => { if (event.matches) pauseForContext('your system now prefers reduced motion'); });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) pauseForContext('this tab was hidden'); });
   window.addEventListener('pagehide', () => { stopPlayback(false); clearTimer(); });
   window.addEventListener('pageshow', event => {
     if (event.persisted) { say('Welcome back. Any playback was stopped when you left; use the tool again to continue.'); render(); }

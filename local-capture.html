@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Instructor Capture — Local View</title>
+<title>Safe Demo Result — Local View</title>
 <style>
 :root{--blue:#315fa8;--line:#d8e1eb;--ink:#26364f}
 *{box-sizing:border-box}
@@ -13,65 +13,96 @@ h1{margin-top:0;color:#315fa8}
 .note{background:#fff6df;border:1px solid #efd184;padding:13px 14px;border-radius:7px;margin:14px 0 18px;line-height:1.5}
 .capture{border:1px solid var(--line);border-radius:8px;overflow:hidden}
 .row{display:grid;grid-template-columns:190px 1fr;gap:12px;padding:11px 14px;border-top:1px solid #e8edf3}
-.row:first-child{border-top:0}.row b{color:#607089}
+.row:first-child{border-top:0}.row b{color:#607089}.row span{overflow-wrap:anywhere}
 .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
 .btn{display:inline-block;border:0;border-radius:7px;padding:10px 14px;background:#315fa8;color:white;text-decoration:none;font-weight:700;cursor:pointer}
 .secondary{background:#edf2f7;color:#24435f}.danger{background:#fff1f0;color:#b42318;border:1px solid #fecdca}
 .empty{padding:18px;border:1px dashed var(--line);border-radius:8px;color:#6c7888;background:#fafcff}
+.btn:focus-visible,a:focus-visible{outline:3px solid #315fa8;outline-offset:4px}
 @media(max-width:650px){.wrap{margin:0;border-radius:0}.row{grid-template-columns:1fr}}
 </style>
 <link rel="stylesheet" href="/home-navigation.css">
 </head>
 <body>
-<div class="top">INSTRUCTOR CAPTURE — LOCAL VIEW</div>
+<div class="top">SAFE CLASSROOM DEMO — NO PASSWORD CAPTURE</div>
 <main class="wrap">
 <nav class="app-home-nav" aria-label="Home navigation"><a class="app-home-link" href="/"><span aria-hidden="true">←</span> Home</a></nav>
-<h1>Instructor Capture — Local View</h1>
+<h1>Safe Demo Result — Local View</h1>
 <div class="note">
-<b>Local-only demonstration:</b> This page shows the exact invented username and password saved in this browser for the awareness exercise.
-The values stay in this browser's localStorage and are not sent to the central Instructor Dashboard.
+<b>What this shows:</b> Stage 2 uses a fixed fictional learner and a public teaching example. Only its demo timestamp and status are saved locally. No password value is saved or displayed here. <b>Never enter a real password.</b>
+<p>Running Stage 2 also sends the fixed identity, example length, and browser/device metadata to this site's classroom server. The server can see the request's IP address. The local result below does not verify account security or show a real credential capture.</p>
+<p>This page uses a new demo-only record. It does not read, display, or remove records created by older versions. Reset below removes only the new demo result in this browser; it does not remove classroom server records.</p>
 </div>
 
-<div id="captureArea"></div>
+<div id="captureArea" role="status" aria-live="polite" aria-atomic="true"></div>
 
 <div class="actions">
 <a class="btn secondary" href="/admin.html">← Back to Instructor Dashboard</a>
 <a class="btn secondary" href="/fake-login.html">Open Stage 2</a>
-<button class="btn danger" onclick="clearLocal()">Clear Local Capture</button>
+<button id="resetDemo" class="btn danger" type="button">Reset this demo result</button>
 </div>
 </main>
 
 <script>
+'use strict';
+const DEMO_STORAGE_KEY="phishlab_demo_result_v1";
+const DEMO_NAME="Demo Student";
+const DEMO_PASSWORD_LENGTH=16;
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+const SERVER_RESULTS={
+  pending:"Not confirmed. The browser saved the start of the demo, but has no confirmed server response.",
+  recorded:"The Stage 2 request received a successful response. This local status is not a live check of the server.",
+  unconfirmed:"No successful response was confirmed. The request may or may not have reached the classroom server."
+};
+
+function empty(message){
+  document.getElementById("captureArea").innerHTML='<div class="empty">'+esc(message)+'</div>';
+}
+
+function validRecord(r){
+  return r && r.version===1 && r.demoId==="fixed-classroom-demo" && r.completed===true &&
+    typeof r.savedAt==="string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(r.savedAt) &&
+    Number.isFinite(Date.parse(r.savedAt)) && Object.prototype.hasOwnProperty.call(SERVER_RESULTS,r.serverStatus);
+}
 
 function render(){
   const area=document.getElementById("captureArea");
-  const raw=localStorage.getItem("phishlab_local_capture");
+  let raw;
+  try{raw=localStorage.getItem(DEMO_STORAGE_KEY);}
+  catch(error){empty("This browser is blocking local storage. Stage 2 can still run, but a local demo result cannot be shown here.");return;}
   if(!raw){
-    area.innerHTML='<div class="empty">No local capture found in this browser. Complete Stage 2 in this same browser first.</div>';
+    empty("No safe demo result is saved in this browser. Run the fixed example in Stage 2 first.");
     return;
   }
-  const r=JSON.parse(raw);
+  let r;
+  try{r=JSON.parse(raw);}
+  catch(error){empty("The demo result could not be read. You can reset this demo result, then run Stage 2 again.");return;}
+  if(!validRecord(r)){
+    empty("The saved result is not a recognized demo record. No stored fields are displayed. Reset this demo result, then run Stage 2 again.");
+    return;
+  }
+  // Render fixed teaching data and the allowlisted status only. Unknown stored
+  // fields are never shown, and legacy credential records are never inspected.
   area.innerHTML=`<div class="capture">
-    <div class="row"><b>Username</b><span>${esc(r.username)}</span></div>
-    <div class="row"><b>Password</b><span>${esc(r.password)}</span></div>
-    <div class="row"><b>Captured at</b><span>${esc(r.capturedAt)}</span></div>
-    <div class="row"><b>Browser / User Agent</b><span>${esc(r.browser)}</span></div>
-    <div class="row"><b>Platform</b><span>${esc(r.platform)}</span></div>
-    <div class="row"><b>Language</b><span>${esc(r.language)}</span></div>
-    <div class="row"><b>Screen resolution</b><span>${esc(r.screen)}</span></div>
-    <div class="row"><b>Browser viewport</b><span>${esc(r.viewport)}</span></div>
-    <div class="row"><b>Timezone</b><span>${esc(r.timezone)}</span></div>
-    <div class="row"><b>Stored in</b><span>${esc(r.storage)}</span></div>
-    <div class="row"><b>Sent to internet?</b><span style="color:#087443;font-weight:700">${esc(r.sentToInternet)}</span></div>
+    <div class="row"><b>Fictional learner</b><span>${DEMO_NAME} (fixed example)</span></div>
+    <div class="row"><b>Example length</b><span>${DEMO_PASSWORD_LENGTH} characters (fixed teaching metadata, not a measurement of your password)</span></div>
+    <div class="row"><b>Password value</b><span>Not collected or stored</span></div>
+    <div class="row"><b>Demo started at</b><span>${esc(r.savedAt)} (UTC)</span></div>
+    <div class="row"><b>Classroom server</b><span>${SERVER_RESULTS[r.serverStatus]}</span></div>
+    <div class="row"><b>Local storage</b><span>Demo version, fixed demo identifier, completion flag, timestamp, and server-response status only</span></div>
+    <div class="row"><b>Lesson</b><span>A real fake-login page may steal a submitted password. Familiar branding, password length, and the padlock alone do not prove a site is trustworthy.</span></div>
   </div>`;
 }
 
 function clearLocal(){
-  localStorage.removeItem("phishlab_local_capture");
+  try{localStorage.removeItem(DEMO_STORAGE_KEY);}
+  catch(error){empty("The browser did not allow the demo result to be reset. No records were cleared.");return;}
   render();
 }
 
+document.getElementById("resetDemo").addEventListener("click",clearLocal);
+window.addEventListener("pageshow",render);
+window.addEventListener("storage",event=>{if(event.key===DEMO_STORAGE_KEY || event.key===null) render();});
 render();
 </script>
 </body></html>

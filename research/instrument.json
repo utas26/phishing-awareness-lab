@@ -1,0 +1,152 @@
+{
+  "version": "utas-cyberlab-satisfaction-draft-1.0",
+  "title": "UTAS-Ibra learning experience feedback",
+  "sourceVersion": "utas-cyberlab-draft-2.0",
+  "instructions": "Thinking about the learning experience you just completed, how much do you agree with each statement?",
+  "items": [
+    {
+      "id": "q1",
+      "text": "Overall, I am satisfied with this learning experience.",
+      "sourceId": "s01_overall"
+    },
+    {
+      "id": "q2",
+      "text": "It was easy to find my way around the application.",
+      "sourceId": "s02_navigation"
+    },
+    {
+      "id": "q3",
+      "text": "The activity instructions were easy to understand.",
+      "sourceId": "s03_instructions"
+    },
+    {
+      "id": "q4",
+      "text": "The on-screen information was easy to read.",
+      "sourceId": "s04_readability"
+    },
+    {
+      "id": "q5",
+      "text": "The feedback clearly explained the result of my choices.",
+      "sourceId": "s05_feedback"
+    },
+    {
+      "id": "q6",
+      "text": "The activities held my attention.",
+      "sourceId": "s06_engagement"
+    },
+    {
+      "id": "q7",
+      "text": "The level of challenge was appropriate for me.",
+      "sourceId": "s07_difficulty"
+    },
+    {
+      "id": "q8",
+      "text": "The scenarios were relevant to situations I may encounter.",
+      "sourceId": "s08_relevance"
+    },
+    {
+      "id": "q9",
+      "text": "The learning experience was useful for learning cybersecurity concepts.",
+      "sourceId": "s09_value"
+    },
+    {
+      "id": "q10",
+      "text": "I would choose to use these learning activities for further practice.",
+      "sourceId": "s10_reuse"
+    }
+  ],
+  "scale": [
+    {
+      "value": 1,
+      "label": "Strongly disagree"
+    },
+    {
+      "value": 2,
+      "label": "Disagree"
+    },
+    {
+      "value": 3,
+      "label": "Neither agree nor disagree"
+    },
+    {
+      "value": 4,
+      "label": "Agree"
+    },
+    {
+      "value": 5,
+      "label": "Strongly agree"
+    },
+    {
+      "value": null,
+      "label": "Not applicable"
+    }
+  ],
+  "comments": [
+    {
+      "id": "usefulPart",
+      "text": "What helped your learning most, and why?",
+      "maxLength": 1000,
+      "sourceId": "open_helpful"
+    },
+    {
+      "id": "improvement",
+      "text": "What was confusing, or what one change would improve the learning experience?",
+      "maxLength": 1000,
+      "sourceId": "open_improve"
+    }
+  ],
+  "labs": [
+    {
+      "id": "overall",
+      "label": "Overall learning experience"
+    },
+    {
+      "id": "phishing",
+      "label": "Phishing awareness"
+    },
+    {
+      "id": "password-strength",
+      "label": "Password strength"
+    },
+    {
+      "id": "mfa-fatigue",
+      "label": "MFA fatigue"
+    },
+    {
+      "id": "qr-phishing",
+      "label": "QR phishing"
+    },
+    {
+      "id": "suspicious-url",
+      "label": "Suspicious URLs"
+    },
+    {
+      "id": "fake-update",
+      "label": "Fake updates"
+    },
+    {
+      "id": "browser-permissions",
+      "label": "Browser permissions"
+    },
+    {
+      "id": "port-scanning",
+      "label": "Port scanning"
+    },
+    {
+      "id": "sql-injection",
+      "label": "SQL injection"
+    },
+    {
+      "id": "xss",
+      "label": "Cross-site scripting"
+    },
+    {
+      "id": "dos-ddos",
+      "label": "DoS and DDoS"
+    },
+    {
+      "id": "wifi-auditing",
+      "label": "Wi-Fi auditing"
+    }
+  ]
+}

@@ -4,7 +4,8 @@
   'use strict';
   const el = id => document.getElementById(id);
   if (!el('wifiDiscover')) return;
-  const reducedMotion = () => !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const motionQuery = typeof window.matchMedia === 'function' ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+  const reducedMotion = () => Boolean(motionQuery?.matches);
   const guide = window.BeginnerGuide?.mount({
     mountTo: '#beginnerGuideMount',
     title: 'Watch a supplied password candidate get checked',
@@ -423,13 +424,26 @@
     void evaluate(token, true);
   }
   function pause() {
-    if (phase !== 'running') return;
+    if (phase !== 'running' && !busy) return;
     stopAsync(); phase = 'paused';
     record('Audit paused', index + ' completed candidate checks retained');
     el('wifiCurrentVerdict').textContent = 'Paused after ' + index + ' completed checks';
     el('wifiRunSummary').textContent = 'Paused. ' + index + ' completed checks retained. Resume or check the next candidate.';
     say('Audit paused after ' + index + ' completed checks. Resume, step one candidate, or cancel.');
     controls();
+  }
+  function pauseForContext(reason) {
+    let changed = false;
+    if (discovery === 'running' && !discoveryPaused) {
+      clearTimeout(discoveryTimer); discoveryTimer = null; discoveryToken += 1; discoveryPaused = true;
+      record('Virtual AP discovery paused', reason + '; revealed access points retained');
+      changed = true;
+    }
+    if (phase === 'running' || busy) { pause(); changed = true; }
+    if (changed) {
+      say('Playback paused because ' + reason + '. Completed evidence is retained. Use the step or resume controls when ready.');
+      controls();
+    }
   }
   function cancel() {
     if (!active()) return;
@@ -497,6 +511,8 @@
     record('Candidate list changed', listLabels[el('wifiWordlist').value] + '; current-run evidence cleared');
     say('Candidate list changed. Current-run evidence cleared; completed baseline comparisons are retained.');
   });
+  if (typeof motionQuery?.addEventListener === 'function') motionQuery.addEventListener('change', event => { if (event.matches) pauseForContext('your system now prefers reduced motion'); });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) pauseForContext('this tab was hidden'); });
   window.addEventListener('pagehide', () => {
     if (discovery === 'running') cancelDiscovery();
     if (phase === 'running' || busy) {

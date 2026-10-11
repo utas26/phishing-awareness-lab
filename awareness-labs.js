@@ -10,9 +10,18 @@
   const status = text => { byId('simStatus').textContent = text; };
   const show = (id, visible) => { byId(id).hidden = !visible; };
   const lock = (id, disabled) => { byId(id).disabled = disabled; };
-  const done = (id, value) => { const node = byId('e-' + id); node.classList.toggle('is-done', Boolean(value)); node.setAttribute('data-completed', String(Boolean(value))); };
+  const done = (id, value) => { const node = byId('e-' + id); node.classList.toggle('is-done', Boolean(value)); node.setAttribute('data-completed', String(Boolean(value))); node.setAttribute('aria-label', node.textContent + '. ' + (value ? 'Completed.' : 'Not completed.')); };
   const on = (id, fn) => byId(id).addEventListener('click', () => { if (!byId(id).disabled) fn(); });
-  const prefersReducedMotion = () => Boolean(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const motionQuery = typeof window.matchMedia === 'function' ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+  const prefersReducedMotion = () => Boolean(motionQuery?.matches);
+  function watchPlayback(manualId, pausePlayback) {
+    if (typeof motionQuery?.addEventListener === 'function') motionQuery.addEventListener('change', event => {
+      if (!event.matches) return;
+      byId(manualId).checked = true;
+      pausePlayback('your system now prefers reduced motion');
+    });
+    document.addEventListener('visibilitychange', () => { if (document.hidden) pausePlayback('this tab was hidden'); });
+  }
   const mountGuide = config => window.BeginnerGuide ? window.BeginnerGuide.mount({ mountTo: '#beginnerGuideMount', ...config }) : null;
   function updateGuide(guide, state) {
     if (guide) guide.update({ ...state, eventKey: 'awareness:' + guideRevision, animate: actions.length > 0 });
@@ -150,6 +159,12 @@
     on('mfaLogin', () => { if (!s.reported || !s.reviewed || s.compromised || s.legitimate) return; s.pending = 'legitimate'; s.numberError = false; byId('mfaNumber').value = ''; record('Started own demo sign-in', 'A matching-number request was sent to the fictional phone'); status('A sign-in you initiated is ready. Match the workstation’s demo number on the phone.'); render(); });
     byId('mfaNumber').addEventListener('change', () => { s.numberError = false; render(); });
     on('simReset', reset);
+    watchPlayback('mfaManual', reason => {
+      if (!s.attacking || s.paused || s.count >= 6) return;
+      stop(); s.paused = true;
+      record('Paused incoming requests', reason);
+      status('Playback paused because ' + reason + '. Handle the pending request, use Next request, or Resume playback when ready.'); render();
+    });
     window.addEventListener('pagehide', () => { stop(); s.paused = true; render(); });
     reset();
     mountReport({ labId: 'mfa-fatigue', title: 'MFA Fatigue Lab', attackType: 'MFA request flooding and accidental approval', howItHappens: 'Repeated unexpected approval requests can pressure a user into granting a session they did not initiate.', scope: 'Local fictional account, phone and sessions. No actual authentication requests or account changes.', recommendations: ['Deny unexpected requests and report through a trusted channel.', 'Review and revoke suspicious sessions with your security team.', 'Prefer phishing-resistant authentication where supported.'] }, () => ({ status: complete() ? 'completed' : s.started ? 'in progress' : 'not started', metrics: mission ? [{ label: 'Practice mission evidence', value: mission.getSummary().status }, { label: 'Current mission checks', value: mission.getSummary().completedChecks + ' / ' + mission.getSummary().totalChecks }, { label: 'Optional hints revealed', value: mission.getSummary().hintsRevealed }] : [], findings: s.started ? [{ title: 'Simulated authentication outcome', evidence: s.count + ' requests received; ' + s.denied + ' denied; report ' + (s.reported ? 'completed' : 'not completed') + '; unauthorized active sessions ' + (s.compromised ? '1' : '0') + '; own sign-in ' + (s.legitimate ? 'completed' : 'not completed'), risk: s.compromised ? 'An unintended approval left a fictional unauthorized session active.' : 'No unauthorized session currently active in the model; this does not assess a real account.', recommendation: 'Tie approvals to your own sign-in and review unexpected activity.' }] : [] }));
@@ -228,6 +243,12 @@
     on('updatePause', () => { s.paused = !s.paused; stop(); record(s.paused ? 'Paused updater playback' : 'Resumed updater playback'); status(s.paused ? 'Updater paused. Use Next update step to advance once, or Resume playback.' : 'Updater playback resumed.'); render(); if (!s.paused) schedule(); });
     on('updateStep', () => { stop(); s.paused = true; advance(); });
     on('updateCancel', () => { stop(); record('Cancelled demo update operation', s.operation); s.operation = ''; s.progress = 0; status('Operation cancelled. No completion was recorded; restart the check or installation when ready.'); render(); });
+    watchPlayback('updateManual', reason => {
+      if (!s.operation || s.paused) return;
+      stop(); s.paused = true;
+      record('Paused updater playback', reason);
+      status('Updater paused because ' + reason + '. Completed steps remain recorded. Use Next update step or Resume playback when ready.'); render();
+    });
     on('simReset', reset); window.addEventListener('pagehide', () => { stop(); if (s.operation) s.paused = true; render(); }); reset();
     mountReport({ labId: 'fake-update', title: 'Fake Software Update Lab', attackType: 'Deceptive update prompt and untrusted installer', howItHappens: 'An unrelated web page impersonates an update channel to persuade a user to run an untrusted file.', scope: 'Fictional browser, file shelf, workstation and updater; no real downloads, execution or signature verification.', recommendations: ['Open the application’s own update channel independently.', 'Inspect the source and publisher rather than trusting logos or urgency.', 'If an unknown installer ran, follow your security team’s containment and recovery process.'] }, () => ({ status: complete() ? 'completed' : s.visited ? 'in progress' : 'not started', findings: s.visited ? [{ title: 'Deceptive update handling', evidence: 'Source inspected: ' + s.inspected + '; fake file selected: ' + s.downloaded + '; fictional installer opened: ' + s.ran + '; cleanup complete: ' + clean() + '; report completed: ' + s.reported + '; trusted demo update installed: ' + s.installed, risk: s.ran && !s.contained ? 'Fictional incident remains uncontained.' : 'The model illustrates the risk of untrusted update sources, not a scan of a real device.', recommendation: 'Use trusted update channels and complete any required incident response.' }] : [] }));
   }
@@ -299,6 +320,12 @@
     on('permTest', () => { s.tested = true; record('Tested fictional microphone', 'Demo signal succeeded; no actual recording or device access'); status('Demo microphone test passed. End the meeting and revoke its grant.'); render(); });
     on('permEnd', () => { if (!s.tested) { status('Test the fictional microphone before ending so you can demonstrate the intended task worked.'); return; } s.ended = true; record('Ended demo voice meeting', 'Permission must still be revoked in simulated settings'); status('Meeting ended. Return to simulated site settings and revoke microphone access.'); render(); });
     on('permRevokeMic', () => { s.microphone = 'Blocked'; if (!s.ended) s.tested = false; record('Revoked demo microphone access', s.ended ? 'Meeting had ended' : 'Meeting still open; the task needs permission to use the microphone'); status(s.ended ? 'Microphone access revoked. Finish any remaining news-site cleanup.' : 'Microphone revoked during the task. Re-allow it if the voice task still needs it.'); render(); });
+    watchPlayback('permManual', reason => {
+      if (s.notifications !== 'Allowed' || s.paused || s.alertsShown >= 4) return;
+      stop(); s.paused = true;
+      record('Paused simulated alerts', reason);
+      status('Alerts paused because ' + reason + '. The permission remains allowed. Show the next alert, resume, or revoke the grant when ready.'); render();
+    });
     on('simReset', reset); window.addEventListener('pagehide', () => { stop(); s.paused = true; render(); }); reset();
     mountReport({ labId: 'browser-permissions', title: 'Browser Permission Lab', attackType: 'Deceptive permission request and notification abuse', howItHappens: 'A page links an unrelated permission request to a fake requirement, then uses the grant beyond the user’s intended task.', scope: 'Fictional browser prompts, permission ledger, notification tray and microphone test. No native device permissions or data access.', recommendations: ['Grant only access needed for the task you initiated.', 'Inspect site settings and revoke unwanted or expired grants.', 'Clearing an alert does not revoke the permission that enabled it.'] }, () => ({ status: complete() ? 'completed' : s.visited ? 'in progress' : 'not started', findings: s.visited ? [{ title: 'Permission state after learner actions', evidence: 'News notifications: ' + s.notifications + '; alerts delivered: ' + s.alertsShown + '; visible alerts: ' + s.alerts.length + '; microphone: ' + s.microphone + '; intentional voice task tested: ' + s.tested + '; meeting ended: ' + s.ended, risk: s.notifications === 'Allowed' ? 'Unwanted fictional notification permission remains allowed.' : 'Unwanted notifications are not currently permitted in the model.', recommendation: 'Revoke unrelated access and clean up task-specific grants when no longer needed.' }] : [] }));
   }
