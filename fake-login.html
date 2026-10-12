@@ -23,6 +23,7 @@ hr{border:0;border-top:1px solid #d8dde4;margin:26px 0}.help{text-align:center;l
 @media(max-width:650px){.panel{margin:0;border-radius:0;padding:24px 18px}.admin{top:46px;right:10px}}
 </style>
 <link rel="stylesheet" href="/home-navigation.css">
+<script src="/phishing-progress.js"></script>
 </head>
 <body>
 <div class="training">AUTHORIZED PHISHING AWARENESS SIMULATION — NOT THE REAL UTAS MOODLE — DO NOT ENTER A REAL PASSWORD</div>
@@ -53,7 +54,7 @@ hr{border:0;border-top:1px solid #d8dde4;margin:26px 0}.help{text-align:center;l
 </ol></section>
 
 <hr>
-<div class="help"><h3>Next: inspect the result</h3><p>Use the local result view to see what this fixed demo saved, or the Instructor Dashboard to inspect the classroom metadata. A completed demo is not a security test of a real account.</p></div>
+<div class="help"><h3>Next: read your lab report</h3><p><a href="/phishing-report.html">Open my phishing lab report</a> to see recorded steps, what happened, warning signs, and prevention. Download it or save it as a PDF.</p><p>Use the local result view to see what this fixed demo saved, or the Instructor Dashboard to inspect the classroom metadata. A completed demo is not a security test of a real account.</p></div>
 <hr>
 <div class="foot"><div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap"><a href="/admin.html" style="display:inline-flex;align-items:center;gap:7px;text-decoration:none;color:#315fa8;font-weight:700"><span style="display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#315fa8;color:#fff;font-size:14px" aria-hidden="true">⚙</span> Stage 3 — Instructor Dashboard</a><a href="/local-capture.html" style="display:inline-flex;align-items:center;gap:7px;color:#315fa8;font-weight:700">Safe local result</a></div><div style="margin-top:6px;color:#6c7888;font-weight:400">The dashboard is for instructors. The local result shows this browser's fixed demo.</div></div>
 </main>
@@ -63,7 +64,20 @@ hr{border:0;border-top:1px solid #d8dde4;margin:26px 0}.help{text-align:center;l
 const DEMO_NAME="Demo Student";
 const DEMO_PASSWORD_LENGTH=16;
 const DEMO_STORAGE_KEY="phishlab_demo_result_v1";
-let demoRunning=false;
+let demoRunning=false, demoGeneration=0, activeDemoController=null, interruptedDemo=false;
+if(typeof window!=="undefined" && typeof window.addEventListener==="function"){
+ window.addEventListener("pagehide",()=>{demoGeneration++;if(activeDemoController){interruptedDemo=true;activeDemoController.abort();activeDemoController=null;}});
+ window.addEventListener("pageshow",()=>{
+  demoRunning=false;
+  const button=document.getElementById("runDemo");button.disabled=false;
+  if(interruptedDemo){
+   button.textContent="Run fixed demo again";
+   const message=document.getElementById("msg");message.style.display="block";
+   message.textContent="The previous attempt was interrupted when you left this page. Its server receipt is unknown. You can read the report or choose to run the fixed demo again; a retry may create another classroom record.";
+  }
+ });
+}
+if(typeof window!=="undefined" && window.PhishingProgress) window.PhishingProgress.record("login-viewed");
 
 function saveDemoResult(record){
  try{localStorage.setItem(DEMO_STORAGE_KEY,JSON.stringify(record));return true;}
@@ -85,6 +99,9 @@ document.getElementById("loginForm").addEventListener("submit",async e=>{
  e.preventDefault();
  if(demoRunning) return;
  demoRunning=true;
+ interruptedDemo=false;
+ const generation=++demoGeneration;
+ if(typeof window!=="undefined" && window.PhishingProgress) window.PhishingProgress.record("demo-started");
  const button=document.getElementById("runDemo");
  button.disabled=true;
  button.textContent="Recording demo…";
@@ -100,21 +117,28 @@ document.getElementById("loginForm").addEventListener("submit",async e=>{
  // Preserve the classroom metadata contract using fixed demo constants.
  const payload={name:DEMO_NAME,usernameEntered:DEMO_NAME,passwordSubmitted:true,passwordLength:DEMO_PASSWORD_LENGTH,passwordStrength:"Not assessed (fixed demo)",browser:s.ua,os:s.os,platform:s.platform,language:navigator.language||"Unavailable",screen:screen.width+" × "+screen.height,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||"Unavailable"};
  const controller=new AbortController();
+ activeDemoController=controller;
  const timeout=setTimeout(()=>controller.abort(),10000);
  try{
    const r=await fetch("/api/submit",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload),signal:controller.signal});
+   if(generation!==demoGeneration) return;
    if(!r.ok) throw new Error();
    localRecord.serverStatus="recorded";
+   if(typeof window!=="undefined" && window.PhishingProgress) window.PhishingProgress.record("demo-finished","recorded");
    const saved=saveDemoResult(localRecord);
    m.style.background="#effaf3";m.style.border="1px solid #b7dfc8";m.style.color="#16623a";
    m.textContent="Stage 2 completed. The classroom server recorded the fixed demo and device metadata, with no password value. "+(saved?"Open the local result view to see the safe demo record.":"This browser could not save the local demo result; the server record was still recorded.");
  }catch(e){
+   if(generation!==demoGeneration) return;
    localRecord.serverStatus="unconfirmed";
+   if(typeof window!=="undefined" && window.PhishingProgress) window.PhishingProgress.record("demo-finished","unconfirmed");
    const saved=saveDemoResult(localRecord);
    m.style.background="#fff7df";m.style.border="1px solid #efd184";m.style.color="#725000";
    m.textContent="The local demonstration ran, but the classroom server record could not be confirmed. "+(saved?"You can still inspect the safe local result.":"This browser also could not save the local result.")+" No password value was read or sent. A retry may create another classroom record.";
  }finally{
    clearTimeout(timeout);
+   if(generation!==demoGeneration) return;
+   activeDemoController=null;
    demoRunning=false;
    button.disabled=false;
    button.textContent="Run fixed demo again";

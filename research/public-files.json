@@ -48,6 +48,8 @@
   "password-strength.html",
   "password-strength.js",
   "phishing-info.html",
+  "phishing-progress.js",
+  "phishing-report.css",
   "phishing-report.html",
   "phishing-report.js",
   "phishing.html",

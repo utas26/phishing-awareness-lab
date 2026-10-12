@@ -5,26 +5,31 @@
 <title>Phishing Lab Report | UTAS-Ibra CyberLab</title>
 <link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#244f91">
 <link rel="icon" href="/icons/security-lab.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/labs.css"><link rel="stylesheet" href="/lab-report.css">
-<script src="/lab-report.js" defer></script><script src="/phishing-report.js" defer></script>
+<link rel="stylesheet" href="/labs.css"><link rel="stylesheet" href="/phishing-report.css">
+<script src="/phishing-progress.js" defer></script><script src="/phishing-report.js" defer></script>
 </head>
 <body>
 <div class="top">PRACTICAL CYBERSECURITY — AUTHORIZED EDUCATIONAL SIMULATIONS ONLY</div>
 <main class="wrap">
 <header class="site-brand"><span class="brand-mark" aria-hidden="true"></span><div><a href="/">UTAS-Ibra CyberLab</a><small>Explore. Practise. Defend.</small></div></header>
 <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/labs.html">All labs</a><span aria-hidden="true">/</span><span aria-current="page">Phishing lab report</span></nav>
-<section class="module">
-<span class="tag">PHISHING AWARENESS · MANUAL DEBRIEF</span><h1>Phishing Lab Report</h1>
-<p>Write what you noticed in the phishing exercise and download a clear, assessment-style learning report.</p>
-<div class="intro"><strong>No activity is imported.</strong> This separate page does not read sign-in information, submissions, instructor records, browser storage, or actions from the phishing exercise. Its report marks automated testing as <strong>Not performed</strong>. Your optional observations are labeled as unverified student notes.</div>
-<h2>What kind of attack is this?</h2>
-<p>Phishing uses a deceptive message or website to persuade someone to disclose information or take an unsafe action. An imitation sign-in page may collect credentials when a person mistakes it for a trusted service.</p>
-<h2>Suggested observations</h2>
-<ul><li>What made the message or destination suspicious?</li><li>How did the message use urgency, familiarity, or authority?</li><li>How would you verify the request through an independent channel?</li><li>What would you recommend to prevent or report a similar attempt?</li></ul>
-<p>Describe warning signs and safe decisions. Do not include names, student IDs, account details, passwords, or other personal information.</p>
+<section class="report-tools" aria-labelledby="reportToolsTitle">
+<h1 id="reportToolsTitle">Your phishing lab report</h1>
+<p>See what this browser tab recorded, understand the result, and explain what you learned.</p>
+<p class="report-note">Use the same tab for the exercise and report. Only fixed step names, times and demo-response status are saved for this report. Earlier activity cannot be recovered. No passwords, account details, device information or instructor records are read.</p>
+<div class="report-controls"><button type="button" id="downloadReport" class="btn">Download report (.html)</button><button type="button" id="printReport" class="btn alt">Print / Save as PDF</button><button type="button" id="refreshReport" class="btn alt">Refresh recorded steps</button></div>
+<p class="report-note">HTML opens in a browser. For PDF, choose “Save as PDF” in the print dialog. Review the preview below before sharing.</p>
+<p id="reportStatus" role="status" aria-live="polite"></p>
+<details class="report-reflection"><summary>Add your reflection (optional)</summary><p>These notes are your own account, not verified activity. They appear in the preview and export but are not saved when you leave. Do not enter names, student IDs, passwords or personal information.</p>
+<label for="reportSigns">Which warning signs did you notice?</label><textarea id="reportSigns" rows="2" maxlength="1200" placeholder="For example: Which words created urgency? What looked wrong with the address?"></textarea>
+<label for="reportResponse">What would you do safely in a real situation?</label><textarea id="reportResponse" rows="2" maxlength="1200" placeholder="Describe how you would verify the request or report it."></textarea>
+<label for="reportLearning">What did you learn?</label><textarea id="reportLearning" rows="2" maxlength="1200" placeholder="Explain why a familiar-looking login page can still be unsafe."></textarea>
+</details>
+<details class="report-reset"><summary>Start a fresh report</summary><p>This clears only the recorded phishing steps in this tab. It does not delete the separate local demo result, classroom server records or your reflection text.</p><button type="button" id="resetReport" class="btn alt">Clear this tab’s report steps</button></details>
 </section>
-<div id="labReportMount"></div>
-<nav class="lab-return" aria-label="Return navigation"><a class="btn" href="/phishing.html">Open phishing exercise</a><a class="btn alt" href="/labs.html">View all labs</a><a class="btn alt" href="/">Back to Home</a></nav>
+<div id="phishingReportPreview" aria-label="Lab report preview"></div>
+<noscript><p>JavaScript is needed to show recorded steps and create a report. No activity can be verified while it is disabled.</p></noscript>
+<nav class="lab-return" aria-label="Return navigation"><a class="btn" href="/phishing.html">Open phishing exercise</a><a class="btn alt" href="/fake-login.html">Open fixed login demo</a><a class="btn alt" href="/labs.html">View all labs</a><a class="btn alt" href="/">Back to Home</a></nav>
 </main>
 <footer class="site-footer">Powered by : <span>Dr. Ramesh Palanisamy, Professor, UTAS-Ibra</span></footer>
 </body>
