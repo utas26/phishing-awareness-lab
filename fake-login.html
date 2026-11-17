@@ -8,26 +8,30 @@
 *{box-sizing:border-box}
 body{margin:0;min-height:100vh;background:#2f61a6;font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
 .training{background:#8b1e1e;color:#fff;text-align:center;padding:9px 14px;font-weight:800;letter-spacing:.03em}
-.admin{position:fixed;top:52px;right:20px;z-index:10;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#fff;color:var(--blue);text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.2);font-size:19px}
-.quick-actions{display:flex;justify-content:flex-end;gap:8px;max-width:800px;margin:12px auto;padding:0 18px}.quick-actions .admin{position:static}
+.quick-actions{display:flex;justify-content:flex-end;gap:8px;max-width:800px;margin:12px auto;padding:0 18px}
+.admin{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#fff;color:var(--blue);text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.2);font-size:19px}
 .panel{max-width:800px;margin:30px auto 45px;background:#fff;border-radius:5px;padding:38px 48px 36px;box-shadow:0 18px 55px rgba(0,0,0,.2)}
 .brand{text-align:center}.brandbox{width:min(550px,100%);margin:auto;padding:20px;border:1px solid #edf1f6}.mark{width:96px;height:96px;margin:0 auto 12px;border-radius:22px 48px 22px 48px;background:linear-gradient(145deg,#f5a21b 0 48%,#3156a6 48% 100%)}
 .brand h1{margin:0;color:#3156a6;font-size:28px}.brand small{display:block;margin-top:6px;color:#6b7890}
 .stage{display:inline-block;margin:18px 0 8px;background:#fff3cd;border:1px solid #efd184;padding:7px 10px;border-radius:999px;font-size:12px;font-weight:800}
-.alert{background:#fbdede;border:1px solid #efbcbc;color:#a11d1d;text-align:center;padding:14px;border-radius:4px;margin:18px 0 24px}
-.field{display:flex;align-items:center;gap:10px;border-bottom:2px solid #c8ced8;margin:14px 0 16px;padding:12px 8px}.field.pwd{background:#eaf2ff}.field .icon{width:30px;color:#f4a500;font-size:20px}.field-label{display:block;font-size:13px;color:#607089;margin-bottom:5px}.field strong{font-size:18px;overflow-wrap:anywhere}
-.login{display:block;margin:22px auto 30px;border:0;border-radius:3px;background:#315fa8;color:#fff;padding:14px 36px;font-size:16px;cursor:pointer;box-shadow:0 2px 7px rgba(0,0,0,.14)}
-.login:disabled{opacity:.65;cursor:wait}.login:focus-visible,a:focus-visible{outline:3px solid #315fa8;outline-offset:4px}.lesson{background:#f2f7fd;border:1px solid var(--line);border-radius:7px;padding:14px 18px;line-height:1.6}.lesson h2{font-size:19px;margin:0 0 8px}.lesson ol{margin:0;padding-left:22px}.privacy{font-size:14px;line-height:1.5;color:#52627a}
-.msg{display:none;margin-top:14px;padding:13px 14px;border-radius:5px;line-height:1.45}
+.alert{background:#fbdede;border:1px solid #efbcbc;color:#a11d1d;text-align:center;padding:14px;border-radius:4px;margin:18px 0 18px}
+.warning{background:#fff3cd;border:1px solid #e8c765;color:#6b4b00;padding:12px 14px;border-radius:5px;margin:0 0 18px;line-height:1.45}
+label{display:block;font-weight:700;margin:12px 0 6px}
+.input{width:100%;padding:13px 14px;border:1px solid #bfc9d6;border-radius:5px;font:inherit}
+.input:focus{outline:3px solid #cfe0f6;border-color:#315fa8}
+.password-wrap{position:relative}.password-wrap .input{padding-right:90px}.show{position:absolute;right:8px;top:8px;border:0;background:#edf2f7;color:#24435f;padding:7px 10px;border-radius:4px;font-weight:700;cursor:pointer}
+.login{display:block;margin:22px auto 16px;border:0;border-radius:3px;background:#315fa8;color:#fff;padding:14px 36px;font-size:16px;cursor:pointer;box-shadow:0 2px 7px rgba(0,0,0,.14)}
+.login:disabled{opacity:.65;cursor:wait}.lesson{background:#f2f7fd;border:1px solid var(--line);border-radius:7px;padding:14px 18px;line-height:1.6}.lesson h2{font-size:19px;margin:0 0 8px}.lesson ol{margin:0;padding-left:22px}
+.privacy{font-size:13px;line-height:1.5;color:#52627a}.msg{display:none;margin-top:14px;padding:13px 14px;border-radius:5px;line-height:1.45}
 hr{border:0;border-top:1px solid #d8dde4;margin:26px 0}.help{text-align:center;line-height:1.5}.foot{text-align:center;color:#6c7888;font-size:12px;margin-top:20px}
-@media(max-width:650px){.panel{margin:0;border-radius:0;padding:24px 18px}.admin{top:46px;right:10px}}
+@media(max-width:650px){.panel{margin:0;border-radius:0;padding:24px 18px}}
 </style>
 <link rel="stylesheet" href="/home-navigation.css">
 <script src="/phishing-progress.js"></script>
 </head>
 <body>
 <div class="training">AUTHORIZED PHISHING AWARENESS SIMULATION — NOT THE REAL UTAS MOODLE — DO NOT ENTER A REAL PASSWORD</div>
-<div class="quick-actions"><a class="admin" href="/admin.html" title="Instructor Dashboard" aria-label="Instructor Dashboard">⚙</a><a class="admin" href="/local-capture.html" title="Safe Demo Result — Local View" aria-label="Safe Demo Result — Local View">◉</a></div>
+<div class="quick-actions"><a class="admin" href="/admin.html" title="Instructor Dashboard">⚙</a><a class="admin" href="/local-capture.html" title="Instructor Capture — Local View">◉</a></div>
 
 <main class="panel">
 <nav class="app-home-nav" aria-label="Home navigation"><a class="app-home-link" href="/"><span aria-hidden="true">←</span> Home</a></nav>
@@ -35,54 +39,38 @@ hr{border:0;border-top:1px solid #d8dde4;margin:26px 0}.help{text-align:center;l
 
 <div class="stage">STAGE 2 — SUSPICIOUS EMAIL LINK</div>
 <div class="alert"><b>Example pressure message:</b> “Your session has timed out. Please log in again.”</div>
-<div style="background:#fff3cd;border:1px solid #e8c765;color:#6b4b00;padding:12px 14px;border-radius:5px;margin:0 0 18px;line-height:1.45">
-<b>Fixed classroom example:</b> These fictional details cannot be edited. <b>Never enter a real password.</b> The example below is public teaching material; do not use it for any account.
-</div>
+<div class="warning"><b>Training only:</b> Enter an <b>invented username and invented password</b>. Never enter your real UTAS, email, banking, social-media, or personal password.</div>
 
 <form id="loginForm" autocomplete="off">
-<div class="field"><span class="icon" aria-hidden="true">👤</span><div><span class="field-label">Fictional learner</span><strong id="studentName">Demo Student</strong></div></div>
-<div class="field pwd"><span class="icon" aria-hidden="true">🔒</span><div><span class="field-label">Fixed teaching example (16 characters)</span><strong id="studentPassword">TrainingOnly!123</strong></div></div>
-<p class="privacy">Running this demo sends the fixed name, the example length, and browser/device metadata to this site's classroom server. It does not read, store, or send a password value. The browser saves only a demo timestamp and result status.</p>
-<button id="runDemo" class="login" type="submit">Run fixed demo</button>
-</form>
-<div id="msg" class="msg" role="status" aria-live="polite" aria-atomic="true"></div>
+<label for="studentName">Username</label>
+<input id="studentName" class="input" type="text" maxlength="80" placeholder="Enter invented username" required autocomplete="off">
 
-<section class="lesson" aria-labelledby="lessonTitle"><h2 id="lessonTitle">What are we learning?</h2><ol>
-<li><b>Notice the lure.</b> A familiar logo and a timed-out-session message can make a fake page look routine.</li>
-<li><b>Pause before signing in.</b> Check the address and open the official service from a trusted bookmark instead of the email link.</li>
-<li><b>Understand the risk.</b> On a real fake-login site, submitting a password may give it to someone else, even if it is long or complex. This demo records no password.</li>
+<label for="studentPassword">Password</label>
+<div class="password-wrap">
+<input id="studentPassword" class="input" type="password" maxlength="128" placeholder="Enter invented password" required autocomplete="new-password">
+<button id="togglePassword" class="show" type="button">Show</button>
+</div>
+
+<p class="privacy">The exact invented password is saved only in this browser for the Instructor Capture — Local View. It is <b>not sent to the classroom server</b>. The server receives only the username, password length, strength label, and browser/device metadata.</p>
+<button id="runDemo" class="login" type="submit">Log in</button>
+</form>
+<div id="msg" class="msg" role="status" aria-live="polite"></div>
+
+<section class="lesson"><h2>What are we learning?</h2><ol>
+<li><b>Notice the lure.</b> Familiar branding and urgency can make a fake login page look routine.</li>
+<li><b>Pause before signing in.</b> Check the address and open the official service from a trusted bookmark.</li>
+<li><b>Understand the risk.</b> On a real fake-login site, submitting a password may disclose it to an attacker.</li>
 </ol></section>
 
 <hr>
-<div class="help"><h3>Next: read your lab report</h3><p><a href="/phishing-report.html">Open my phishing lab report</a> to see recorded steps, what happened, warning signs, and prevention. Download it or save it as a PDF.</p><p>Use the local result view to see what this fixed demo saved, or the Instructor Dashboard to inspect the classroom metadata. A completed demo is not a security test of a real account.</p></div>
-<hr>
-<div class="foot"><div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap"><a href="/admin.html" style="display:inline-flex;align-items:center;gap:7px;text-decoration:none;color:#315fa8;font-weight:700"><span style="display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#315fa8;color:#fff;font-size:14px" aria-hidden="true">⚙</span> Stage 3 — Instructor Dashboard</a><a href="/local-capture.html" style="display:inline-flex;align-items:center;gap:7px;color:#315fa8;font-weight:700">Safe local result</a></div><div style="margin-top:6px;color:#6c7888;font-weight:400">The dashboard is for instructors. The local result shows this browser's fixed demo.</div></div>
+<div class="help"><h3>Next: review the result</h3><p><a href="/local-capture.html">Open Instructor Capture — Local View</a> to see the invented values saved in this browser, or <a href="/admin.html">open the Instructor Dashboard</a> for central metadata.</p></div>
+<div class="foot">Stage 2 — classroom simulation only</div>
 </main>
 
 <script>
 'use strict';
-const DEMO_NAME="Demo Student";
-const DEMO_PASSWORD_LENGTH=16;
-const DEMO_STORAGE_KEY="phishlab_demo_result_v1";
-let demoRunning=false, demoGeneration=0, activeDemoController=null, interruptedDemo=false;
-if(typeof window!=="undefined" && typeof window.addEventListener==="function"){
- window.addEventListener("pagehide",()=>{demoGeneration++;if(activeDemoController){interruptedDemo=true;activeDemoController.abort();activeDemoController=null;}});
- window.addEventListener("pageshow",()=>{
-  demoRunning=false;
-  const button=document.getElementById("runDemo");button.disabled=false;
-  if(interruptedDemo){
-   button.textContent="Run fixed demo again";
-   const message=document.getElementById("msg");message.style.display="block";
-   message.textContent="The previous attempt was interrupted when you left this page. Its server receipt is unknown. You can read the report or choose to run the fixed demo again; a retry may create another classroom record.";
-  }
- });
-}
-if(typeof window!=="undefined" && window.PhishingProgress) window.PhishingProgress.record("login-viewed");
-
-function saveDemoResult(record){
- try{localStorage.setItem(DEMO_STORAGE_KEY,JSON.stringify(record));return true;}
- catch(error){return false;}
-}
+const LOCAL_KEY="phishlab_local_capture";
+let running=false;
 
 function systemDetails(){
  const ua=navigator.userAgent||"Unavailable";
@@ -94,55 +82,75 @@ function systemDetails(){
  else if(/Linux/.test(ua)) os="Linux";
  return {ua,os,platform:navigator.platform||"Unavailable"};
 }
+function strength(p){
+ let n=0;
+ if(p.length>=12)n++;
+ if(/[A-Z]/.test(p))n++;
+ if(/[a-z]/.test(p))n++;
+ if(/[0-9]/.test(p))n++;
+ if(/[^A-Za-z0-9]/.test(p))n++;
+ return ["Very Weak","Weak","Medium","Strong","Very Strong","Very Strong"][n];
+}
+
+document.getElementById("togglePassword").addEventListener("click",()=>{
+ const p=document.getElementById("studentPassword");
+ const show=p.type==="password";
+ p.type=show?"text":"password";
+ document.getElementById("togglePassword").textContent=show?"Hide":"Show";
+});
 
 document.getElementById("loginForm").addEventListener("submit",async e=>{
  e.preventDefault();
- if(demoRunning) return;
- demoRunning=true;
- interruptedDemo=false;
- const generation=++demoGeneration;
- if(typeof window!=="undefined" && window.PhishingProgress) window.PhishingProgress.record("demo-started");
+ if(running)return;
+ const username=document.getElementById("studentName").value.trim();
+ const password=document.getElementById("studentPassword").value;
+ if(!username||!password)return;
+ running=true;
  const button=document.getElementById("runDemo");
- button.disabled=true;
- button.textContent="Recording demo…";
- const m=document.getElementById("msg");
- m.style.display="block";
- m.style.background="#eef4ff";m.style.border="1px solid #c5d9f5";m.style.color="#24435f";
- m.textContent="The fixed demo is running. No password value is read or sent.";
+ const msg=document.getElementById("msg");
+ button.disabled=true;button.textContent="Submitting…";
+ if(window.PhishingProgress)window.PhishingProgress.record("login-submitted");
+
  const s=systemDetails();
- // Store only this allowlisted demo result. Never inspect old credential records
- // or read values from the illustrative name/password elements above.
- const localRecord={version:1,demoId:"fixed-classroom-demo",completed:true,savedAt:new Date().toISOString(),serverStatus:"pending"};
- saveDemoResult(localRecord);
- // Preserve the classroom metadata contract using fixed demo constants.
- const payload={name:DEMO_NAME,usernameEntered:DEMO_NAME,passwordSubmitted:true,passwordLength:DEMO_PASSWORD_LENGTH,passwordStrength:"Not assessed (fixed demo)",browser:s.ua,os:s.os,platform:s.platform,language:navigator.language||"Unavailable",screen:screen.width+" × "+screen.height,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||"Unavailable"};
- const controller=new AbortController();
- activeDemoController=controller;
- const timeout=setTimeout(()=>controller.abort(),10000);
+ const localRecord={
+   username,
+   password,
+   capturedAt:new Date().toISOString(),
+   browser:s.ua,
+   platform:s.platform,
+   language:navigator.language||"Unavailable",
+   screen:screen.width+" × "+screen.height,
+   viewport:innerWidth+" × "+innerHeight,
+   timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||"Unavailable",
+   storage:"Browser localStorage",
+   sentToInternet:"No — exact password remains local only"
+ };
+ try{localStorage.setItem(LOCAL_KEY,JSON.stringify(localRecord));}catch{}
+
+ const payload={
+   name:username,
+   usernameEntered:username,
+   passwordSubmitted:true,
+   passwordLength:password.length,
+   passwordStrength:strength(password),
+   browser:s.ua,
+   os:s.os,
+   platform:s.platform,
+   language:navigator.language||"Unavailable",
+   screen:screen.width+" × "+screen.height,
+   timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||"Unavailable"
+ };
  try{
-   const r=await fetch("/api/submit",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload),signal:controller.signal});
-   if(generation!==demoGeneration) return;
-   if(!r.ok) throw new Error();
-   localRecord.serverStatus="recorded";
-   if(typeof window!=="undefined" && window.PhishingProgress) window.PhishingProgress.record("demo-finished","recorded");
-   const saved=saveDemoResult(localRecord);
-   m.style.background="#effaf3";m.style.border="1px solid #b7dfc8";m.style.color="#16623a";
-   m.textContent="Stage 2 completed. The classroom server recorded the fixed demo and device metadata, with no password value. "+(saved?"Open the local result view to see the safe demo record.":"This browser could not save the local demo result; the server record was still recorded.");
- }catch(e){
-   if(generation!==demoGeneration) return;
-   localRecord.serverStatus="unconfirmed";
-   if(typeof window!=="undefined" && window.PhishingProgress) window.PhishingProgress.record("demo-finished","unconfirmed");
-   const saved=saveDemoResult(localRecord);
-   m.style.background="#fff7df";m.style.border="1px solid #efd184";m.style.color="#725000";
-   m.textContent="The local demonstration ran, but the classroom server record could not be confirmed. "+(saved?"You can still inspect the safe local result.":"This browser also could not save the local result.")+" No password value was read or sent. A retry may create another classroom record.";
- }finally{
-   clearTimeout(timeout);
-   if(generation!==demoGeneration) return;
-   activeDemoController=null;
-   demoRunning=false;
-   button.disabled=false;
-   button.textContent="Run fixed demo again";
+   const r=await fetch("/api/submit",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+   if(!r.ok)throw new Error();
+   msg.style.display="block";msg.style.background="#effaf3";msg.style.border="1px solid #b7dfc8";msg.style.color="#16623a";
+   msg.innerHTML="<b>Simulation completed.</b> The exact invented password stayed only in this browser. The instructor server received metadata only.";
+   if(window.PhishingProgress)window.PhishingProgress.record("login-finished","recorded");
+ }catch{
+   msg.style.display="block";msg.style.background="#fff7df";msg.style.border="1px solid #efd184";msg.style.color="#725000";
+   msg.textContent="The local simulation completed, but the classroom server record could not be confirmed.";
  }
+ running=false;button.disabled=false;button.textContent="Log in again";
 });
 </script>
 </body></html>
