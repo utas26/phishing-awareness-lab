@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="An offline, animated classroom comparison of normal traffic, denial of service, and distributed denial of service.">
+  <title>DoS vs DDoS · Live Classroom Animation</title>
+  <style>
+    :root { color-scheme: dark; --bg:#080d1c; --panel:#10192c; --panel2:#142139; --line:#2a3853; --ink:#f2f6ff; --muted:#afbed8; --green:#48e6a8; --cyan:#53d8ff; --coral:#ff7584; --purple:#b89aff; --amber:#ffd279; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:radial-gradient(ellipse at 6% 0%,#15264c 0,transparent 43%),radial-gradient(ellipse at 95% 25%,#201738 0,transparent 41%),var(--bg); color:var(--ink); font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; line-height:1.5; }
+    button,input { font:inherit; }
+    button,a,input,summary { -webkit-tap-highlight-color:transparent; }
+    button { cursor:pointer; }
+    button:focus-visible,input:focus-visible,a:focus-visible,summary:focus-visible { outline:3px solid var(--cyan); outline-offset:4px; }
+    button:disabled,input:disabled { cursor:not-allowed; }
+    .app { width:min(1340px,calc(100% - 48px)); margin:0 auto; padding:30px 0 78px; }
+    .hero { display:flex; align-items:flex-start; justify-content:space-between; gap:22px; margin-bottom:22px; }
+    .eyebrow { display:flex; align-items:center; flex-wrap:wrap; gap:9px; color:var(--cyan); font-size:12px; font-weight:750; letter-spacing:.12em; text-transform:uppercase; }
+    .live-dot { width:8px; height:8px; border-radius:50%; background:var(--green); box-shadow:0 0 14px #48e6a855; flex:none; }
+    h1 { margin:9px 0 7px; font-size:clamp(32px,4.5vw,52px); letter-spacing:-.055em; line-height:1.1; }
+    h1 .dos { color:var(--coral); } h1 .ddos { color:var(--purple); } h1 .vs { font-weight:450; color:var(--muted); font-size:.7em; }
+    .intro { max-width:790px; margin:10px 0 0; color:var(--muted); font-size:15px; }
+    .intro strong { color:var(--ink); font-weight:650; }
+    .button { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:43px; padding:10px 15px; border:1px solid #3c4c69; border-radius:11px; background:#17243a; color:var(--ink); font-size:13px; font-weight:700; white-space:nowrap; }
+    .button:hover { background:#20314d; border-color:#60769c; }
+    .button svg { width:17px; height:17px; flex:none; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+    .button.primary { background:var(--cyan); color:#071725; border-color:var(--cyan); }
+    .button.primary:hover { background:#8ae5ff; }
+    .fullscreen { margin-top:3px; }
+    .control-panel { border:1px solid #34415e; border-radius:20px; padding:18px; background:linear-gradient(125deg,#15213a,#131b2e); box-shadow:0 14px 40px #00000022; margin-bottom:19px; }
+    .control-top { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; }
+    .scene-buttons { display:flex; flex-wrap:wrap; gap:9px; }
+    .scene-button { min-height:46px; display:inline-flex; align-items:center; justify-content:center; gap:9px; padding:10px 17px; border:1px solid #40516d; border-radius:12px; background:#0e172a; color:#bdcbe2; font-weight:750; font-size:14px; }
+    .scene-button .scene-dot { width:8px; height:8px; border-radius:50%; background:var(--accent); }
+    .scene-button[data-scene="normal"] { --accent:var(--green); }
+    .scene-button[data-scene="dos"] { --accent:var(--coral); }
+    .scene-button[data-scene="ddos"] { --accent:var(--purple); }
+    .scene-button[aria-pressed="true"] { border-color:var(--accent); color:var(--accent); background:#243149; box-shadow:inset 0 0 0 1px var(--accent); }
+    .scene-button:hover { background:#26344e; }
+    .play-controls { display:flex; gap:9px; }
+    .control-bottom { margin-top:17px; padding-top:16px; border-top:1px solid #34415e; display:grid; grid-template-columns:minmax(240px,1fr) auto auto; align-items:center; gap:19px 28px; }
+    .range-head { display:flex; justify-content:space-between; gap:10px; align-items:baseline; margin-bottom:5px; }
+    .range-head label { color:#d5e1f5; font-size:13px; font-weight:650; }
+    .range-value { color:var(--coral); font-weight:800; font-size:14px; font-variant-numeric:tabular-nums; white-space:nowrap; }
+    input[type="range"] { width:100%; display:block; accent-color:var(--coral); height:22px; margin:0; }
+    .range-help { font-size:11px; color:var(--muted); margin-top:2px; }
+    .switch-control { display:flex; align-items:center; gap:10px; cursor:pointer; font-size:13px; font-weight:650; white-space:nowrap; }
+    .switch-control input { appearance:none; -webkit-appearance:none; width:39px; height:23px; background:#35435e; border:1px solid #60708b; border-radius:20px; position:relative; margin:0; flex:none; cursor:pointer; }
+    .switch-control input:before { content:""; position:absolute; width:15px; height:15px; border-radius:50%; top:3px; left:3px; background:#dbe5f9; }
+    .switch-control input:checked { background:#37bcd9; border-color:#73e4ff; }
+    .switch-control input:checked:before { left:19px; background:#082033; }
+    .switch-control.block input:checked { background:#e4b74f; border-color:var(--amber); }
+    .switch-control:has(input:disabled) { opacity:.52; cursor:not-allowed; }
+    .control-caption { font-size:12px; color:var(--muted); margin:12px 0 0; }
+    .dashboard { display:grid; grid-template-columns:minmax(0,1fr) 326px; gap:19px; align-items:start; }
+    .card { border:1px solid #2b3b56; border-radius:20px; background:linear-gradient(155deg,#121d32,#0e1728); overflow:hidden; box-shadow:0 18px 50px #00000020; }
+    .visual-header { padding:19px 21px 0; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+    .visual-header h2 { margin:0; font-size:20px; letter-spacing:-.025em; }
+    .scene-subtitle { margin:5px 0 0; color:var(--muted); font-size:13px; }
+    .state-chip { display:inline-flex; align-items:center; gap:6px; flex:none; padding:5px 9px; border:1px solid #416277; background:#13323d; border-radius:30px; color:var(--cyan); font-size:10px; font-weight:800; letter-spacing:.09em; margin-top:2px; }
+    .state-chip.paused { color:var(--amber); background:#3c301c; border-color:#7d6740; }
+    .sequence { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; padding:12px 21px 0; color:var(--muted); font-size:11px; }
+    .sequence-progress { height:3px; background:#23324b; margin:8px 21px 0; border-radius:4px; overflow:hidden; }
+    .sequence-progress span { display:block; height:100%; width:0; background:linear-gradient(90deg,var(--cyan),var(--purple)); }
+    .canvas-wrap { padding:2px 13px 0; }
+    #network-canvas { width:100%; display:block; height:480px; }
+    .legend { display:flex; flex-wrap:wrap; gap:9px 18px; padding:0 21px 15px; color:#c4d1e6; font-size:11px; }
+    .legend span { display:inline-flex; align-items:center; gap:7px; }
+    .legend-mark { width:8px; height:8px; flex:none; display:inline-block; }
+    .legend-mark.request { background:var(--green); border-radius:50%; }
+    .legend-mark.attack { background:var(--coral); transform:rotate(45deg); }
+    .legend-mark.reply { border:2px solid var(--purple); border-radius:50%; width:9px; height:9px; }
+    .legend-mark.blocked { background:var(--amber); border-radius:2px; }
+    .scene-summary { border-top:1px solid #2a3b54; padding:15px 21px; background:#101f2d; display:flex; gap:11px; align-items:flex-start; }
+    .summary-symbol { display:flex; justify-content:center; align-items:center; width:29px; height:29px; color:var(--green); background:#153d35; border-radius:9px; flex:none; font-weight:850; }
+    .summary-symbol.warning { color:var(--amber); background:#44351f; }
+    .scene-summary p { margin:0; font-size:13px; line-height:1.55; color:#dce8f7; }
+    .metrics { padding:18px; }
+    .metrics-title { display:flex; justify-content:space-between; align-items:baseline; gap:9px; margin-bottom:13px; }
+    .metrics-title h2 { font-size:17px; margin:0; letter-spacing:-.02em; }
+    .metrics-title span { font-size:10px; color:var(--cyan); font-weight:750; letter-spacing:.05em; }
+    .metrics-grid { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+    .metric { min-width:0; padding:12px 10px; background:#15233a; border:1px solid #2c3d59; border-radius:12px; }
+    .metric-label { font-size:11.5px; color:#c0cee3; line-height:1.4; min-height:30px; }
+    .metric-value { font-size:28px; font-weight:800; letter-spacing:-.045em; line-height:1.2; margin-top:5px; font-variant-numeric:tabular-nums; }
+    .metric-unit { font-size:11px; color:#b9c9e2; margin-top:4px; }
+    .metric.cyan .metric-value { color:var(--cyan); } .metric.coral .metric-value { color:var(--coral); } .metric.green .metric-value { color:var(--green); } .metric.amber .metric-value { color:var(--amber); } .metric.purple .metric-value { color:var(--purple); }
+    .capacity-panel { padding:15px 0 14px; border-bottom:1px solid #2c3c57; }
+    .capacity-head { display:flex; align-items:center; justify-content:space-between; gap:9px; font-size:12px; }
+    .capacity-head strong { font-variant-numeric:tabular-nums; color:var(--green); }
+    .capacity-bar { display:flex; width:100%; height:10px; background:#273751; border-radius:6px; overflow:hidden; margin-top:9px; }
+    .capacity-genuine { width:25%; background:var(--green); } .capacity-attack { width:0; background:var(--coral); }
+    .capacity-note { margin:8px 0 0; color:var(--muted); font-size:11px; line-height:1.5; }
+    .source-detail { margin:12px 0; padding:10px 11px; background:#0e192b; border:1px solid #293b59; border-radius:10px; font-size:11px; color:#ccdaed; min-height:55px; }
+    .counters-head { display:flex; justify-content:space-between; align-items:baseline; gap:8px; margin-top:14px; }
+    .counters-head h3 { margin:0; font-size:12px; font-weight:700; }
+    .counters-head span { font-size:11px; color:var(--muted); font-variant-numeric:tabular-nums; }
+    .counters { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:8px; }
+    .counter { font-size:23px; font-weight:750; font-variant-numeric:tabular-nums; }
+    .counter-label { color:var(--muted); font-size:11px; margin-top:1px; }
+    .served-count { color:var(--green); } .affected-count { color:var(--amber); }
+    .model-label { color:var(--muted); font-size:11px; margin:13px 0 0; }
+    .learning { display:grid; grid-template-columns:repeat(3,1fr); gap:13px; margin-top:19px; }
+    .learning-card { background:#111b2e; border:1px solid #293a56; padding:16px 18px; border-radius:14px; }
+    .learning-card h3 { font-size:13px; margin:0 0 6px; color:var(--cyan); }
+    .learning-card:nth-child(2) h3 { color:var(--coral); } .learning-card:nth-child(3) h3 { color:var(--purple); }
+    .learning-card p { margin:0; color:#bdcce3; font-size:12px; line-height:1.6; }
+    .about { margin-top:17px; border:1px solid #2a3a55; border-radius:14px; background:#0e1728; padding:14px 18px; }
+    .about summary { color:#dce7fa; font-size:13px; font-weight:700; cursor:pointer; }
+    .about-content { color:var(--muted); font-size:12px; line-height:1.7; margin-top:13px; }
+    .about-content ul { margin:0; padding-left:19px; }
+    .about-content li + li { margin-top:7px; }
+    .about-content strong { color:#e2eafb; font-weight:650; }
+    a { color:var(--cyan); text-underline-offset:3px; }
+    .sources { margin:12px 0 0; color:#a8bad7; }
+    .footer { display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px 18px; margin-top:17px; color:#a6b7d1; font-size:11px; }
+    .creditbar { position:fixed; z-index:20; left:0; right:0; bottom:0; padding:10px 14px; text-align:center; background:#0c1527f5; border-top:1px solid #35516c; box-shadow:0 -8px 24px #00000035; color:#c5d5eb; font-size:12px; letter-spacing:.01em; }
+    .creditbar strong { color:var(--cyan); font-weight:750; }
+    #utility-status { min-height:18px; margin:8px 0 0; color:var(--amber); font-size:12px; }
+    .presentation .app { max-width:1500px; }
+    .sr-only { position:absolute!important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    @media(min-width:1600px) { .presentation .app { width:calc(100% - 80px); } }
+    @media(max-width:1050px) { .dashboard { grid-template-columns:minmax(0,1fr) 294px; gap:15px; } .metrics { padding:14px; } .control-bottom { gap:16px; } }
+    @media(max-width:940px) { .dashboard { grid-template-columns:1fr; } .metrics-grid { grid-template-columns:repeat(3,1fr); } .metric-label { min-height:16px; } .capacity-panel { margin-top:3px; } .learning { gap:10px; } }
+    @media(max-width:690px) { .app { width:calc(100% - 28px); padding-top:21px; } .hero { display:block; margin-bottom:17px; } .fullscreen { margin-top:15px; } .intro { font-size:13px; } .control-panel { padding:14px; } .control-top { align-items:stretch; } .scene-buttons { width:100%; gap:7px; } .scene-button { flex:1; padding:10px 9px; font-size:13px; } .play-controls { width:100%; } .play-controls .button { flex:1; } .control-bottom { grid-template-columns:1fr 1fr; gap:16px 13px; } .range-control { grid-column:1/-1; } .switch-control { font-size:12px; gap:8px; } .visual-header { padding:17px 15px 0; } .visual-header h2 { font-size:18px; } .scene-subtitle { font-size:12px; } .state-chip { padding:5px 7px; font-size:9px; } .sequence { padding-left:15px; padding-right:15px; } .sequence-progress { margin-left:15px; margin-right:15px; } .canvas-wrap { padding-left:8px; padding-right:8px; } .legend { padding:0 15px 14px; font-size:10px; gap:9px 14px; } .scene-summary { padding:14px 15px; } .scene-summary p { font-size:12px; } .learning { grid-template-columns:1fr; } .learning-card { padding:14px 16px; } .learning-card p { font-size:12px; } }
+    @media(max-width:420px) { .metrics-grid { grid-template-columns:1fr 1fr; } .metric-label { min-height:28px; } .eyebrow { font-size:10px; letter-spacing:.1em; } .switch-control { font-size:11px; } .switch-control input { width:35px; } .switch-control input:checked:before { left:15px; } .scene-button { gap:6px; } .control-caption { font-size:11px; } .visual-header { gap:8px; } .visual-header h2 { font-size:16px; } }
+    @media(prefers-reduced-motion:reduce) { *,*:before,*:after { scroll-behavior:auto!important; } }
+  </style>
+</head>
+<body>
+  <main class="app" id="app">
+    <header class="hero">
+      <div>
+        <div class="eyebrow"><span class="live-dot" aria-hidden="true"></span>Offline classroom simulator</div>
+        <h1><span class="dos">DoS</span> <span class="vs">vs</span> <span class="ddos">DDoS</span></h1>
+        <p class="intro">Watch requests move in real time. <strong>One attack source or many sources — the goal is to disrupt availability.</strong> This is a local teaching simulation with illustrative traffic.</p>
+      </div>
+      <button class="button fullscreen" id="fullscreen-button" type="button" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></svg><span id="fullscreen-label">Presentation view</span>
+      </button>
+    </header>
+
+    <section class="control-panel" aria-label="Animation controls">
+      <div class="control-top">
+        <div class="scene-buttons" role="group" aria-label="Choose a scene">
+          <button type="button" class="scene-button" data-scene="normal" aria-pressed="true"><span class="scene-dot" aria-hidden="true"></span>Normal</button>
+          <button type="button" class="scene-button" data-scene="dos" aria-pressed="false"><span class="scene-dot" aria-hidden="true"></span>DoS</button>
+          <button type="button" class="scene-button" data-scene="ddos" aria-pressed="false"><span class="scene-dot" aria-hidden="true"></span>DDoS</button>
+        </div>
+        <div class="play-controls">
+          <button type="button" class="button primary" id="play-button" aria-label="Pause animation"><svg viewBox="0 0 24 24" aria-hidden="true" id="play-icon"><path d="M8 5v14M16 5v14"/></svg><span id="play-label">Pause</span></button>
+          <button type="button" class="button" id="restart-button" title="Restart this scene and reset its counters"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10a9 9 0 1 1 2 8M3 4v6h6"/></svg>Restart</button>
+        </div>
+      </div>
+      <div class="control-bottom">
+        <div class="range-control">
+          <div class="range-head"><label for="attack-rate">Combined attack rate</label><span class="range-value" id="attack-rate-value">300 req/s</span></div>
+          <input type="range" id="attack-rate" min="0" max="600" step="30" value="300" aria-describedby="attack-rate-help" disabled>
+          <div class="range-help" id="attack-rate-help">Same total setting for DoS and DDoS · select an attack scene to adjust.</div>
+        </div>
+        <label class="switch-control block"><input id="block-source" type="checkbox" role="switch" disabled><span>Block one source</span></label>
+        <label class="switch-control"><input id="auto-demo" type="checkbox" role="switch" checked><span>Auto demo</span></label>
+      </div>
+      <p class="control-caption">Choose a scene to hold it. Auto demo cycles through all three. Pause freezes the animation and live counters.</p>
+    </section>
+
+    <div class="dashboard">
+      <section class="card visual" aria-labelledby="scene-title">
+        <div class="visual-header">
+          <div><h2 id="scene-title">Normal traffic</h2><p class="scene-subtitle" id="scene-subtitle">Genuine users can access the website.</p></div>
+          <span class="state-chip" id="playback-chip">● RUNNING</span>
+        </div>
+        <div class="sequence"><span id="sequence-label">Auto demo · next: DoS</span><span id="sequence-time">7 seconds</span></div>
+        <div class="sequence-progress" aria-hidden="true"><span id="sequence-fill"></span></div>
+        <div class="canvas-wrap"><canvas id="network-canvas" role="img" aria-label="Normal traffic: genuine users send requests to a college website and receive replies.">The animated diagram compares one attack source with six example sources. All requests and metrics are simulated.</canvas></div>
+        <div class="legend" aria-label="Traffic legend">
+          <span><i class="legend-mark request" aria-hidden="true"></i>Genuine request</span>
+          <span><i class="legend-mark attack" aria-hidden="true"></i>Attack request</span>
+          <span><i class="legend-mark reply" aria-hidden="true"></i>Website reply</span>
+          <span><i class="legend-mark blocked" aria-hidden="true"></i>Blocked source</span>
+        </div>
+        <div class="scene-summary"><span class="summary-symbol" id="summary-symbol" aria-hidden="true">✓</span><p id="scene-summary" aria-live="polite" aria-atomic="true">The server has enough capacity. All genuine requests are served.</p></div>
+      </section>
+
+      <aside class="card metrics" aria-labelledby="metrics-title">
+        <div class="metrics-title"><h2 id="metrics-title">Live model</h2><span>ILLUSTRATIVE</span></div>
+        <div class="metrics-grid" aria-live="off">
+          <div class="metric cyan"><div class="metric-label">Genuine requests</div><div class="metric-value" id="metric-genuine" data-metric="legitimateRate">30</div><div class="metric-unit">requests / second</div></div>
+          <div class="metric coral"><div class="metric-label">Attack reaching server</div><div class="metric-value" id="metric-attack" data-metric="effectiveAttackRate">0</div><div class="metric-unit">requests / second</div></div>
+          <div class="metric purple"><div class="metric-label">Server capacity</div><div class="metric-value" id="metric-capacity" data-metric="capacity">120</div><div class="metric-unit">requests / second</div></div>
+          <div class="metric cyan"><div class="metric-label">Demand / capacity</div><div class="metric-value" id="metric-demand" data-metric="offeredLoadPercent">25%</div><div class="metric-unit" id="demand-unit">30 / 120 requests per second</div></div>
+          <div class="metric green"><div class="metric-label">Genuine requests served</div><div class="metric-value" id="metric-served" data-metric="legitimateServed">30</div><div class="metric-unit">requests / second</div></div>
+          <div class="metric amber"><div class="metric-label">Genuine requests affected</div><div class="metric-value" id="metric-affected" data-metric="legitimateAffected">0</div><div class="metric-unit">not served in this interval / s</div></div>
+        </div>
+        <div class="capacity-panel">
+          <div class="capacity-head"><span>Server capacity in use</span><strong id="utilization-value">25%</strong></div>
+          <div class="capacity-bar" aria-hidden="true"><span class="capacity-genuine" id="capacity-genuine"></span><span class="capacity-attack" id="capacity-attack"></span></div>
+          <p class="capacity-note" id="capacity-note">Green: genuine traffic · coral: attack traffic. Spare capacity remains.</p>
+        </div>
+        <div class="source-detail" id="source-detail">No attack sources. 30 genuine requests reach the server each second.</div>
+        <div class="counters-head"><h3>In this scene</h3><span id="scene-clock">00:00</span></div>
+        <div class="counters" aria-live="off">
+          <div><div class="counter served-count" id="count-served">0</div><div class="counter-label">genuine requests served</div></div>
+          <div><div class="counter affected-count" id="count-affected">0</div><div class="counter-label">genuine requests affected</div></div>
+        </div>
+        <p class="model-label">Counters integrate the model rates while playing. Displayed values are rounded; the calculation keeps full precision.</p>
+      </aside>
+    </div>
+
+    <section class="learning" aria-label="Key teaching points">
+      <article class="learning-card"><h3>Normal: capacity is available</h3><p>Genuine requests reach the server and replies return. Here, 30 requests per second use one quarter of its capacity.</p></article>
+      <article class="learning-card"><h3>DoS example: one attack source</h3><p>One source can exhaust available resources. At this model’s default rate, genuine users receive fewer successful replies.</p></article>
+      <article class="learning-card"><h3>DDoS example: many sources</h3><p>The same total attack rate is shared across six devices. Distribution is the defining difference; one person may control many sources.</p></article>
+    </section>
+
+    <details class="about" id="about-model">
+      <summary>About this model, teaching notes &amp; sources</summary>
+      <div class="about-content">
+        <ul>
+          <li><strong>Local real-time simulation:</strong> the animation and counters run entirely on this device. They do not measure an actual server or send attack traffic. Moving shapes represent request bundles, not a literal packet count.</li>
+          <li><strong>Simplified capacity model:</strong> genuine traffic is 30 requests/s; capacity is 120 requests/s. When demand exceeds capacity, processing is shared proportionally between genuine and attack requests. Genuine served rate = 30 × min(1, 120 ÷ total incoming rate). “Affected” means not served in that interval; in a real system those requests might be delayed, dropped, or time out. This model has no queue, protocol details, or per-client prioritization.</li>
+          <li><strong>Equal total attack traffic:</strong> the slider sets the combined rate for either attack scene. DoS uses one source; DDoS divides that rate equally across six example sources. A DDoS attack is not necessarily more damaging than a single-source attack at the same effective load.</li>
+          <li><strong>Blocking is an idealized example:</strong> “Block one source” assumes one source can be correctly identified and completely filtered before its traffic reaches the server. It removes all of this single-source DoS traffic, but only one sixth of this DDoS traffic. Real attacks can involve spoofing, reflection, changing sources, and upstream congestion, so this is not a universal defense.</li>
+          <li><strong>Terminology:</strong> denial of service (DoS) is the broad category; DDoS is its distributed form. In this comparison, “DoS” means the single-source example. Traffic floods are one way to deny service; other attacks exploit vulnerabilities or exhaust particular resources. Botnets are common in DDoS attacks, but not required.</li>
+          <li><strong>Controls:</strong> selecting a scene, adjusting the rate, or changing source blocking switches to manual mode. Restart resets the current scene and counters. Pausing also pauses automatic changes. Hidden browser tabs pause simulation time. Reduced-motion preferences start the simulator paused; Play remains available.</li>
+        </ul>
+        <p class="sources"><strong>Further reading:</strong> <a href="https://www.cloudflare.com/en-au/learning/ddos/glossary/denial-of-service/" target="_blank" rel="noopener noreferrer">Cloudflare: denial of service</a> · <a href="https://developers.cloudflare.com/learning-paths/prevent-ddos-attacks/concepts/ddos-attacks/" target="_blank" rel="noopener noreferrer">Cloudflare: distributed denial of service</a>. These optional links require internet access; the simulator does not.</p>
+      </div>
+    </details>
+    <p id="utility-status" role="status" aria-live="polite"></p>
+    <footer class="footer"><span>Open this HTML file directly in Chrome or Edge. No installation or connection needed.</span><span>Availability is the focus · all traffic is illustrative</span></footer>
+  </main>
+  <div class="creditbar">Powered by <strong>Dr. Ramesh Palanisamy</strong></div>
+
+  <script id="simulation-model">
+    (function (global) {
+      'use strict';
+      const CAPACITY = 120;
+      const LEGITIMATE_RATE = 30;
+      const SOURCE_COUNTS = Object.freeze({ normal:0, dos:1, ddos:6 });
+      function compute(options) {
+        const input = options || {};
+        const mode = Object.prototype.hasOwnProperty.call(SOURCE_COUNTS,input.mode) ? input.mode : 'normal';
+        const numericRate = Number(input.attackRate === undefined ? 300 : input.attackRate);
+        const configuredAttackRate = Math.min(600,Math.max(0,Number.isFinite(numericRate) ? numericRate : 300));
+        const sourceCount = SOURCE_COUNTS[mode];
+        const attackRate = sourceCount ? configuredAttackRate : 0;
+        const perSourceRate = sourceCount ? attackRate/sourceCount : 0;
+        const blockedSources = Boolean(input.blockOne) && sourceCount > 0 ? 1 : 0;
+        const blockedRate = perSourceRate*blockedSources;
+        const effectiveAttackRate = Math.max(0,attackRate-blockedRate);
+        const totalIncoming = LEGITIMATE_RATE+effectiveAttackRate;
+        const serviceFraction = Math.min(1,CAPACITY/totalIncoming);
+        const legitimateServed = LEGITIMATE_RATE*serviceFraction;
+        const legitimateAffected = Math.max(0,LEGITIMATE_RATE-legitimateServed);
+        const attackServed = effectiveAttackRate*serviceFraction;
+        const utilizedCapacity = legitimateServed+attackServed;
+        return Object.freeze({ mode, capacity:CAPACITY, legitimateRate:LEGITIMATE_RATE, configuredAttackRate,
+          sourceCount, attackRate, perSourceRate, blockedSources, blockedRate, effectiveAttackRate,
+          totalIncoming, serviceFraction, legitimateServed, legitimateAffected, attackServed,
+          utilizedCapacity, utilizationPercent:utilizedCapacity/CAPACITY*100,
+          offeredLoadPercent:totalIncoming/CAPACITY*100, overloaded:totalIncoming>CAPACITY });
+      }
+      global.DOS_DDOS_MODEL = Object.freeze({ compute, CAPACITY, LEGITIMATE_RATE, SOURCE_COUNTS });
+    })(window);
+  </script>
+
+  <script id="simulation-renderer">
+    (function (global) {
+      'use strict';
+      const C = { bg:'#101b2e', ink:'#f1f6ff', muted:'#b6c7e1', line:'#334760', green:'#48e6a8', cyan:'#53d8ff', coral:'#ff7584', purple:'#b89aff', amber:'#ffd279' };
+      const FONT = 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+      const TAU = Math.PI*2;
+      function roundRect(ctx,x,y,w,h,r) {
+        r = Math.min(r,w/2,h/2); ctx.beginPath(); ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.quadraticCurveTo(x+w,y,x+w,y+r); ctx.lineTo(x+w,y+h-r); ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h); ctx.lineTo(x+r,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-r); ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y); ctx.closePath();
+      }
+      function text(ctx,value,x,y,size,color,weight,align) { const fontWeight=Math.min(900,Math.max(100,Math.round((weight||500)/100)*100)); const fontSize=Math.max(11,size); ctx.font=fontWeight+' '+fontSize+'px '+FONT; ctx.fillStyle=color||C.ink; ctx.textAlign=align||'center'; ctx.textBaseline='middle'; ctx.fillText(value,x,y); }
+      function circle(ctx,x,y,r,fill,stroke,lineWidth) { ctx.beginPath(); ctx.arc(x,y,r,0,TAU); if(fill){ctx.fillStyle=fill;ctx.fill();} if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lineWidth||1;ctx.stroke();} }
+      function n(value) { return Math.abs(value-Math.round(value))<0.0001 ? String(Math.round(value)) : value.toFixed(1); }
+      function layoutFor(width) {
+        const compact=width<680;
+        return compact ? { compact:true,height:678,server:{x:width/2,y:392},users:{x:width/2,y:590},sourceCenter:{x:width/2,y:154},groupX:width/2,
+          sources:[{x:width*.25,y:80},{x:width*.75,y:80},{x:width*.25,y:154},{x:width*.75,y:154},{x:width*.25,y:228},{x:width*.75,y:228}] }
+          : { compact:false,height:480,server:{x:width*.76,y:214},users:{x:Math.max(120,width*.18),y:393},sourceCenter:{x:119,y:185},groupX:117,
+          sources:[{x:68,y:84},{x:159,y:114},{x:68,y:172},{x:159,y:202},{x:68,y:260},{x:159,y:290}] };
+      }
+      function curve(ctx,p,color,width,dashed) { ctx.beginPath();ctx.moveTo(p[0].x,p[0].y);ctx.bezierCurveTo(p[1].x,p[1].y,p[2].x,p[2].y,p[3].x,p[3].y);ctx.strokeStyle=color;ctx.lineWidth=width||1.5;ctx.setLineDash(dashed?[4,5]:[]);ctx.stroke();ctx.setLineDash([]); }
+      function point(p,t) { const a=1-t;return {x:a*a*a*p[0].x+3*a*a*t*p[1].x+3*a*t*t*p[2].x+t*t*t*p[3].x,y:a*a*a*p[0].y+3*a*a*t*p[1].y+3*a*t*t*p[2].y+t*t*t*p[3].y}; }
+      function packets(ctx,path,rate,time,kind,phase) {
+        if(rate<=0) return;
+        const travel=1.85, bundle=12, interval=bundle/rate;
+        const start=((time+(phase||0)*interval)%interval+interval)%interval;
+        const limit=Math.min(100,Math.ceil(travel/interval)+1);
+        for(let i=0;i<limit;i++) {
+          const age=start+i*interval;if(age>travel)continue;
+          const t=age/travel,p=point(path,t);
+          const fade=Math.min(1,t*12,(1-t)*12);
+          ctx.save();ctx.globalAlpha=Math.max(.15,fade);
+          if(kind==='attack') { ctx.translate(p.x,p.y);ctx.rotate(Math.PI/4);ctx.fillStyle=C.coral;ctx.fillRect(-3.4,-3.4,6.8,6.8); }
+          else if(kind==='reply') circle(ctx,p.x,p.y,4,C.bg,C.purple,2);
+          else circle(ctx,p.x,p.y,4,C.green);
+          ctx.restore();
+        }
+      }
+      function computer(ctx,x,y,blocked,index,rate,single,compact) {
+        const scale=single?1.25:1;
+        ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);
+        ctx.shadowBlur=blocked?0:13;ctx.shadowColor='#ff758428';
+        roundRect(ctx,-24,-18,48,32,5);ctx.fillStyle=blocked?'#292c34':'#352439';ctx.fill();ctx.strokeStyle=blocked?'#8c7955':C.coral;ctx.lineWidth=1.4;ctx.stroke();ctx.shadowBlur=0;
+        roundRect(ctx,-19,-13,38,22,2);ctx.fillStyle=blocked?'#1b2230':'#172033';ctx.fill();
+        if(blocked) { ctx.strokeStyle=C.amber;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-7,-8);ctx.lineTo(7,5);ctx.moveTo(7,-8);ctx.lineTo(-7,5);ctx.stroke(); }
+        else {ctx.strokeStyle=C.coral;ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(-12,-5);ctx.lineTo(-8,-1);ctx.lineTo(-12,3);ctx.moveTo(-3,4);ctx.lineTo(9,4);ctx.stroke();}
+        ctx.beginPath();ctx.moveTo(-25,16);ctx.lineTo(25,16);ctx.lineTo(29,20);ctx.lineTo(-29,20);ctx.closePath();ctx.fillStyle=blocked?'#6d624d':'#bd657c';ctx.fill();
+        ctx.restore();
+        const labelY=y+(single?38:31);
+        text(ctx,'Source '+(index+1),x,labelY,compact?11:11.5,blocked?C.amber:C.ink,650);
+        text(ctx,blocked?'BLOCKED':n(rate)+' req/s',x,labelY+16,compact?10.5:11,blocked?C.amber:C.muted,blocked?750:500);
+      }
+      function users(ctx,x,y) {
+        circle(ctx,x,y,37,'#143c38','#2f806e',1);
+        circle(ctx,x,y-9,7,C.green);circle(ctx,x-16,y-4,5,'#74cbb0');circle(ctx,x+16,y-4,5,'#74cbb0');
+        ctx.fillStyle=C.green;roundRect(ctx,x-11,y+1,22,17,8);ctx.fill();
+        ctx.fillStyle='#74cbb0';roundRect(ctx,x-25,y+5,12,12,5);ctx.fill();roundRect(ctx,x+13,y+5,12,12,5);ctx.fill();
+      }
+      function server(ctx,x,y,m,time) {
+        const statusColor=m.overloaded?C.coral:C.green;
+        const wave=(Math.sin(time*3)+1)/2;
+        circle(ctx,x,y,70+(m.overloaded?wave*4:0),m.overloaded?'#ff758410':'#48e6a808');
+        circle(ctx,x,y,59,null,'#29415b',6);
+        ctx.beginPath();ctx.arc(x,y,59,-Math.PI/2,-Math.PI/2+TAU*m.utilizationPercent/100);ctx.strokeStyle=statusColor;ctx.lineWidth=6;ctx.lineCap='round';ctx.stroke();ctx.lineCap='butt';
+        circle(ctx,x,y,50,'#192b45','#506580',1);
+        [-24,-6,12].forEach(function(offset,i){roundRect(ctx,x-24,y+offset,48,13,3);ctx.fillStyle='#263c58';ctx.fill();ctx.strokeStyle='#64829e';ctx.lineWidth=1;ctx.stroke();circle(ctx,x+16,y+offset+6.5,2.1,i===0&&m.overloaded?C.coral:C.cyan);ctx.strokeStyle='#91abc3';ctx.beginPath();ctx.moveTo(x-16,y+offset+6.5);ctx.lineTo(x+4,y+offset+6.5);ctx.stroke();});
+        text(ctx,'120 req/s',x,y+38,10,C.muted,650);
+        const label=m.overloaded?'OVERLOADED':'AVAILABLE';
+        roundRect(ctx,x-61,y+82,122,26,13);ctx.fillStyle=m.overloaded?'#482738':'#163d35';ctx.fill();ctx.strokeStyle=m.overloaded?'#ba6070':'#408b74';ctx.lineWidth=1;ctx.stroke();
+        text(ctx,label,x,y+95,10.5,statusColor,800);
+      }
+      function draw(ctx,width,height,state,timeSeconds) {
+        const s=state||{};const m=global.DOS_DDOS_MODEL.compute(s);const l=layoutFor(width);const t=Number.isFinite(timeSeconds)?timeSeconds:0;const serverPos=l.server,userPos=l.users;
+        ctx.clearRect(0,0,width,height);ctx.save();
+        ctx.fillStyle=C.bg;ctx.fillRect(0,0,width,height);
+        ctx.fillStyle='#26364d';
+        for(let x=18;x<width;x+=28)for(let y=19;y<height;y+=28){ctx.globalAlpha=.38;ctx.fillRect(x,y,1,1);}ctx.globalAlpha=1;
+        let sources=[];
+        if(m.mode==='dos')sources=[l.sourceCenter];if(m.mode==='ddos')sources=l.sources;
+        text(ctx,'ATTACK SOURCES',l.groupX,23,11,C.coral,800);
+        text(ctx,m.sourceCount===0?'None':m.sourceCount===1?'One device':'Six example devices',l.groupX,43,11.5,C.muted,500);
+        const attackPaths=[];
+        sources.forEach(function(source,i){
+          const end=l.compact?{x:serverPos.x+(i-(sources.length-1)/2)*8,y:serverPos.y-63}:{x:serverPos.x-62,y:serverPos.y+(i-(sources.length-1)/2)*10};
+          let start,p;
+          if(l.compact&&m.mode==='dos'){
+            start={x:source.x+34,y:source.y};
+            const lane=Math.min(width-24,serverPos.x+95);
+            p=[start,{x:lane,y:start.y},{x:lane,y:end.y-50},end];
+          }else if(l.compact){
+            const left=source.x<width/2;
+            start={x:source.x+(left?30:-30),y:source.y};
+            p=[start,{x:serverPos.x+(left?-10:10),y:start.y},{x:end.x,y:end.y-45},end];
+          }else{
+            start={x:source.x+(m.mode==='dos'?34:30),y:source.y};
+            p=[start,{x:start.x+140,y:start.y},{x:end.x-91,y:end.y},end];
+          }
+          const blocked=m.blockedSources>0&&i===0;
+          curve(ctx,p,blocked?'#756040':'#703e52',blocked?1.2:1.6,blocked);attackPaths.push({p,blocked});
+        });
+        const laneOffset=Math.min(105,width*.34);
+        const request=l.compact?[{x:userPos.x-24,y:userPos.y-29},{x:userPos.x-laneOffset,y:userPos.y-90},{x:serverPos.x-laneOffset,y:serverPos.y+95},{x:serverPos.x-31,y:serverPos.y+47}]
+          :[{x:userPos.x+36,y:userPos.y-9},{x:width*.43,y:365},{x:width*.59,y:286},{x:serverPos.x-47,y:serverPos.y+37}];
+        const reply=l.compact?[{x:serverPos.x+33,y:serverPos.y+47},{x:serverPos.x+laneOffset,y:serverPos.y+95},{x:userPos.x+laneOffset,y:userPos.y-90},{x:userPos.x+24,y:userPos.y-28}]
+          :[{x:serverPos.x-25,y:serverPos.y+53},{x:width*.64,y:351},{x:width*.44,y:421},{x:userPos.x+36,y:userPos.y+10}];
+        curve(ctx,request,'#326b61',2,false);curve(ctx,reply,'#5e4f80',2,false);
+        attackPaths.forEach(function(path,i){if(!path.blocked)packets(ctx,path.p,m.perSourceRate,t,'attack',i*.23);});
+        packets(ctx,request,m.legitimateRate,t,'request',.15);packets(ctx,reply,m.legitimateServed,t,'reply',.61);
+        if(m.sourceCount===0){
+          circle(ctx,l.sourceCenter.x,l.sourceCenter.y,34,'#14293a','#375675',1);
+          ctx.strokeStyle=C.cyan;ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(l.sourceCenter.x-12,l.sourceCenter.y);ctx.lineTo(l.sourceCenter.x-3,l.sourceCenter.y+9);ctx.lineTo(l.sourceCenter.x+14,l.sourceCenter.y-11);ctx.stroke();
+          text(ctx,'No attack traffic',l.sourceCenter.x,l.sourceCenter.y+56,12,C.muted,550);
+        }
+        sources.forEach(function(source,i){computer(ctx,source.x,source.y,m.blockedSources>0&&i===0,i,m.perSourceRate,m.mode==='dos',l.compact);});
+        if(l.compact){
+          const captionX=Math.max(35,serverPos.x-91);
+          text(ctx,'College',captionX,serverPos.y-9,12,C.ink,700);
+          text(ctx,'website',captionX,serverPos.y+9,12,C.ink,700);
+        }else{
+          text(ctx,'COLLEGE WEBSITE',serverPos.x,serverPos.y-99,12.5,C.ink,800);
+          text(ctx,'Server',serverPos.x,serverPos.y-80,11.5,C.muted,500);
+        }
+        server(ctx,serverPos.x,serverPos.y,m,t);
+        users(ctx,userPos.x,userPos.y);
+        text(ctx,'Genuine users',userPos.x,userPos.y+52,14,C.ink,750);
+        text(ctx,'30 requests / second',userPos.x,userPos.y+72,11.5,C.green,550);
+        if(l.compact){
+          const offset=Math.min(93,width*.29);
+          text(ctx,'Requests',userPos.x-offset,serverPos.y+155,11,C.green,600);
+          text(ctx,'Replies',userPos.x+offset,serverPos.y+155,11,C.purple,600);
+        }else{
+          text(ctx,'Genuine requests',width*.41,329,11,C.green,600);
+          text(ctx,'Replies',width*.47,408,11,C.purple,600);
+        }
+        ctx.restore();
+        return { model:m,layout:l };
+      }
+      global.DOS_DDOS_RENDER=Object.freeze({draw,layoutFor});
+    })(window);
+  </script>
+
+  <script id="simulation-app">
+    (function () {
+      'use strict';
+      const $=function(id){return document.getElementById(id);};
+      const canvas=$('network-canvas'),ctx=canvas.getContext('2d');
+      if(!ctx){$('utility-status').textContent='Your browser could not create the animation canvas. Please open this file in a current version of Chrome or Edge.';return;}
+      const preference=window.matchMedia?window.matchMedia('(prefers-reduced-motion: reduce)'):null;
+      const reduced=Boolean(preference&&preference.matches);
+      const modes=['normal','dos','ddos'];
+      const durations={normal:7,dos:11,ddos:11};
+      const names={normal:'Normal traffic',dos:'DoS · one attack source',ddos:'DDoS · distributed sources'};
+      const state={mode:'normal',attackRate:300,blockOne:false,playing:!reduced,auto:!reduced,elapsed:0,autoElapsed:0,servedCount:0,affectedCount:0};
+      let width=0,height=0,lastTime=null,uiElapsed=0,lastSummary='',model=window.DOS_DDOS_MODEL.compute(state);
+      const sceneButtons=Array.from(document.querySelectorAll('[data-scene]'));
+      function rate(value){return Math.abs(value-Math.round(value))<.0001?String(Math.round(value)):value.toFixed(1);}
+      function clock(value){const seconds=Math.floor(value);return String(Math.floor(seconds/60)).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0');}
+      function stopAuto(){state.auto=false;state.autoElapsed=0;}
+      function resetCounters(){state.elapsed=0;state.autoElapsed=0;state.servedCount=0;state.affectedCount=0;lastTime=null;}
+      function chooseMode(mode,manual){if(modes.indexOf(mode)<0)return;state.mode=mode;if(manual)stopAuto();resetCounters();refresh();}
+      function summaryFor(m){
+        if(m.mode==='normal')return 'The server has spare capacity. All 30 genuine requests per second are served.';
+        if(m.blockedSources&&m.sourceCount===1)return 'The identified source is filtered before reaching the server. In this idealized example, all genuine requests are served again.';
+        const prefix=m.blockedSources?'One of six sources is filtered. '+rate(m.effectiveAttackRate)+' attack requests per second still reach the server. ':m.sourceCount===1?'One device supplies the attack traffic. ':'Six devices share the same combined attack rate. ';
+        return prefix+(m.overloaded?'Demand exceeds capacity: about '+rate(m.legitimateServed)+' of 30 genuine requests per second are served.':'At this rate, the server still has enough capacity to serve all genuine requests.');
+      }
+      function renderUI(){
+        model=window.DOS_DDOS_MODEL.compute(state);
+        $('app').dataset.mode=state.mode;$('app').dataset.playing=String(state.playing);$('app').dataset.auto=String(state.auto);
+        sceneButtons.forEach(function(button){button.setAttribute('aria-pressed',String(button.dataset.scene===state.mode));});
+        $('scene-title').textContent=names[state.mode];
+        $('scene-subtitle').textContent=state.mode==='normal'?'Genuine users can access the website.':state.mode==='dos'?'Denial of Service · a single-source example.':'Distributed Denial of Service · six devices shown.';
+        $('play-label').textContent=state.playing?'Pause':'Play';$('play-button').setAttribute('aria-label',state.playing?'Pause animation':'Play animation');
+        $('play-icon').innerHTML=state.playing?'<path d="M8 5v14M16 5v14"/>':'<path d="M8 4l12 8-12 8z"/>';
+        $('playback-chip').textContent=state.playing?'● RUNNING':'Ⅱ PAUSED';$('playback-chip').classList.toggle('paused',!state.playing);
+        $('auto-demo').checked=state.auto;$('block-source').checked=state.blockOne;$('block-source').disabled=state.mode==='normal';
+        $('attack-rate').disabled=state.mode==='normal';$('attack-rate').value=String(state.attackRate);$('attack-rate-value').textContent=rate(state.attackRate)+' req/s';
+        $('attack-rate-help').textContent='Same total setting for DoS and DDoS'+(state.mode==='normal'?' · select an attack scene to adjust.':' · divided across the sources shown, before blocking.');
+        const next=modes[(modes.indexOf(state.mode)+1)%modes.length];
+        $('sequence-label').textContent=state.auto?'Auto demo · next: '+(next==='normal'?'Normal':next==='dos'?'DoS':'DDoS'):'Manual scene · stays on your selection';
+        $('sequence-time').textContent=state.auto?Math.max(0,Math.ceil(durations[state.mode]-state.autoElapsed))+' seconds'+(state.playing?'':' · paused'):'';
+        $('sequence-fill').style.width=state.auto?Math.min(100,state.autoElapsed/durations[state.mode]*100)+'%':'0%';
+        $('metric-genuine').textContent=rate(model.legitimateRate);$('metric-attack').textContent=rate(model.effectiveAttackRate);$('metric-capacity').textContent=rate(model.capacity);
+        $('metric-demand').textContent=Math.round(model.offeredLoadPercent)+'%';$('demand-unit').textContent=rate(model.totalIncoming)+' / 120 requests per second';
+        $('metric-served').textContent=rate(model.legitimateServed);$('metric-affected').textContent=rate(model.legitimateAffected);
+        $('utilization-value').textContent=Math.round(model.utilizationPercent)+'%';$('utilization-value').style.color=model.overloaded?'var(--coral)':'var(--green)';
+        $('capacity-genuine').style.width=model.legitimateServed/model.capacity*100+'%';$('capacity-attack').style.width=model.attackServed/model.capacity*100+'%';
+        $('capacity-note').textContent='Green: genuine traffic · coral: attack traffic. '+(model.overloaded?'Demand exceeds capacity.':model.totalIncoming===model.capacity?'Capacity is fully used.':'Spare capacity remains.');
+        $('source-detail').textContent=model.sourceCount===0?'No attack sources. 30 genuine requests reach the server each second.':model.sourceCount+' source'+(model.sourceCount===1?'':'s')+' × '+rate(model.perSourceRate)+' req/s = '+rate(model.attackRate)+' generated.'+(model.blockedSources?' Filtered: '+rate(model.blockedRate)+' req/s. Reaching server: '+rate(model.effectiveAttackRate)+' req/s.':' All attack traffic reaches the server.');
+        $('scene-clock').textContent=clock(state.elapsed);$('count-served').textContent=Math.floor(state.servedCount+1e-7).toLocaleString();$('count-affected').textContent=Math.floor(state.affectedCount+1e-7).toLocaleString();
+        const summary=summaryFor(model);if(summary!==lastSummary){$('scene-summary').textContent=summary;lastSummary=summary;}
+        $('summary-symbol').textContent=model.overloaded?'!':'✓';$('summary-symbol').classList.toggle('warning',model.overloaded);
+        canvas.setAttribute('aria-label',names[state.mode]+'. '+summary+' Genuine requests are green circles, attack requests are coral diamonds, and replies are purple rings.');
+      }
+      function draw(){if(width>0)window.DOS_DDOS_RENDER.draw(ctx,width,height,state,state.elapsed);}
+      function refresh(){renderUI();draw();}
+      function resize(){
+        const measured=canvas.getBoundingClientRect().width;if(measured<=0)return;
+        width=Math.max(200,Math.round(measured));height=window.DOS_DDOS_RENDER.layoutFor(width).height;
+        const scale=Math.min(window.devicePixelRatio||1,2.5);
+        canvas.style.height=height+'px';canvas.width=Math.round(width*scale);canvas.height=Math.round(height*scale);ctx.setTransform(scale,0,0,scale,0,0);draw();
+      }
+      sceneButtons.forEach(function(button){button.addEventListener('click',function(){chooseMode(button.dataset.scene,true);});});
+      $('play-button').addEventListener('click',function(){state.playing=!state.playing;lastTime=null;refresh();});
+      $('restart-button').addEventListener('click',function(){resetCounters();refresh();$('utility-status').textContent='Current scene restarted. Its counters have been reset.';});
+      $('auto-demo').addEventListener('change',function(event){state.auto=event.target.checked;state.autoElapsed=0;refresh();});
+      $('block-source').addEventListener('change',function(event){state.blockOne=event.target.checked;stopAuto();refresh();});
+      $('attack-rate').addEventListener('input',function(event){state.attackRate=Number(event.target.value);stopAuto();refresh();});
+      function fullscreenLabel(){const active=Boolean(document.fullscreenElement)||document.body.classList.contains('presentation');$('fullscreen-button').setAttribute('aria-pressed',String(active));$('fullscreen-label').textContent=active?'Exit presentation':'Presentation view';}
+      $('fullscreen-button').addEventListener('click',async function(){
+        if(document.fullscreenElement){try{await document.exitFullscreen();}catch(error){$('utility-status').textContent='Use the Esc key to leave browser fullscreen.';}fullscreenLabel();return;}
+        if(document.body.classList.contains('presentation')){document.body.classList.remove('presentation');$('utility-status').textContent='Presentation view closed.';fullscreenLabel();resize();return;}
+        try{if(!document.documentElement.requestFullscreen)throw new Error('Fullscreen unavailable');await document.documentElement.requestFullscreen();$('utility-status').textContent='Presentation fullscreen enabled. Press Esc to exit.';}
+        catch(error){document.body.classList.add('presentation');$('utility-status').textContent='Presentation view enabled. Fullscreen is unavailable in this preview; open the downloaded file in your browser and use F11 if desired.';}
+        fullscreenLabel();resize();
+      });
+      document.addEventListener('fullscreenchange',function(){fullscreenLabel();resize();});
+      document.addEventListener('visibilitychange',function(){lastTime=null;});
+      if(preference){const change=function(event){if(event.matches){state.playing=false;lastTime=null;refresh();$('utility-status').textContent='Reduced-motion preference detected. The animation is paused; press Play when ready.';}};if(preference.addEventListener)preference.addEventListener('change',change);else if(preference.addListener)preference.addListener(change);}
+      if(reduced)$('utility-status').textContent='Reduced-motion preference detected. The animation starts paused; press Play when ready.';
+      if('ResizeObserver' in window){const observer=new ResizeObserver(function(){const measured=Math.round(canvas.getBoundingClientRect().width);if(measured!==width)resize();});observer.observe(canvas.parentElement);}else window.addEventListener('resize',resize);
+      window.addEventListener('resize',resize);
+      function frame(timestamp){
+        if(lastTime===null)lastTime=timestamp;const dt=Math.max(0,Math.min(.1,(timestamp-lastTime)/1000));lastTime=timestamp;
+        if(state.playing&&!document.hidden){
+          model=window.DOS_DDOS_MODEL.compute(state);state.elapsed+=dt;state.servedCount+=model.legitimateServed*dt;state.affectedCount+=model.legitimateAffected*dt;if(state.auto)state.autoElapsed+=dt;
+          if(state.auto&&state.autoElapsed>=durations[state.mode])chooseMode(modes[(modes.indexOf(state.mode)+1)%modes.length],false);
+          uiElapsed+=dt;if(uiElapsed>=.125){renderUI();uiElapsed=0;}draw();
+        }
+        window.requestAnimationFrame(frame);
+      }
+      window.DOS_DDOS_SIM=Object.freeze({getState:function(){return Object.assign({},state,{model:window.DOS_DDOS_MODEL.compute(state)});}});
+      renderUI();resize();window.requestAnimationFrame(frame);
+    })();
+  </script>
+</body>
+</html>
