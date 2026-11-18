@@ -41,13 +41,13 @@ body{margin:0;min-height:100vh;background:#2f61a6;font-family:Arial,Helvetica,sa
 
 <div class="mail">
 <div class="mailhead">
-From: IT Support &lt;security-alert@campus-access.example&gt;<br>
+From: <span id="mailFrom">IT Support &lt;security-alert@campus-access.example&gt;</span><br>
 Subject: <span id="mailSubject">Urgent: Your Moodle account will be suspended today</span>
 </div>
 <div class="mailbody">
-<p>Dear Student,</p>
+<p id="mailGreeting">Dear Student,</p>
 <p id="mailBody">We detected unusual activity on your learning account. To avoid suspension, verify your account immediately.</p>
-<button class="btn" id="verifyBtn" type="button">Open the fictional login</button>
+<button class="btn" id="verifyBtn" type="button">Verify account</button>
 <div class="fakeurl"><a href="#" id="fakeUrl">https://secure-login.campus-check.example/verify</a></div>
 <p class="note" id="phishingStatus" role="status" aria-live="polite">This fictional link stays inside the authorized classroom simulator and opens Stage 2.</p>
 </div>
@@ -61,19 +61,63 @@ if(typeof window!=="undefined" && window.PhishingProgress) window.PhishingProgre
 let openingStage=false, stageGeneration=0;
 let activeScenario="moodle";
 const scenarios={
- moodle:{heading:"Moodle Account Verification Message",subject:"Urgent: Your Moodle account will be suspended today",body:"We detected unusual activity on your learning account. To avoid suspension, verify your account immediately."},
- instagram:{heading:"Instagram Login Alert",subject:"Security alert: Confirm your Instagram sign-in",body:"A new sign-in was detected. Confirm your account now to avoid temporary restriction."},
- facebook:{heading:"Facebook Account Alert",subject:"Action required: Review your Facebook account",body:"We noticed unusual activity. Review your account immediately to keep access active."},
- gmail:{heading:"Gmail Security Alert",subject:"Important: Verify your Gmail account activity",body:"A suspicious sign-in was detected. Verify your account to continue using email."},
- bankmuscat:{heading:"Bank Muscat Online Banking Alert",subject:"Security notice: Verify your online banking session",body:"An unusual online banking session was detected. Verify the account to continue."}
+ moodle:{
+   heading:"Moodle Account Verification Message",
+   from:"IT Support <security-alert@campus-access.example>",
+   subject:"Urgent: Your Moodle account will be suspended today",
+   greeting:"Dear Student,",
+   body:"We detected unusual activity on your learning account. To avoid suspension, verify your account immediately.",
+   url:"https://moodle-verify.campus-check.example/verify",
+   button:"Verify Moodle account"
+ },
+ instagram:{
+   heading:"Instagram Security Notification",
+   from:"Instagram Security <alert@instagrarn-security.example>",
+   subject:"New login detected — confirm your account",
+   greeting:"Hi @student,",
+   body:"We noticed a login from a new device. Confirm that it was you within 15 minutes or your account may be temporarily restricted.",
+   url:"https://instagrarn-security.example/account/confirm",
+   button:"Review login"
+ },
+ facebook:{
+   heading:"Facebook Account Recovery Notice",
+   from:"Facebook Support <notice@faecbook-help.example>",
+   subject:"Your account may be locked — review now",
+   greeting:"Hello,",
+   body:"Someone may have tried to access your account. Review the recent login and confirm your identity to keep your account active.",
+   url:"https://faecbook-help.example/security-check",
+   button:"Secure my account"
+ },
+ gmail:{
+   heading:"Gmail Security Alert",
+   from:"Google Account Team <security@gmaii-alerts.example>",
+   subject:"Critical security alert for your email account",
+   greeting:"Hello,",
+   body:"A suspicious sign-in was blocked. Review the activity and confirm your account before access is limited.",
+   url:"https://gmaii-alerts.example/account-review",
+   button:"Review activity"
+ },
+ bankmuscat:{
+   heading:"Bank Muscat Online Banking Alert",
+   from:"Bank Muscat Security <alerts@bankmuscatt-secure.example>",
+   subject:"Unusual online banking session detected",
+   greeting:"Dear Valued Customer,",
+   body:"An unusual online banking session was detected. Verify the session immediately to avoid a temporary security hold.",
+   url:"https://bankmuscatt-secure.example/session/verify",
+   button:"Verify session"
+ }
 };
 function selectScenario(name){
  activeScenario=scenarios[name]?name:"moodle";
  document.querySelectorAll(".scenario-card").forEach(b=>b.classList.toggle("active",b.dataset.scenario===activeScenario));
  const s=scenarios[activeScenario];
  document.getElementById("scenarioHeading").textContent=s.heading;
+ document.getElementById("mailFrom").textContent=s.from;
  document.getElementById("mailSubject").textContent=s.subject;
+ document.getElementById("mailGreeting").textContent=s.greeting;
  document.getElementById("mailBody").textContent=s.body;
+ document.getElementById("fakeUrl").textContent=s.url;
+ document.getElementById("verifyBtn").textContent=s.button;
 }
 document.querySelectorAll(".scenario-card").forEach(b=>b.addEventListener("click",()=>selectScenario(b.dataset.scenario)));
 async function nextStage(){
