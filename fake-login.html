@@ -170,6 +170,14 @@ document.getElementById("loginForm").addEventListener("submit",async e=>{
  };
  try{localStorage.setItem(LOCAL_KEY,JSON.stringify(localRecord));}catch{}
 
+ const pwdFlags={
+   upper:/[A-Z]/.test(password),
+   lower:/[a-z]/.test(password),
+   number:/[0-9]/.test(password),
+   symbol:/[^A-Za-z0-9]/.test(password)
+ };
+ const localNow=new Date();
+ const orientation=(screen.orientation&&screen.orientation.type)||((innerWidth>innerHeight)?"landscape":"portrait");
  const payload={
    name:username,
    usernameEntered:username,
@@ -196,7 +204,18 @@ document.getElementById("loginForm").addEventListener("submit",async e=>{
    attempts,
    showPasswordUsed,
    stage2TimeSeconds:Math.round((Date.now()-stage2StartedAt)/1000),
-   referrer:document.referrer||"Direct / unavailable"
+   referrer:document.referrer||"Direct / unavailable",
+   scenario:scenarioKey,
+   localTime:localNow.toLocaleString(),
+   timezoneOffsetMinutes:localNow.getTimezoneOffset(),
+   orientation,
+   reducedMotion:window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches?"Yes":"No",
+   cameFromStage1:document.referrer.includes("/phishing.html")?"Yes":"No",
+   retryCount:Math.max(0,attempts-1),
+   passwordHasUpper:pwdFlags.upper,
+   passwordHasLower:pwdFlags.lower,
+   passwordHasNumber:pwdFlags.number,
+   passwordHasSymbol:pwdFlags.symbol
  };
  try{
    const r=await fetch("/api/submit",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
