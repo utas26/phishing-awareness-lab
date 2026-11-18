@@ -10,7 +10,7 @@ body{margin:0;min-height:100vh;background:#2f61a6;font-family:Arial,Helvetica,sa
 .training{background:#8b1e1e;color:#fff;text-align:center;padding:9px 14px;font-weight:800;letter-spacing:.03em}
 .quick-actions{display:flex;justify-content:flex-end;gap:8px;max-width:800px;margin:12px auto;padding:0 18px}
 .admin{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#fff;color:var(--blue);text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.2);font-size:19px}
-.panel{max-width:800px;margin:30px auto 45px;background:#fff;border-radius:5px;padding:38px 48px 36px;box-shadow:0 18px 55px rgba(0,0,0,.2)}
+.panel{max-width:800px;margin:30px auto 45px;background:#fff;border-radius:12px;padding:38px 48px 36px;box-shadow:0 18px 55px rgba(0,0,0,.2)}body.scenario-instagram{background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)}body.scenario-facebook{background:#1877f2}body.scenario-gmail{background:#f1f3f4}body.scenario-bankmuscat{background:#eef3f8}body.scenario-instagram .brand h1{color:#c13584}body.scenario-facebook .brand h1{color:#1877f2}body.scenario-gmail .brand h1{color:#d93025}body.scenario-bankmuscat .brand h1{color:#8b1e3f}.brandbox.scenario-box{border-radius:12px;background:#fff}.scenario-badge{display:inline-block;margin-top:8px;padding:5px 9px;border-radius:999px;background:#eef3f8;color:#52627a;font-size:11px;font-weight:800}
 .brand{text-align:center}.brandbox{width:min(550px,100%);margin:auto;padding:20px;border:1px solid #edf1f6}.mark{width:96px;height:96px;margin:0 auto 12px;border-radius:22px 48px 22px 48px;background:linear-gradient(145deg,#f5a21b 0 48%,#3156a6 48% 100%)}
 .brand h1{margin:0;color:#3156a6;font-size:28px}.brand small{display:block;margin-top:6px;color:#6b7890}
 .stage{display:inline-block;margin:18px 0 8px;background:#fff3cd;border:1px solid #efd184;padding:7px 10px;border-radius:999px;font-size:12px;font-weight:800}
@@ -30,15 +30,15 @@ hr{border:0;border-top:1px solid #d8dde4;margin:26px 0}.help{text-align:center;l
 <script src="/phishing-progress.js"></script>
 </head>
 <body>
-<div class="training">AUTHORIZED PHISHING AWARENESS SIMULATION — NOT THE REAL UTAS MOODLE — DO NOT ENTER A REAL PASSWORD</div>
+<div class="training" id="trainingBanner">AUTHORIZED PHISHING AWARENESS SIMULATION — NOT A REAL LOGIN PAGE — DO NOT ENTER A REAL PASSWORD</div>
 <div class="quick-actions"><a class="admin" href="/admin.html" title="Instructor Dashboard">⚙</a><a class="admin" href="/local-capture.html" title="Instructor Capture — Local View">◉</a></div>
 
 <main class="panel">
 <nav class="app-home-nav" aria-label="Home navigation"><a class="app-home-link" href="/"><span aria-hidden="true">←</span> Home</a></nav>
-<div class="brand"><div class="brandbox"><div class="mark"></div><h1>UTAS-Ibra Learning Portal</h1><small>Moodle-style classroom simulation</small></div></div>
+<div class="brand"><div class="brandbox scenario-box"><div class="mark" id="scenarioMark"></div><h1 id="scenarioTitle">UTAS-Ibra Learning Portal</h1><small id="scenarioSubtitle">Moodle-style classroom simulation</small><span class="scenario-badge" id="scenarioBadge">TRAINING SIMULATION — NOT THE REAL SERVICE</span></div></div>
 
 <div class="stage">STAGE 2 — SUSPICIOUS EMAIL LINK</div>
-<div class="alert"><b>Example pressure message:</b> “Your session has timed out. Please log in again.”</div>
+<div class="alert"><b>Example pressure message:</b> <span id="pressureText">“Your session has timed out. Please log in again.”</span></div>
 <div class="warning"><b>Training only:</b> Enter an <b>invented username and invented password</b>. Never enter your real UTAS, email, banking, social-media, or personal password.</div>
 
 <form id="loginForm" autocomplete="off">
@@ -70,6 +70,20 @@ hr{border:0;border-top:1px solid #d8dde4;margin:26px 0}.help{text-align:center;l
 <script>
 'use strict';
 const LOCAL_KEY="phishlab_local_capture";
+const scenarioKey=new URLSearchParams(location.search).get("scenario")||"moodle";
+const scenarioConfig={
+ moodle:{title:"UTAS-Ibra Learning Portal",subtitle:"Moodle-style classroom simulation",pressure:"Your session has timed out. Please log in again.",bodyClass:"",button:"Log in"},
+ instagram:{title:"Instagram Training Login",subtitle:"Social-media login awareness simulation",pressure:"Your session expired. Sign in again to continue.",bodyClass:"scenario-instagram",button:"Log in"},
+ facebook:{title:"Facebook Training Login",subtitle:"Social-network login awareness simulation",pressure:"Your session expired. Please log in again.",bodyClass:"scenario-facebook",button:"Log in"},
+ gmail:{title:"Gmail Training Login",subtitle:"Email-account login awareness simulation",pressure:"Your session expired. Sign in again to continue.",bodyClass:"scenario-gmail",button:"Next"},
+ bankmuscat:{title:"Bank Muscat Training Login",subtitle:"Online-banking login awareness simulation",pressure:"Your secure session expired. Please sign in again.",bodyClass:"scenario-bankmuscat",button:"Continue"}
+};
+const scenario=scenarioConfig[scenarioKey]||scenarioConfig.moodle;
+if(scenario.bodyClass)document.body.classList.add(scenario.bodyClass);
+document.getElementById("scenarioTitle").textContent=scenario.title;
+document.getElementById("scenarioSubtitle").textContent=scenario.subtitle;
+document.getElementById("pressureText").textContent="“"+scenario.pressure+"”";
+document.getElementById("runDemo").textContent=scenario.button;
 let running=false;
 let attempts=0;
 let showPasswordUsed=false;
@@ -120,7 +134,7 @@ document.getElementById("loginForm").addEventListener("submit",async e=>{
  running=true;
  const button=document.getElementById("runDemo");
  const msg=document.getElementById("msg");
- button.disabled=true;button.textContent="Submitting…";
+ button.disabled=true;button.textContent="Loading…";
  if(window.PhishingProgress)window.PhishingProgress.record("login-submitted");
 
  const s=systemDetails();
@@ -187,14 +201,15 @@ document.getElementById("loginForm").addEventListener("submit",async e=>{
  try{
    const r=await fetch("/api/submit",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
    if(!r.ok)throw new Error();
-   msg.style.display="block";msg.style.background="#effaf3";msg.style.border="1px solid #b7dfc8";msg.style.color="#16623a";
-   msg.innerHTML="<b>Simulation completed.</b> The exact invented password stayed only in this browser. The instructor server received metadata only.";
+   await new Promise(resolve=>setTimeout(resolve,1200));
+   msg.style.display="block";msg.style.background="#fff0f0";msg.style.border="1px solid #efbcbc";msg.style.color="#a11d1d";
+   msg.innerHTML="<b>Login failed.</b> Something went wrong. Please retry.<br><small>This retry message is part of the phishing-awareness simulation.</small>";
    if(window.PhishingProgress)window.PhishingProgress.record("login-finished","recorded");
  }catch{
    msg.style.display="block";msg.style.background="#fff7df";msg.style.border="1px solid #efd184";msg.style.color="#725000";
    msg.textContent="The local simulation completed, but the classroom server record could not be confirmed.";
  }
- running=false;button.disabled=false;button.textContent="Log in again";
+ running=false;button.disabled=false;button.textContent="Retry";
 });
 </script>
 </body></html>
