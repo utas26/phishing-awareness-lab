@@ -62,9 +62,9 @@ table{width:100%;border-collapse:collapse;font-size:12px}th,td{border-bottom:1px
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
 
 document.getElementById("loginBtn").onclick=async()=>{
- const r=await fetch("/api/admin-login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:document.getElementById("au").value,password:document.getElementById("ap").value})});
+ const r=await fetch("/api/teaching-admin-login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:document.getElementById("au").value,password:document.getElementById("ap").value})});
  if(r.ok){document.getElementById("loginBox").classList.add("hidden");document.getElementById("dash").classList.remove("hidden");loadData();}
- else document.getElementById("loginMsg").textContent=r.status===503?"Researcher login has not been configured.":"Login was not accepted. Check credentials or try again later.";
+ else document.getElementById("loginMsg").textContent=r.status===503?"Teaching admin login is not configured.":"Login was not accepted. Check credentials or try again later.";
  document.getElementById("ap").value="";
 };
 
@@ -78,6 +78,6 @@ async function loadData(){
  <td>${esc(x.name)}</td><td>${x.passwordSubmitted ? "•".repeat(Math.max(1,Math.min(x.passwordLength||8,12)))+" ("+(x.passwordLength||0)+" chars)" : "No"}</td><td>${esc(x.capturedAt)}</td><td>${esc(x.ip)}</td><td>${esc(x.os||"Unavailable")}</td><td>${esc(x.platform||"Unavailable")}</td><td>${esc(x.browser)}</td><td>${esc(x.language)}</td><td>${esc(x.screen)}</td><td>${esc(x.timezone)}</td>
  </tr>`).join("");
 }
-async function logout(){await fetch("/api/admin-logout",{method:"POST"});location.reload();}
+async function logout(){await fetch("/teaching-admin-logout",{method:"POST"});location.reload();}
 </script>
 </body></html>
