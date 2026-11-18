@@ -35,6 +35,21 @@ function createApp(env=process.env) {
   // Legacy teaching simulation records are deliberately separate from research.
   // They remain temporary and are not included in research reports or exports.
   const submissions=[],events=[];
+  const teachingAdminUser=String(env.TEACHING_ADMIN_USERNAME||'admin');
+  const teachingAdminPassword=String(env.TEACHING_ADMIN_PASSWORD||'');
+  const teachingSessions=new Set();
+  function teachingCookie(req){
+    const raw=String(req.headers.cookie||'');
+    const m=raw.match(/(?:^|;\s*)teaching_admin=([^;]+)/);
+    return m?decodeURIComponent(m[1]):'';
+  }
+  function teachingValid(req){return teachingSessions.has(teachingCookie(req));}
+  function newTeachingSession(){
+    const token=require('node:crypto').randomBytes(24).toString('hex');
+    teachingSessions.add(token);
+    if(teachingSessions.size>100){const first=teachingSessions.values().next().value;teachingSessions.delete(first);}
+    return token;
+  }
   const homepageImage=Buffer.from(Array.from({length:24},(_,i)=>fs.readFileSync(path.join(root,'homepage-image-parts',String(i).padStart(2,'0')+'.base64'),'utf8')).join(''),'base64');
   let writeWindow=Date.now(),writeCount=0;
   function sameOrigin(req) {
@@ -93,6 +108,19 @@ function createApp(env=process.env) {
         }
         return send(res,200,report);
       }
+      if(req.method==='POST' && route==='/api/teaching-admin-login') {
+        if(!legacySameOrigin(req))return send(res,403,{error:'Same-origin login required.'});
+        if(!teachingAdminPassword)return send(res,503,{error:'Teaching admin login is not configured.'});
+        const body=await readJson(req);
+        const ok=String(body.username||'')===teachingAdminUser && String(body.password||'')===teachingAdminPassword;
+        if(!ok)return send(res,401,{error:'Invalid credentials.'});
+        const token=newTeachingSession();
+        return send(res,200,{ok:true},undefined,{'Set-Cookie':`teaching_admin=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=14400${config.origin?.startsWith('https:')?'; Secure':''}`});
+      }
+      if(req.method==='POST' && route==='/teaching-admin-logout') {
+        const token=teachingCookie(req);if(token)teachingSessions.delete(token);
+        return send(res,200,{ok:true},undefined,{'Set-Cookie':'teaching_admin=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0'});
+      }
       if(req.method==='POST' && route==='/api/admin-login') {
         if(!config.adminConfigured || !config.origin)return send(res,503,{error:'Researcher login is not configured.'});
         if(!sameOrigin(req))return send(res,403,{error:'Same-origin login required.'});
@@ -104,7 +132,7 @@ function createApp(env=process.env) {
         return send(res,200,{ok:true},undefined,{'Set-Cookie':auth.logout(req)});
       }
       if(req.method==='GET' && route==='/api/submissions') {
-        if(!auth.valid(req))return send(res,401,{error:'Unauthorized'});
+        if(!teachingValid(req) && !auth.valid(req))return send(res,401,{error:'Unauthorized'});
         return send(res,200,{submissions,clickCount:events.filter(e=>e.event==='clicked_phishing_link').length});
       }
       if(route==='/api/feedback') {
