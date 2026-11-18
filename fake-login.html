@@ -11,8 +11,8 @@ body{margin:0;min-height:100vh;background:#2f61a6;font-family:Arial,Helvetica,sa
 .quick-actions{display:flex;justify-content:flex-end;gap:8px;max-width:800px;margin:12px auto;padding:0 18px}
 .admin{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#fff;color:var(--blue);text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.2);font-size:19px}
 .panel{max-width:800px;margin:30px auto 45px;background:#fff;border-radius:12px;padding:38px 48px 36px;box-shadow:0 18px 55px rgba(0,0,0,.2)}body.scenario-instagram{background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)}body.scenario-facebook{background:#1877f2}body.scenario-gmail{background:#f1f3f4}body.scenario-bankmuscat{background:#eef3f8}body.scenario-instagram .brand h1{color:#c13584}body.scenario-facebook .brand h1{color:#1877f2}body.scenario-gmail .brand h1{color:#d93025}body.scenario-bankmuscat .brand h1{color:#8b1e3f}.brandbox.scenario-box{border-radius:12px;background:#fff}.scenario-badge{display:inline-block;margin-top:8px;padding:5px 9px;border-radius:999px;background:#eef3f8;color:#52627a;font-size:11px;font-weight:800}
-.brand{text-align:center}.brandbox{width:min(550px,100%);margin:auto;padding:20px;border:1px solid #edf1f6}.mark{width:96px;height:96px;margin:0 auto 12px;border-radius:22px 48px 22px 48px;background:linear-gradient(145deg,#f5a21b 0 48%,#3156a6 48% 100%)}
-.brand h1{margin:0;color:#3156a6;font-size:28px}.brand small{display:block;margin-top:6px;color:#6b7890}
+.brand{text-align:center}.brandbox{width:min(550px,100%);margin:auto;padding:24px;border:1px solid #edf1f6}.mark{width:96px;height:96px;margin:0 auto 12px;border-radius:24px;background:linear-gradient(145deg,#f5a21b 0 48%,#3156a6 48% 100%);display:grid;place-items:center;color:white;font-weight:900;font-size:42px;letter-spacing:-2px;box-shadow:0 8px 24px rgba(0,0,0,.12)}.mark.instagram{background:radial-gradient(circle at 30% 110%,#fdf497 0 10%,#fdf49700 11%),linear-gradient(135deg,#515bd4,#8134af,#dd2a7b,#f58529,#feda77)}.mark.facebook{background:#1877f2;border-radius:50%;font-family:Arial;font-size:58px}.mark.gmail{background:white;border:4px solid #ea4335;color:#4285f4;font-size:32px}.mark.bankmuscat{background:linear-gradient(145deg,#7f1d3f,#c79a3b);border-radius:50%}.mark.moodle{background:linear-gradient(145deg,#f5a21b 0 48%,#3156a6 48% 100%)}
+.brand h1{margin:0;color:#3156a6;font-size:30px}.brand small{display:block;margin-top:6px;color:#6b7890}.brandline{margin-top:10px;font-size:12px;color:#69788e}.scenario-facebook .panel{max-width:500px;border-radius:10px}.scenario-instagram .panel{max-width:470px}.scenario-gmail .panel{max-width:520px;border:1px solid #dadce0;box-shadow:0 2px 8px rgba(60,64,67,.15)}.scenario-bankmuscat .panel{max-width:520px;border-top:6px solid #8b1e3f}.scenario-facebook .login{background:#1877f2;width:100%;border-radius:7px}.scenario-instagram .login{width:100%;background:linear-gradient(90deg,#8134af,#dd2a7b,#f58529)}.scenario-gmail .login{margin-left:auto;margin-right:0;background:#1a73e8;border-radius:4px}.scenario-bankmuscat .login{width:100%;background:#8b1e3f}.scenario-facebook .input,.scenario-instagram .input,.scenario-bankmuscat .input{background:#f7f8fa}.scenario-gmail .input{border:1px solid #dadce0;border-radius:4px}.scenario-badge{display:inline-block;margin-top:10px;padding:5px 9px;border-radius:999px;background:#fff3cd;color:#725000;font-size:11px;font-weight:800;border:1px solid #efd184}
 .stage{display:inline-block;margin:18px 0 8px;background:#fff3cd;border:1px solid #efd184;padding:7px 10px;border-radius:999px;font-size:12px;font-weight:800}
 .alert{background:#fbdede;border:1px solid #efbcbc;color:#a11d1d;text-align:center;padding:14px;border-radius:4px;margin:18px 0 18px}
 .warning{background:#fff3cd;border:1px solid #e8c765;color:#6b4b00;padding:12px 14px;border-radius:5px;margin:0 0 18px;line-height:1.45}
@@ -35,7 +35,7 @@ hr{border:0;border-top:1px solid #d8dde4;margin:26px 0}.help{text-align:center;l
 
 <main class="panel">
 <nav class="app-home-nav" aria-label="Home navigation"><a class="app-home-link" href="/"><span aria-hidden="true">←</span> Home</a></nav>
-<div class="brand"><div class="brandbox scenario-box"><div class="mark" id="scenarioMark"></div><h1 id="scenarioTitle">UTAS-Ibra Learning Portal</h1><small id="scenarioSubtitle">Moodle-style classroom simulation</small><span class="scenario-badge" id="scenarioBadge">TRAINING SIMULATION — NOT THE REAL SERVICE</span></div></div>
+<div class="brand"><div class="brandbox scenario-box"><div class="mark moodle" id="scenarioMark">M</div><h1 id="scenarioTitle">UTAS-Ibra Learning Portal</h1><small id="scenarioSubtitle">Moodle-style classroom simulation</small><div class="brandline" id="scenarioBrandline">Fictional classroom copy for awareness training</div><span class="scenario-badge" id="scenarioBadge">TRAINING SIMULATION — NOT THE REAL SERVICE</span></div></div>
 
 <div class="stage">STAGE 2 — SUSPICIOUS EMAIL LINK</div>
 <div class="alert"><b>Example pressure message:</b> <span id="pressureText">“Your session has timed out. Please log in again.”</span></div>
@@ -72,18 +72,25 @@ hr{border:0;border-top:1px solid #d8dde4;margin:26px 0}.help{text-align:center;l
 const LOCAL_KEY="phishlab_local_capture";
 const scenarioKey=new URLSearchParams(location.search).get("scenario")||"moodle";
 const scenarioConfig={
- moodle:{title:"UTAS-Ibra Learning Portal",subtitle:"Moodle-style classroom simulation",pressure:"Your session has timed out. Please log in again.",bodyClass:"",button:"Log in"},
- instagram:{title:"Instagram Training Login",subtitle:"Social-media login awareness simulation",pressure:"Your session expired. Sign in again to continue.",bodyClass:"scenario-instagram",button:"Log in"},
- facebook:{title:"Facebook Training Login",subtitle:"Social-network login awareness simulation",pressure:"Your session expired. Please log in again.",bodyClass:"scenario-facebook",button:"Log in"},
- gmail:{title:"Gmail Training Login",subtitle:"Email-account login awareness simulation",pressure:"Your session expired. Sign in again to continue.",bodyClass:"scenario-gmail",button:"Next"},
- bankmuscat:{title:"Bank Muscat Training Login",subtitle:"Online-banking login awareness simulation",pressure:"Your secure session expired. Please sign in again.",bodyClass:"scenario-bankmuscat",button:"Continue"}
+ moodle:{title:"UTAS-Ibra Learning Portal",subtitle:"Moodle-style classroom simulation",pressure:"Your session has timed out. Please log in again.",bodyClass:"",button:"Log in",mark:"M",markClass:"moodle",userLabel:"Username",userPlaceholder:"Enter invented username",brandline:"Learning portal training copy"},
+ instagram:{title:"Instagrarn",subtitle:"Social-media login awareness simulation",pressure:"Your session expired. Sign in again to continue.",bodyClass:"scenario-instagram",button:"Log in",mark:"◎",markClass:"instagram",userLabel:"Phone number, username, or email",userPlaceholder:"Invented username only",brandline:"Fictional look-alike: Instagrarn"},
+ facebook:{title:"faecbook",subtitle:"Social-network login awareness simulation",pressure:"Your session expired. Please log in again.",bodyClass:"scenario-facebook",button:"Log in",mark:"f",markClass:"facebook",userLabel:"Email address or phone number",userPlaceholder:"Invented email or phone",brandline:"Fictional look-alike: faecbook"},
+ gmail:{title:"GmaiI",subtitle:"Email-account login awareness simulation",pressure:"Your session expired. Sign in again to continue.",bodyClass:"scenario-gmail",button:"Next",mark:"M",markClass:"gmail",userLabel:"Email or phone",userPlaceholder:"Invented email only",brandline:"Fictional look-alike: GmaiI"},
+ bankmuscat:{title:"Bank Muscatt",subtitle:"Online-banking login awareness simulation",pressure:"Your secure session expired. Please sign in again.",bodyClass:"scenario-bankmuscat",button:"Continue",mark:"BM",markClass:"bankmuscat",userLabel:"User ID",userPlaceholder:"Invented banking user ID",brandline:"Fictional look-alike: Bank Muscatt"}
 };
 const scenario=scenarioConfig[scenarioKey]||scenarioConfig.moodle;
 if(scenario.bodyClass)document.body.classList.add(scenario.bodyClass);
 document.getElementById("scenarioTitle").textContent=scenario.title;
 document.getElementById("scenarioSubtitle").textContent=scenario.subtitle;
+document.getElementById("scenarioBrandline").textContent=scenario.brandline;
 document.getElementById("pressureText").textContent="“"+scenario.pressure+"”";
 document.getElementById("runDemo").textContent=scenario.button;
+const mark=document.getElementById("scenarioMark");
+mark.textContent=scenario.mark;
+mark.className="mark "+scenario.markClass;
+const userLabel=document.querySelector('label[for="studentName"]');
+userLabel.textContent=scenario.userLabel;
+document.getElementById("studentName").placeholder=scenario.userPlaceholder;
 let running=false;
 let attempts=0;
 let showPasswordUsed=false;
