@@ -14,7 +14,8 @@ body{margin:0;min-height:100vh;background:#2f61a6;font-family:Arial,Helvetica,sa
 .mark{width:62px;height:62px;border-radius:15px 30px 15px 30px;background:linear-gradient(145deg,#f5a21b 0 48%,#3156a6 48% 100%)}
 .brand h1{margin:0;color:#3156a6;font-size:25px}.brand small{color:#6b7890}
 .stage{display:inline-block;margin:18px 0 8px;background:#fff3cd;border:1px solid #efd184;padding:7px 10px;border-radius:999px;font-size:12px;font-weight:800}
-.mail{margin-top:12px;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.mail{margin-top:12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 8px 26px rgba(28,46,72,.08)}
+.mail-brand{display:flex;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid #edf1f5;background:#fff}.mail-logo{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:22px;background:#315fa8}.mail-logo.instagram{background:linear-gradient(135deg,#515bd4,#8134af,#dd2a7b,#f58529)}.mail-logo.facebook{background:#1877f2;border-radius:50%;font-size:30px}.mail-logo.gmail{background:#fff;color:#4285f4;border:3px solid #ea4335}.mail-logo.bankmuscat{background:linear-gradient(145deg,#8b1e3f,#c99b45);border-radius:50%}.mail-brand strong{display:block;font-size:18px}.mail-brand small{color:#6c7888}.mail-detail{margin:16px 0;padding:12px 14px;background:#f7f9fc;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;line-height:1.6}.mail-detail b{color:#26364f}.mail-footer{margin-top:18px;padding-top:14px;border-top:1px solid #e9edf2;color:#7b8798;font-size:12px;line-height:1.5}.mail-instagram .btn{background:#d62976}.mail-facebook .btn{background:#1877f2}.mail-gmail .btn{background:#1a73e8}.mail-bankmuscat .btn{background:#8b1e3f}
 .mailhead{background:#f6f8fb;padding:14px 16px;border-bottom:1px solid var(--line);font-size:13px;line-height:1.45}
 .mailbody{padding:20px;line-height:1.58}
 .btn{display:inline-block;background:#245d99;color:#fff;border:0;border-radius:6px;padding:12px 18px;font-weight:700;cursor:pointer}
@@ -39,17 +40,17 @@ body{margin:0;min-height:100vh;background:#2f61a6;font-family:Arial,Helvetica,sa
 <div id="labExplanationMount"></div>
 <p class="note"><b>Start here:</b> Watch the short explanation, then inspect the fictional email. The button below opens a demo-only login. Never enter a real password.</p>
 
-<div class="mail">
+<div class="mail" id="mailCard"><div class="mail-brand"><div class="mail-logo" id="mailLogo">M</div><div><strong id="mailBrandName">Moodle Security</strong><small id="mailBrandSub">Account protection notice</small></div></div>
 <div class="mailhead">
 From: <span id="mailFrom">IT Support &lt;security-alert@campus-access.example&gt;</span><br>
 Subject: <span id="mailSubject">Urgent: Your Moodle account will be suspended today</span>
 </div>
 <div class="mailbody">
 <p id="mailGreeting">Dear Student,</p>
-<p id="mailBody">We detected unusual activity on your learning account. To avoid suspension, verify your account immediately.</p>
+<p id="mailBody">We detected unusual activity on your learning account. To avoid suspension, verify your account immediately.</p><div class="mail-detail" id="mailDetail"><b>Sign-in details</b><br>Device: Chrome on Windows<br>Location: Muscat, Oman<br>Time: Today, 10:42 AM</div>
 <button class="btn" id="verifyBtn" type="button">Verify account</button>
 <div class="fakeurl"><a href="#" id="fakeUrl">https://secure-login.campus-check.example/verify</a></div>
-<p class="note" id="phishingStatus" role="status" aria-live="polite">This fictional link stays inside the authorized classroom simulator and opens Stage 2.</p>
+<p class="note" id="phishingStatus" role="status" aria-live="polite">This fictional link stays inside the authorized classroom simulator and opens Stage 2.</p><div class="mail-footer" id="mailFooter">If you did not request this action, ignore this message. This is a classroom simulation.</div>
 </div>
 </div>
 
@@ -62,49 +63,19 @@ let openingStage=false, stageGeneration=0;
 let activeScenario="moodle";
 const scenarios={
  moodle:{
-   heading:"Moodle Account Verification Message",
-   from:"IT Support <security-alert@campus-access.example>",
-   subject:"Urgent: Your Moodle account will be suspended today",
-   greeting:"Dear Student,",
-   body:"We detected unusual activity on your learning account. To avoid suspension, verify your account immediately.",
-   url:"https://moodle-verify.campus-check.example/verify",
-   button:"Verify Moodle account"
+   heading:"Moodle Account Verification Message",from:"IT Support <security-alert@campus-access.example>",subject:"Urgent: Your Moodle account will be suspended today",greeting:"Dear Student,",body:"We detected unusual activity on your learning account. To avoid suspension, verify your account immediately.",url:"https://moodle-verify.campus-check.example/verify",button:"Verify Moodle account",brand:"Moodle Security",sub:"Account protection notice",logo:"M",logoClass:"",mailClass:"",detail:"Device: Chrome on Windows|Location: Muscat, Oman|Time: Today, 10:42 AM",footer:"If you did not request this action, ignore this message. This is a classroom simulation."
  },
  instagram:{
-   heading:"Instagram Security Notification",
-   from:"Instagram Security <alert@instagrarn-security.example>",
-   subject:"New login detected — confirm your account",
-   greeting:"Hi @student,",
-   body:"We noticed a login from a new device. Confirm that it was you within 15 minutes or your account may be temporarily restricted.",
-   url:"https://instagrarn-security.example/account/confirm",
-   button:"Review login"
+   heading:"Instagrarn Security Alert",from:"Instagrarn Security <alert@instagrarn-security.example>",subject:"New login detected from a device we don't recognize",greeting:"Hi @student,",body:"We noticed a login to your account from a device you don't usually use. If this was you, review the activity below. If not, secure your account now.",url:"https://instagrarn-security.example/account/confirm",button:"Review login activity",brand:"Instagrarn",sub:"Security • Login alert",logo:"◎",logoClass:"instagram",mailClass:"mail-instagram",detail:"Device: Chrome on Windows|Approx. location: Muscat, Oman|Time: Today, 10:42 AM",footer:"You received this message because a new sign-in was detected. Never share your password by email."
  },
  facebook:{
-   heading:"Facebook Account Recovery Notice",
-   from:"Facebook Support <notice@faecbook-help.example>",
-   subject:"Your account may be locked — review now",
-   greeting:"Hello,",
-   body:"Someone may have tried to access your account. Review the recent login and confirm your identity to keep your account active.",
-   url:"https://faecbook-help.example/security-check",
-   button:"Secure my account"
+   heading:"faecbook Security Check",from:"faecbook Security <notice@faecbook-help.example>",subject:"Was this you? Review a recent login",greeting:"Hello,",body:"We noticed a login from a browser or device you don't usually use. Review the details and tell us if it was you.",url:"https://faecbook-help.example/security-check",button:"Review login",brand:"faecbook",sub:"Security check",logo:"f",logoClass:"facebook",mailClass:"mail-facebook",detail:"Device: Chrome on Windows|Approx. location: Muscat, Oman|Time: Today, 10:42 AM",footer:"If this wasn't you, secure your account using the official app or website."
  },
  gmail:{
-   heading:"Gmail Security Alert",
-   from:"Google Account Team <security@gmaii-alerts.example>",
-   subject:"Critical security alert for your email account",
-   greeting:"Hello,",
-   body:"A suspicious sign-in was blocked. Review the activity and confirm your account before access is limited.",
-   url:"https://gmaii-alerts.example/account-review",
-   button:"Review activity"
+   heading:"GmaiI Security Alert",from:"GmaiI Account Team <security@gmaii-alerts.example>",subject:"Security alert: New sign-in on your account",greeting:"Hello,",body:"A new sign-in was detected on your account. Review the activity to confirm whether it was you.",url:"https://gmaii-alerts.example/account-review",button:"Check activity",brand:"GmaiI",sub:"Account security",logo:"M",logoClass:"gmail",mailClass:"mail-gmail",detail:"Device: Chrome on Windows|Approx. location: Muscat, Oman|Time: Today, 10:42 AM",footer:"You can also review security activity from the official account settings page."
  },
  bankmuscat:{
-   heading:"Bank Muscat Online Banking Alert",
-   from:"Bank Muscat Security <alerts@bankmuscatt-secure.example>",
-   subject:"Unusual online banking session detected",
-   greeting:"Dear Valued Customer,",
-   body:"An unusual online banking session was detected. Verify the session immediately to avoid a temporary security hold.",
-   url:"https://bankmuscatt-secure.example/session/verify",
-   button:"Verify session"
+   heading:"Bank Muscatt Online Banking Security Alert",from:"Bank Muscatt Security <alerts@bankmuscatt-secure.example>",subject:"Unusual online banking session detected",greeting:"Dear Valued Customer,",body:"We detected an online banking session that does not match your usual activity. Review the session details below and confirm whether it was authorized.",url:"https://bankmuscatt-secure.example/session/verify",button:"Review secure session",brand:"Bank Muscatt",sub:"Online banking security",logo:"BM",logoClass:"bankmuscat",mailClass:"mail-bankmuscat",detail:"Channel: Online Banking|Device: Chrome on Windows|Time: Today, 10:42 AM",footer:"For your security, never share your OTP, PIN, or password. Use the official banking app or website."
  }
 };
 function selectScenario(name){
@@ -118,6 +89,13 @@ function selectScenario(name){
  document.getElementById("mailBody").textContent=s.body;
  document.getElementById("fakeUrl").textContent=s.url;
  document.getElementById("verifyBtn").textContent=s.button;
+ document.getElementById("mailBrandName").textContent=s.brand;
+ document.getElementById("mailBrandSub").textContent=s.sub;
+ const logo=document.getElementById("mailLogo"); logo.textContent=s.logo; logo.className="mail-logo "+s.logoClass;
+ const card=document.getElementById("mailCard"); card.className="mail "+s.mailClass;
+ const detailLines=s.detail.split("|");
+ document.getElementById("mailDetail").innerHTML="<b>Sign-in details</b><br>"+detailLines.map(x=>x.replace(/</g,"&lt;")).join("<br>");
+ document.getElementById("mailFooter").textContent=s.footer;
 }
 document.querySelectorAll(".scenario-card").forEach(b=>b.addEventListener("click",()=>selectScenario(b.dataset.scenario)));
 async function nextStage(){
